@@ -6,21 +6,21 @@ extends Node
 
 
 @export var room_scene_by_mask := {
-	#1:  preload("res://rooms/N.tscn"),
-	#2:  preload("res://rooms/E.tscn"),
-	#4:  preload("res://rooms/S.tscn"),
-	#8:  preload("res://rooms/W.tscn"),
-	#3:  preload("res://rooms/NE.tscn"),
-	#5:  preload("res://rooms/NS.tscn"),
-	#9:  preload("res://rooms/NW.tscn"),
-	#6:  preload("res://rooms/ES.tscn"),
-	#10: preload("res://rooms/EW.tscn"),
-	#12: preload("res://rooms/SW.tscn"),
-	#7:  preload("res://rooms/NES.tscn"),
-	#11: preload("res://rooms/NEW.tscn"),
-	#13: preload("res://rooms/NSW.tscn"),
-	#14: preload("res://rooms/ESW.tscn"),
-	15: preload("res://TestMapGeneration0906edithome/NESW.tscn"),
+	1:  preload("res://rooms/N.tscn"),
+	2:  preload("res://rooms/E.tscn"),
+	4:  preload("res://rooms/S.tscn"),
+	8:  preload("res://rooms/W.tscn"),
+	3:  preload("res://rooms/NE.tscn"),
+	5:  preload("res://rooms/NS.tscn"),
+	9:  preload("res://rooms/NW.tscn"),
+	6:  preload("res://rooms/ES.tscn"),
+	10: preload("res://rooms/EW.tscn"),
+	12: preload("res://rooms/SW.tscn"),
+	7:  preload("res://rooms/NES.tscn"),
+	11: preload("res://rooms/NEW.tscn"),
+	13: preload("res://rooms/NSW.tscn"),
+	14: preload("res://rooms/ESW.tscn"),
+	15: preload("res://rooms/NESW.tscn"),
 }
 
 
@@ -33,9 +33,9 @@ var enemy_pools := {
 
 @export var width := 100
 @export var height := 100
-@export var min_rooms := 10 * 5
-@export var max_rooms := 18 * 5
-@export var min_path_len := 6 * 5
+@export var min_rooms := 10 
+@export var max_rooms := 18
+@export var min_path_len := 6 
 @export var rng_seed := 123456 #TODO 这个种子似乎没有起作用 
 
 var rng := RandomNumberGenerator.new()
@@ -64,29 +64,54 @@ func _generate_layout():
 		if not grid.has(current): #确保周围格子没有被占用 
 			path.append(current)
 			_create_room(current)
+			_connect_rooms(path[-2], current) # 主线必连
 	
 	# 记录主线 id
 	var main_ids := [] #目前位置在生成主线房间 
 	for p in path:
 		main_ids.append(grid[p])
 
-	# 分支：从主线若干点出发扩展 #注意 min_path_len的长度要和min和max保持对应 不然会卡死
-	while rooms.size() < rng.randi_range(min_rooms, max_rooms): 
-		var anchor = path[rng.randi_range(1, path.size()-2)]
-		var branch_len := rng.randi_range(1, 3)
-		var pos = anchor
-		for i in branch_len:
-			var nxt = _random_neighbor_step(pos, false)
-			if not grid.has(nxt):
-				_create_room(nxt)
-				pos = nxt
-			else :
-				break
+	## 分支：从主线若干点出发扩展 #注意 min_path_len的长度要和min和max保持对应 不然会卡死
+	#while rooms.size() < rng.randi_range(min_rooms, max_rooms): 
+		#var anchor = path[rng.randi_range(1, path.size()-2)]
+		#var branch_len := rng.randi_range(1, 3)
+		#var pos = anchor
+		#for i in branch_len:
+			#var nxt = _random_neighbor_step(pos, false)
+			#if not grid.has(nxt):
+				#_create_room(nxt)
+				#_connect_rooms(pos, nxt) # 分支必连
+				##_maybe_connect_to_other_neighbors(pos) # 有概率额外连门
+				#pos = nxt
+			#else :
+				#break
 
 	# 建立邻居与难度（基于曼哈顿距起点）
 	for r in rooms: #TODO 基于不同的难度 难度3的房间保持在一定数量 
-		r.neighbors = _find_neighbors(r.grid_pos)
+		#r.neighbors = _find_neighbors(r.grid_pos)
 		r.difficulty = r.grid_pos.distance_to(start_pos)
+
+# 连接两个房间（双向）
+func _connect_rooms(a: Vector2i, b: Vector2i) -> void:
+	var room_a = rooms[grid[a]]
+	var room_b = rooms[grid[b]]
+
+	if not room_a.neighbors.has(room_b):
+		room_a.neighbors.append(room_b)
+	if not room_b.neighbors.has(room_a):
+		room_b.neighbors.append(room_a)
+
+# 有概率把某个房间和它的相邻房间连起来
+func _maybe_connect_to_other_neighbors(pos: Vector2i, extra_prob: float = 0.25) -> void:
+	var dirs = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
+	for d in dirs:
+		var np = pos + d
+		if grid.has(np):
+			var room_a = rooms[grid[pos]]
+			var room_b = rooms[grid[np]]
+			if not room_a.neighbors.has(room_b):
+				if rng.randf() < extra_prob:
+					_connect_rooms(pos, np)
 
 
 func _create_room(pos: Vector2i, t := RoomData.RoomType.NORMAL):
@@ -98,12 +123,12 @@ func _create_room(pos: Vector2i, t := RoomData.RoomType.NORMAL):
 	grid[pos] = rd.id
 
 
-func _random_neighbor_step(pos: Vector2i, avoid_backtrack := true) -> Vector2i:
+func _random_neighbor_step(pos: Vector2i, avoid_backtrack := true) -> Vector2i: #将房间限制在格式内 
 	var dirs := [Vector2i(0,-1), Vector2i(1,0), Vector2i(0,1), Vector2i(-1,0)]
 	dirs.shuffle()
 	for d in dirs:
 		var np = pos + d
-		if abs(np.x - start_pos.x) > width/2: continue
+		if abs(np.x - start_pos.x) > width/2: continue #这段代码保证房间不会超出边界
 		if abs(np.y - start_pos.y) > height/2: continue
 		if avoid_backtrack and grid.has(np): continue
 		return np
@@ -121,7 +146,7 @@ func _find_neighbors(pos: Vector2i) -> Array[int]:
 	}
 	for off in offsets.keys():
 		var np = pos + off
-		if grid.has(np):
+		if grid.has(np): 
 			ids.append(grid[np])
 	return ids
 
@@ -149,7 +174,7 @@ func _assign_room_types():
 	if secret_spots.size() > 0:
 		var pos := secret_spots[0]
 		_create_room(pos, RoomData.RoomType.SECRET)
-
+#
 	# 超级隐藏：恰好只有 1 个邻居的空位
 	var ssecret := _find_secret_spots(1, 1)
 	if ssecret.size() > 0:
@@ -204,7 +229,7 @@ func _compute_door_masks():
 func _instantiate_rooms():
 	var cell_size := Vector2(256, 256) # 你的房间世界尺寸
 	for r in rooms:
-		var scene = room_scene_by_mask.get(r.door_mask, preload("res://TestMapGeneration0906edithome/NESW.tscn"))
+		var scene = room_scene_by_mask.get(r.door_mask)
 		var inst = scene.instantiate()
 		add_child(inst)
 		inst.position = Vector2(r.grid_pos.x * cell_size.x, r.grid_pos.y * cell_size.y)
@@ -250,7 +275,6 @@ func _spawn_enemies(r: RoomData, base_count: int = 3, t : String = "普通房间
 		inst.add_child(label)
 		
 		e.global_position = _random_point_in_room(inst)
-
 
 func _room_node(room_id: int) -> Node2D:
 	for c in get_children():
