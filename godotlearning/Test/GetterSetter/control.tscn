@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://chssvvk6b7ia8"]
+
+[ext_resource type="Script" uid="uid://dpuojwomau66s" path="res://Test/GetterSetter/control.gd" id="1_a02r7"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_dosdd"]
+font_size = 36
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_a02r7")
+
+[node name="HSlider" type="HSlider" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 267.0
+offset_right = 372.0
+offset_bottom = 323.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_top = 178.0
+offset_right = 40.0
+offset_bottom = 201.0
+text = "12"
+label_settings = SubResource("LabelSettings_dosdd")
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 0
+offset_top = 220.0
+offset_right = 41.0
+offset_bottom = 270.0
+text = "低血量预警"
+label_settings = SubResource("LabelSettings_dosdd")
+
+[connection signal="value_changed" from="HSlider" to="." method="_on_h_slider_value_changed"]

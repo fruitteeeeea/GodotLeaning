@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://nh0jkjbnd5l7"]
+
+[ext_resource type="PackedScene" uid="uid://4y0m8fnyllf2" path="res://TestMapGeneration0906edithome/dungeon_generator.tscn" id="1_1c14a"]
+[ext_resource type="Script" uid="uid://dujmsk7pdbh1q" path="res://TestMapGeneration0906edithome/test_scene.gd" id="1_x1q1v"]
+[ext_resource type="Texture2D" uid="uid://dkgen5k28mwha" path="res://icon.svg" id="3_51crv"]
+
+[node name="TestScene" type="Node2D"]
+script = ExtResource("1_x1q1v")
+
+[node name="DungeonGenerator" parent="." instance=ExtResource("1_1c14a")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+offset_right = 336.0
+offset_bottom = 152.0
+text = "Reload
+"
+
+[node name="Icon" type="Sprite2D" parent="."]
+scale = Vector2(1, 0.125)
+texture = ExtResource("3_51crv")
+
+[node name="Icon2" type="Sprite2D" parent="."]
+scale = Vector2(0.125, 1.25)
+texture = ExtResource("3_51crv")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.3, 0.3)
+
+[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]

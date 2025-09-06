@@ -1,0 +1,273 @@
+class_name DungeonGenerator
+extends Node
+
+#房间多了容易卡死 
+#可以加入波坍塌函数来寻求和回溯随机生成结果
+
+
+@export var room_scene_by_mask := {
+	#1:  preload("res://rooms/N.tscn"),
+	#2:  preload("res://rooms/E.tscn"),
+	#4:  preload("res://rooms/S.tscn"),
+	#8:  preload("res://rooms/W.tscn"),
+	#3:  preload("res://rooms/NE.tscn"),
+	#5:  preload("res://rooms/NS.tscn"),
+	#9:  preload("res://rooms/NW.tscn"),
+	#6:  preload("res://rooms/ES.tscn"),
+	#10: preload("res://rooms/EW.tscn"),
+	#12: preload("res://rooms/SW.tscn"),
+	#7:  preload("res://rooms/NES.tscn"),
+	#11: preload("res://rooms/NEW.tscn"),
+	#13: preload("res://rooms/NSW.tscn"),
+	#14: preload("res://rooms/ESW.tscn"),
+	15: preload("res://TestMapGeneration0906edithome/NESW.tscn"),
+}
+
+
+# 简化示例：敌人库按难度抽样
+var enemy_pools := {
+	0: [preload("res://TestMapGeneration0906edithome/Unit/enemy_0.tscn")],
+	2: [preload("res://TestMapGeneration0906edithome/Unit/enemy_2.tscn")],
+	4: [preload("res://TestMapGeneration0906edithome/Unit/enemy_4.tscn")],
+}
+
+@export var width := 100
+@export var height := 100
+@export var min_rooms := 10 * 5
+@export var max_rooms := 18 * 5
+@export var min_path_len := 6 * 5
+@export var rng_seed := 123456 #TODO 这个种子似乎没有起作用 
+
+var rng := RandomNumberGenerator.new()
+@export var grid := {} # Dictionary[Vector2i, int] -> room_id
+@export var rooms := [] # Array[RoomData]
+@export var start_pos := Vector2i(0, 0)
+
+
+func _ready():
+	rng.seed = rng_seed
+	_generate_layout()
+	_assign_room_types()
+	_compute_door_masks()
+	_instantiate_rooms()
+	_populate_content()
+
+func _generate_layout():
+	rooms.clear(); grid.clear()
+	var current := start_pos
+	_create_room(current, RoomData.RoomType.START)
+
+	# 主线：随机游走直到长度达到 min_path_len
+	var path := [current]
+	while path.size() < min_path_len:
+		current = _random_neighbor_step(current, true)
+		if not grid.has(current): #确保周围格子没有被占用 
+			path.append(current)
+			_create_room(current)
+	
+	# 记录主线 id
+	var main_ids := [] #目前位置在生成主线房间 
+	for p in path:
+		main_ids.append(grid[p])
+
+	# 分支：从主线若干点出发扩展 #注意 min_path_len的长度要和min和max保持对应 不然会卡死
+	while rooms.size() < rng.randi_range(min_rooms, max_rooms): 
+		var anchor = path[rng.randi_range(1, path.size()-2)]
+		var branch_len := rng.randi_range(1, 3)
+		var pos = anchor
+		for i in branch_len:
+			var nxt = _random_neighbor_step(pos, false)
+			if not grid.has(nxt):
+				_create_room(nxt)
+				pos = nxt
+			else :
+				break
+
+	# 建立邻居与难度（基于曼哈顿距起点）
+	for r in rooms: #TODO 基于不同的难度 难度3的房间保持在一定数量 
+		r.neighbors = _find_neighbors(r.grid_pos)
+		r.difficulty = r.grid_pos.distance_to(start_pos)
+
+
+func _create_room(pos: Vector2i, t := RoomData.RoomType.NORMAL):
+	var rd := RoomData.new()
+	rd.id = rooms.size()
+	rd.grid_pos = pos
+	rd.type = t
+	rooms.append(rd)
+	grid[pos] = rd.id
+
+
+func _random_neighbor_step(pos: Vector2i, avoid_backtrack := true) -> Vector2i:
+	var dirs := [Vector2i(0,-1), Vector2i(1,0), Vector2i(0,1), Vector2i(-1,0)]
+	dirs.shuffle()
+	for d in dirs:
+		var np = pos + d
+		if abs(np.x - start_pos.x) > width/2: continue
+		if abs(np.y - start_pos.y) > height/2: continue
+		if avoid_backtrack and grid.has(np): continue
+		return np
+	# 兜底：随机方向
+	return pos + dirs[0]
+
+#寻找邻居 
+func _find_neighbors(pos: Vector2i) -> Array[int]:
+	var ids : Array[int] = []
+	var offsets := {
+		Vector2i(0,-1): 1,  # N
+		Vector2i(1,0): 2,   # E
+		Vector2i(0,1): 4,   # S
+		Vector2i(-1,0): 8,  # W
+	}
+	for off in offsets.keys():
+		var np = pos + off
+		if grid.has(np):
+			ids.append(grid[np])
+	return ids
+
+
+func _assign_room_types(): 
+	# 选 Boss：离起点最远的普通房
+	var boss = _find_boss_room()
+	boss.type = RoomData.RoomType.BOSS
+
+	# 选宝物房：中等距离的普通房（不与 Boss 相邻）
+	var candidates := rooms.filter(func(r):
+		return r.type == RoomData.RoomType.NORMAL and r.difficulty >= min_path_len/2 and not _adjacent_to_type(r, RoomData.RoomType.BOSS))
+	if candidates.size() > 0:
+		candidates.shuffle()
+		candidates[0].type = RoomData.RoomType.TREASURE
+
+	# 商店：与宝物房不同、靠近主线的普通房
+	var shops := rooms.filter(func(r): return r.type == RoomData.RoomType.NORMAL and r.difficulty >= min_path_len/2 - 1)
+	if shops.size() > 0:
+		shops.shuffle()
+		shops[0].type = RoomData.RoomType.SHOP
+
+	# 隐藏房：寻找“被 >=3 个房包围”的空位再回填
+	var secret_spots := _find_secret_spots(3)
+	if secret_spots.size() > 0:
+		var pos := secret_spots[0]
+		_create_room(pos, RoomData.RoomType.SECRET)
+
+	# 超级隐藏：恰好只有 1 个邻居的空位
+	var ssecret := _find_secret_spots(1, 1)
+	if ssecret.size() > 0:
+		_create_room(ssecret[0], RoomData.RoomType.SUPER_SECRET)
+
+
+func _find_boss_room() -> RoomData:
+	var max_room: RoomData = null
+	for r in rooms:
+		if max_room == null or r.difficulty > max_room.difficulty:
+			max_room = r
+	return max_room
+
+
+func _adjacent_to_type(r: RoomData, t: int) -> bool:
+	for nid in r.neighbors:
+		if rooms[nid].type == t:
+			return true
+	return false
+
+#隐藏房间
+func _find_secret_spots(min_adjacent := 3, max_adjacent := 4) -> Array[Vector2i]:
+	var spots : Array[Vector2i] = []
+	var dirs := [Vector2i(0,-1), Vector2i(1,0), Vector2i(0,1), Vector2i(-1,0)]
+	# 在当前边界的内圈查找空位
+	for x in range(start_pos.x - width/2, start_pos.x + width/2 + 1):
+		for y in range(start_pos.y - height/2, start_pos.y + height/2 + 1):
+			var p := Vector2i(x,y)
+			if grid.has(p): continue
+			var cnt := 0
+			for d in dirs:
+				if grid.has(p + d): cnt += 1
+			if cnt >= min_adjacent and cnt <= max_adjacent:
+				spots.append(p)
+	spots.shuffle()
+	return spots
+
+#j计算门掩码
+func _compute_door_masks():
+	var offset_to_bit := {
+		Vector2i(0,-1): 1, Vector2i(1,0): 2, Vector2i(0,1): 4, Vector2i(-1,0): 8
+	}
+	for r in rooms:
+		var mask := 0
+		for off in offset_to_bit.keys():
+			var np = r.grid_pos + off
+			if grid.has(np):
+				mask |= offset_to_bit[off] #在已知房间中寻找已经存在的房间 
+		r.door_mask = mask
+
+
+func _instantiate_rooms():
+	var cell_size := Vector2(256, 256) # 你的房间世界尺寸
+	for r in rooms:
+		var scene = room_scene_by_mask.get(r.door_mask, preload("res://TestMapGeneration0906edithome/NESW.tscn"))
+		var inst = scene.instantiate()
+		add_child(inst)
+		inst.position = Vector2(r.grid_pos.x * cell_size.x, r.grid_pos.y * cell_size.y)
+		inst.set_meta("room_id", r.id)
+		
+		#_apply_room_theme(inst, r.type)
+
+
+func _populate_content():
+	for r in rooms:
+		match r.type:
+			RoomData.RoomType.NORMAL: #TODO 重写一些对应房间生成的物品 
+				#_spawn_enemies(r, lampi(1 + r.difficulty/2, 1, 6))
+				_spawn_enemies(r, 3, "普通房间")
+			RoomData.RoomType.TREASURE:
+				#_spawn_treasure(r)
+				_spawn_enemies(r, 3, "宝箱房间")
+			RoomData.RoomType.SHOP:
+				#_spawn_shop(r)
+				_spawn_enemies(r, 3, "商店房间")
+			RoomData.RoomType.BOSS:
+				#_spawn_boss(r)
+				_spawn_enemies(r, 3, "BOSS房间")
+			RoomData.RoomType.SECRET, RoomData.RoomType.SUPER_SECRET:
+				#_spawn_secret_rewards(r)
+				_spawn_enemies(r, 3, "隐藏房间")
+
+
+func _spawn_enemies(r: RoomData, base_count: int = 3, t : String = "普通房间"):
+	var inst = _room_node(r.id)
+	var count := base_count
+	for i in count:
+		var tier := 0
+		if r.difficulty >= 4: tier = 4
+		elif r.difficulty >= 2: tier = 2
+		var pool = enemy_pools.get(tier, enemy_pools[0])
+		var scene = pool[rng.randi() % pool.size()]
+		var e = scene.instantiate()
+		inst.add_child(e)
+		
+		var label = Label.new()
+		label.text = t
+		inst.add_child(label)
+		
+		e.global_position = _random_point_in_room(inst)
+
+
+func _room_node(room_id: int) -> Node2D:
+	for c in get_children():
+		if c.get_meta("room_id") == room_id:
+			return c
+	return null
+
+
+func _random_point_in_room(room: Node2D) -> Vector2:
+	print("房间初始位置", room.global_position)
+	# 先拿房间的区域范围（这里假设房间场景的大小是 512x320）
+	var size = Vector2(128, 128)
+	
+	# 在这个矩形范围里随机一个点
+	var local_x = rng.randf_range(-size.x/2, size.x/2)
+	var local_y = rng.randf_range(-size.y/2, size.y/2)
+
+	var pos = room.position + Vector2(local_x, local_y)
+	print("敌人位置", pos)
+	return pos
