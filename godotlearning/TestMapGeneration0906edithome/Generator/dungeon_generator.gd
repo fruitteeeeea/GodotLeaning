@@ -1,11 +1,9 @@
 class_name DungeonGenerator
 extends Node
 
-#房间多了容易卡死 
 #可以加入波坍塌函数来寻求和回溯随机生成结果
 
-
-@export var room_scene_by_mask := {
+@export var room_scene_by_mask := { #这个根据门掩码来生成对应的房间思路可以借用 
 	1:  preload("res://rooms/N.tscn"),
 	2:  preload("res://rooms/E.tscn"),
 	4:  preload("res://rooms/S.tscn"),
@@ -33,9 +31,9 @@ var enemy_pools := {
 
 @export var width := 100
 @export var height := 100
-@export var min_rooms := 10 
+@export var min_rooms := 10
 @export var max_rooms := 18
-@export var min_path_len := 6 
+@export var min_path_len := 6
 @export var rng_seed := 123456 #TODO 这个种子似乎没有起作用 
 
 var rng := RandomNumberGenerator.new()
@@ -43,6 +41,7 @@ var rng := RandomNumberGenerator.new()
 @export var rooms := [] # Array[RoomData]
 @export var start_pos := Vector2i(0, 0)
 
+var main_ids := [] #目前位置在生成主线房间 
 
 func _ready():
 	rng.seed = rng_seed
@@ -67,24 +66,23 @@ func _generate_layout():
 			_connect_rooms(path[-2], current) # 主线必连
 	
 	# 记录主线 id
-	var main_ids := [] #目前位置在生成主线房间 
 	for p in path:
 		main_ids.append(grid[p])
 
-	## 分支：从主线若干点出发扩展 #注意 min_path_len的长度要和min和max保持对应 不然会卡死
-	#while rooms.size() < rng.randi_range(min_rooms, max_rooms): 
-		#var anchor = path[rng.randi_range(1, path.size()-2)]
-		#var branch_len := rng.randi_range(1, 3)
-		#var pos = anchor
-		#for i in branch_len:
-			#var nxt = _random_neighbor_step(pos, false)
-			#if not grid.has(nxt):
-				#_create_room(nxt)
-				#_connect_rooms(pos, nxt) # 分支必连
-				##_maybe_connect_to_other_neighbors(pos) # 有概率额外连门
-				#pos = nxt
-			#else :
-				#break
+	# 分支：从主线若干点出发扩展 #注意 min_path_len的长度要和min和max保持对应 不然会卡死
+	while rooms.size() < rng.randi_range(min_rooms, max_rooms): 
+		var anchor = path[rng.randi_range(1, path.size()-2)]
+		var branch_len := rng.randi_range(1, 3)
+		var pos = anchor
+		for i in branch_len:
+			var nxt = _random_neighbor_step(pos, false)
+			if not grid.has(nxt):
+				_create_room(nxt)
+				_connect_rooms(pos, nxt) # 分支必连
+				#_maybe_connect_to_other_neighbors(pos) # 有概率额外连门
+				pos = nxt
+			else :
+				break
 
 	# 建立邻居与难度（基于曼哈顿距起点）
 	for r in rooms: #TODO 基于不同的难度 难度3的房间保持在一定数量 
@@ -93,13 +91,14 @@ func _generate_layout():
 
 # 连接两个房间（双向）
 func _connect_rooms(a: Vector2i, b: Vector2i) -> void:
-	var room_a = rooms[grid[a]]
-	var room_b = rooms[grid[b]]
+	var room_a = grid[a]
+	var room_b = grid[b]
 
-	if not room_a.neighbors.has(room_b):
-		room_a.neighbors.append(room_b)
-	if not room_b.neighbors.has(room_a):
-		room_b.neighbors.append(room_a)
+
+	if not rooms[room_a].neighbors.has(room_b):
+		rooms[room_a].neighbors.append(room_b)
+	if not rooms[room_b].neighbors.has(room_a):
+		rooms[room_b].neighbors.append(room_a)
 
 # 有概率把某个房间和它的相邻房间连起来
 func _maybe_connect_to_other_neighbors(pos: Vector2i, extra_prob: float = 0.25) -> void:
@@ -123,8 +122,8 @@ func _create_room(pos: Vector2i, t := RoomData.RoomType.NORMAL):
 	grid[pos] = rd.id
 
 
-func _random_neighbor_step(pos: Vector2i, avoid_backtrack := true) -> Vector2i: #将房间限制在格式内 
-	var dirs := [Vector2i(0,-1), Vector2i(1,0), Vector2i(0,1), Vector2i(-1,0)]
+func _random_neighbor_step(pos: Vector2i, avoid_backtrack := true) -> Vector2i: #随机寻找房间 
+	var dirs := [Vector2i(0,-1), Vector2i(1,0), Vector2i(0,1), Vector2i(-1,0)] #TODO 主线房间最好有一个大方向 
 	dirs.shuffle()
 	for d in dirs:
 		var np = pos + d
@@ -235,7 +234,7 @@ func _instantiate_rooms():
 		inst.position = Vector2(r.grid_pos.x * cell_size.x, r.grid_pos.y * cell_size.y)
 		inst.set_meta("room_id", r.id)
 		
-		#_apply_room_theme(inst, r.type)
+		#_apply_room_theme(inst, r.type) #装饰房间 
 
 
 func _populate_content():
@@ -246,7 +245,7 @@ func _populate_content():
 				_spawn_enemies(r, 3, "普通房间")
 			RoomData.RoomType.TREASURE:
 				#_spawn_treasure(r)
-				_spawn_enemies(r, 3, "宝箱房间")
+				_spawn_enemies(r, 3, "宝物房间")
 			RoomData.RoomType.SHOP:
 				#_spawn_shop(r)
 				_spawn_enemies(r, 3, "商店房间")

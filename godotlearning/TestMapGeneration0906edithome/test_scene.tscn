@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://nh0jkjbnd5l7"]
 
-[ext_resource type="PackedScene" uid="uid://4y0m8fnyllf2" path="res://TestMapGeneration0906edithome/dungeon_generator.tscn" id="1_1c14a"]
+[ext_resource type="PackedScene" uid="uid://4y0m8fnyllf2" path="res://TestMapGeneration0906edithome/Generator/dungeon_generator.tscn" id="1_1c14a"]
 [ext_resource type="Script" uid="uid://dujmsk7pdbh1q" path="res://TestMapGeneration0906edithome/test_scene.gd" id="1_x1q1v"]
 [ext_resource type="Texture2D" uid="uid://dkgen5k28mwha" path="res://icon.svg" id="3_51crv"]
 [ext_resource type="TileSet" uid="uid://danxik5imddkh" path="res://Test/TilemapLearning0905/Scene/00_ground.tres" id="4_mwglr"]
@@ -32,5 +32,18 @@ texture = ExtResource("3_51crv")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.3, 0.3)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]

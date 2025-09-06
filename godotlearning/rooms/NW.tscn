@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://byppb0dccramu"]
 
-[ext_resource type="Script" uid="uid://l2oxn8sqsah6" path="res://TestMapGeneration0906edithome/nesw.gd" id="1_mt2co"]
+[ext_resource type="Script" uid="uid://l2oxn8sqsah6" path="res://rooms/nesw.gd" id="1_mt2co"]
 [ext_resource type="Texture2D" uid="uid://dkgen5k28mwha" path="res://icon.svg" id="2_4s7q5"]
 [ext_resource type="TileSet" uid="uid://danxik5imddkh" path="res://Test/TilemapLearning0905/Scene/00_ground.tres" id="3_ov8hr"]
 [ext_resource type="TileSet" uid="uid://cabcvqgd1uh0u" path="res://Test/TilemapLearning0905/Scene/01_wall.tres" id="4_0ssw7"]
