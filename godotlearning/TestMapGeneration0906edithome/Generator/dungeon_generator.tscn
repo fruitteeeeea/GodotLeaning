@@ -8,5 +8,3 @@ script = ExtResource("1_lefw4")
 
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("2_leavy")
-
-[node name="Node" type="Node" parent="."]
