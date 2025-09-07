@@ -15,6 +15,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		move = false
 
 
-func _physics_process(delta: float) -> void:
-	if move:
-		dungeon_generator.global_position = get_global_mouse_position()
+#func _physics_process(delta: float) -> void:
+	#if move:
+		#dungeon_generator.global_position = get_global_mouse_position()

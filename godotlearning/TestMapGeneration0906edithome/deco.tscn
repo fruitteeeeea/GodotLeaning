@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=4 uid="uid://cfrus7e6i3r4v"]
+
+[ext_resource type="TileSet" uid="uid://cfglmoim6jruu" path="res://rooms/Unit/original.tres" id="1_a6ri5"]
+
+[node name="Deco" type="Node2D"]
+
+[node name="Shop" type="TileMapLayer" parent="."]
+visible = false
+tile_map_data = PackedByteArray("AAD//wAAAAAKAAYAAAD+/wAAAAAKAAYAAAAAAP//AAACAAcAAAAAAAAAAAAAAAYAAAABAAAAAAAAAAYAAAABAAEAAAABAAYAAAA=")
+tile_set = ExtResource("1_a6ri5")
+
+[node name="Tresure" type="TileMapLayer" parent="."]
+visible = false
+tile_map_data = PackedByteArray("AAD//wAAAAAFAAcAAAD9/wAAAAAFAAcAAAABAAAAAAAFAAcAAAA=")
+tile_set = ExtResource("1_a6ri5")

@@ -89,7 +89,7 @@ func _generate_layout():
 		#r.neighbors = _find_neighbors(r.grid_pos)
 		r.difficulty = r.grid_pos.distance_to(start_pos)
 
-#创建房间 使用默认值 
+#创建房间数据  使用默认值 
 func _create_room(pos: Vector2i, t := RoomData.RoomType.NORMAL):
 	var rd := RoomData.new()
 	rd.id = rooms.size()
@@ -134,9 +134,6 @@ func _maybe_connect_to_other_neighbors(pos: Vector2i, extra_prob: float = 0.25) 
 				#if rng.randf() < 1:
 					_connect_rooms(pos, np)
 					print("额外连接房间")
-
-
-
 
 #寻找邻居 
 func _find_neighbors(pos: Vector2i) -> Array[int]:
@@ -233,14 +230,17 @@ func _compute_door_masks():
 func _instantiate_rooms():
 	var cell_size := Vector2(256, 256) # 你的房间世界尺寸
 	for r in rooms:
+		
 		#if r.neighbors.size() == 0:
 			#return
-		#
+		
 		var scene = room_scene_by_mask.get(r.door_mask)
-		var inst = scene.instantiate()
+		var inst = scene.instantiate() as Room
 		add_child(inst)
 		inst.position = Vector2(r.grid_pos.x * cell_size.x, r.grid_pos.y * cell_size.y)
-		inst.set_meta("room_id", r.id)
+		inst.set_meta("room_id", r.id) #他这里是统一实例化的 
+		
+		inst.room_info = r #赋予房间信息 
 		
 		#_apply_room_theme(inst, r.type) #装饰房间 
 
@@ -282,6 +282,9 @@ func _spawn_enemies(r: RoomData, base_count: int = 3, t : String = "普通房间
 		inst.add_child(label)
 		
 		e.global_position = _random_point_in_room(inst)
+
+func _spawn_shop():
+	pass
 
 func _room_node(room_id: int) -> Node2D:
 	for c in get_children():
