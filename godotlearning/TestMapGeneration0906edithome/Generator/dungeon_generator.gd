@@ -31,6 +31,8 @@ var enemy_pools := {
 @export var width := 100
 @export var height := 100 #限制格子边界 
 
+@export var room_size := Vector2(256, 256) #房间尺寸
+
 @export var min_rooms := 10 
 @export var max_rooms := 18
 @export var min_path_len := 6 #迷宫房间数量的重要参数 
@@ -141,8 +143,8 @@ func _maybe_connect_to_other_neighbors(pos: Vector2i, extra_prob: float = 0.25) 
 			var room_a = rooms[grid[pos]]
 			var room_b = rooms[grid[np]]
 			if not room_a.neighbors.has(room_b.id):
-				if rng.randf() < extra_prob:
-				#if rng.randf() < 1:
+				#if rng.randf() < extra_prob:
+				if rng.randf() < 1:
 					_connect_rooms(pos, np)
 					print("额外连接房间")
 
@@ -224,7 +226,7 @@ func _find_secret_spots(min_adjacent := 3, max_adjacent := 4) -> Array[Vector2i]
 	spots.shuffle()
 	return spots #这里需要同时返回隐藏房间点和隐藏房间连接的房间
 
-#j计算门掩码
+#j计算门掩码 #关键函数 
 func _compute_door_masks():
 	var offset_to_bit := {
 		Vector2i(0,-1): 1, Vector2i(1,0): 2, Vector2i(0,1): 4, Vector2i(-1,0): 8
@@ -238,14 +240,13 @@ func _compute_door_masks():
 				mask |= offset_to_bit[off] #在已知房间中寻找已经存在的房间 
 		r.door_mask = mask
 
+##===下面是正式开始实例化房间===
 
 func _instantiate_rooms():
-	var cell_size := Vector2(256, 256) # 你的房间世界尺寸
+	var cell_size := room_size # 你的房间世界尺寸
 	for r in rooms:
-		
 		#if r.neighbors.size() == 0:
 			#return
-		
 		var scene = room_scene_by_mask.get(r.door_mask)
 		var inst = scene.instantiate() as Room
 		add_child(inst)
@@ -284,7 +285,7 @@ func _spawn_enemies(r: RoomData, base_count: int = 3, t : String = "普通房间
 	for i in count:
 		var tier := 0
 		if r.difficulty >= 4: tier = 4
-		elif r.difficulty >= 2: tier = 2
+		elif r.difficulty >= 2: tier = 2 #根据当前房间与初始房间的距离计算出敌人的难度 
 		var pool = enemy_pools.get(tier, enemy_pools[0])
 		var scene = pool[rng.randi() % pool.size()]
 		var e = scene.instantiate()
