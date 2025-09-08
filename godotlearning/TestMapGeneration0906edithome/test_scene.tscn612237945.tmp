@@ -1,16 +1,31 @@
-[gd_scene load_steps=6 format=4 uid="uid://nh0jkjbnd5l7"]
+[gd_scene load_steps=21 format=4 uid="uid://nh0jkjbnd5l7"]
 
 [ext_resource type="PackedScene" uid="uid://4y0m8fnyllf2" path="res://TestMapGeneration0906edithome/Generator/dungeon_generator.tscn" id="1_1c14a"]
 [ext_resource type="Script" uid="uid://dujmsk7pdbh1q" path="res://TestMapGeneration0906edithome/test_scene.gd" id="1_x1q1v"]
 [ext_resource type="Script" uid="uid://c7xxy7a0p26u8" path="res://TestMapGeneration0906edithome/camera_2d.gd" id="4_b1j0l"]
 [ext_resource type="TileSet" uid="uid://danxik5imddkh" path="res://Test/TilemapLearning0905/Scene/00_ground.tres" id="4_mwglr"]
 [ext_resource type="PackedScene" uid="uid://b7o8fmb1wj16g" path="res://TestMapGeneration0906edithome/Player/player.tscn" id="4_n0pet"]
+[ext_resource type="PackedScene" uid="uid://b5u7y1wr43txt" path="res://rooms/N.tscn" id="5_glfw0"]
+[ext_resource type="PackedScene" uid="uid://csdc010r2l4ew" path="res://rooms/E.tscn" id="6_07r37"]
+[ext_resource type="PackedScene" uid="uid://mwtsbbti3xa8" path="res://rooms/S.tscn" id="7_bd86b"]
+[ext_resource type="PackedScene" uid="uid://bfaa5lebuf6ml" path="res://rooms/W.tscn" id="8_dw4ce"]
+[ext_resource type="PackedScene" uid="uid://n6p8ij073f4o" path="res://rooms/NE.tscn" id="9_ilwie"]
+[ext_resource type="PackedScene" uid="uid://dwg3sc33wyt21" path="res://rooms/NS.tscn" id="10_4amuo"]
+[ext_resource type="PackedScene" uid="uid://byppb0dccramu" path="res://rooms/NW.tscn" id="11_7ygyu"]
+[ext_resource type="PackedScene" uid="uid://b0f6x2tp2heil" path="res://rooms/ES.tscn" id="12_xmeii"]
+[ext_resource type="PackedScene" uid="uid://bvwn21ciws2it" path="res://rooms/EW.tscn" id="13_jluit"]
+[ext_resource type="PackedScene" uid="uid://cym3f6tk4dq5a" path="res://rooms/SW.tscn" id="14_8alpj"]
+[ext_resource type="PackedScene" uid="uid://d4wb456j7bk0" path="res://rooms/NES.tscn" id="15_preet"]
+[ext_resource type="PackedScene" uid="uid://b0cgmqbjf3y3h" path="res://rooms/NEW.tscn" id="16_dxwfn"]
+[ext_resource type="PackedScene" uid="uid://mrwlcnm3tp1e" path="res://rooms/NSW.tscn" id="17_1pwjj"]
+[ext_resource type="PackedScene" uid="uid://bcdchg85po3o2" path="res://rooms/ESW.tscn" id="18_888h3"]
+[ext_resource type="PackedScene" uid="uid://bwbn23eadeyky" path="res://rooms/NESW.tscn" id="19_movqw"]
 
 [node name="TestScene" type="Node2D"]
 script = ExtResource("1_x1q1v")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(2.5, 2.5)
 script = ExtResource("4_b1j0l")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -18,6 +33,32 @@ tile_map_data = PackedByteArray("AACH/7z/AgAAAAAAAACH/73/AgAAAAAAAACH/77/AgAAAAA
 tile_set = ExtResource("4_mwglr")
 
 [node name="DungeonGenerator" parent="." instance=ExtResource("1_1c14a")]
+room_scene_by_mask = {
+1: ExtResource("5_glfw0"),
+2: ExtResource("6_07r37"),
+3: ExtResource("9_ilwie"),
+4: ExtResource("7_bd86b"),
+5: ExtResource("10_4amuo"),
+6: ExtResource("12_xmeii"),
+7: ExtResource("15_preet"),
+8: ExtResource("8_dw4ce"),
+9: ExtResource("11_7ygyu"),
+10: ExtResource("13_jluit"),
+11: ExtResource("16_dxwfn"),
+12: ExtResource("14_8alpj"),
+13: ExtResource("17_1pwjj"),
+14: ExtResource("18_888h3"),
+15: ExtResource("19_movqw")
+}
+width = 100
+height = 100
+min_rooms = 10
+max_rooms = 18
+min_path_len = 6
+rng_seed = 123456
+grid = {}
+rooms = []
+start_pos = Vector2i(0, 0)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

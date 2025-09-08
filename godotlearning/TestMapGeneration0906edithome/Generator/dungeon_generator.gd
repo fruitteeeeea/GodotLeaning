@@ -21,7 +21,6 @@ extends Node
 	15: preload("res://rooms/NESW.tscn"),
 }
 
-
 # 简化示例：敌人库按难度抽样
 var enemy_pools := {
 	0: [preload("res://TestMapGeneration0906edithome/Unit/enemy_0.tscn")],
@@ -30,10 +29,12 @@ var enemy_pools := {
 }
 
 @export var width := 100
-@export var height := 100
+@export var height := 100 #限制格子边界 
+
 @export var min_rooms := 10 
 @export var max_rooms := 18
-@export var min_path_len := 6
+@export var min_path_len := 6 #迷宫房间数量的重要参数 
+
 @export var rng_seed := 123456 #TODO 这个种子似乎没有起作用 
 
 var rng := RandomNumberGenerator.new()
@@ -41,7 +42,15 @@ var rng := RandomNumberGenerator.new()
 @export var rooms := [] # Array[RoomData]
 @export var start_pos := Vector2i(0, 0)
 
-var main_ids := [] #目前位置在生成主线房间 
+var main_ids := [] #主线房间 
+var side_ids := [] #衍生房间
+
+#其他装饰房间
+var special_rooms := {
+	"shop": preload("res://rooms/Unit/Shop.tscn"),
+	"treasure": preload("res://rooms/Unit/Treasure.tscn"),
+}
+
 
 func _ready():
 	rng.seed = rng_seed
@@ -69,7 +78,7 @@ func _generate_layout():
 	for p in path:
 		main_ids.append(grid[p])
 
-	# 分支：从主线若干点出发扩展 #注意 min_path_len的长度要和min和max保持对应 不然会卡死
+	# 分支：从主线若干点出发扩展 #注意 min_path_len 的长度要和min和max保持对应 不然会卡死
 	while rooms.size() < rng.randi_range(min_rooms, max_rooms): 
 		var anchor = path[rng.randi_range(1, path.size()-2)]
 		var branch_len := rng.randi_range(1, 3)
@@ -81,6 +90,8 @@ func _generate_layout():
 				_connect_rooms(pos, nxt) # 分支必连
 				_maybe_connect_to_other_neighbors(pos) # 有概率额外连门
 				pos = nxt
+				
+				side_ids.append(grid[nxt])
 			else :
 				break
 
@@ -154,20 +165,20 @@ func _find_neighbors(pos: Vector2i) -> Array[int]:
 func _assign_room_types():
 	# 选 Boss：离起点最远的普通房
 	var boss = _find_boss_room()
-	boss.type = RoomData.RoomType.BOSS
+	boss.type = RoomData.RoomType.BOSS #补充 最好为主线房间的终点 
 
 	# 选宝物房：中等距离的普通房（不与 Boss 相邻）
 	var candidates := rooms.filter(func(r): #筛选出符合条件的房间
 		return r.type == RoomData.RoomType.NORMAL and r.difficulty >= min_path_len/2 and not _adjacent_to_type(r, RoomData.RoomType.BOSS))
 	if candidates.size() > 0:
 		candidates.shuffle()
-		candidates[0].type = RoomData.RoomType.TREASURE
+		candidates[0].type = RoomData.RoomType.TREASURE #补充（最好为主线房间的一级衍生房间
 
 	# 商店：与宝物房不同、靠近主线的普通房
 	var shops := rooms.filter(func(r): return r.type == RoomData.RoomType.NORMAL and r.difficulty >= min_path_len/2 - 1)
 	if shops.size() > 0:
 		shops.shuffle()
-		shops[0].type = RoomData.RoomType.SHOP
+		shops[0].type = RoomData.RoomType.SHOP #补充（最好为主线房间的二级衍生房间
 
 	## 隐藏房：寻找“被 >=3 个房包围”的空位再回填 #TODO 隐藏房间还未设置 connect
 	#var secret_spots := _find_secret_spots(3)
@@ -177,7 +188,7 @@ func _assign_room_types():
 ##
 	## 超级隐藏：恰好只有 1 个邻居的空位
 	#var ssecret := _find_secret_spots(1, 1)
-	#if ssecret.size() > 0:
+	#if ssecret.size() > 1:
 		#_create_room(ssecret[0], RoomData.RoomType.SUPER_SECRET)
 
 
@@ -209,8 +220,9 @@ func _find_secret_spots(min_adjacent := 3, max_adjacent := 4) -> Array[Vector2i]
 				if grid.has(p + d): cnt += 1
 			if cnt >= min_adjacent and cnt <= max_adjacent:
 				spots.append(p)
+			
 	spots.shuffle()
-	return spots
+	return spots #这里需要同时返回隐藏房间点和隐藏房间连接的房间
 
 #j计算门掩码
 func _compute_door_masks():
@@ -252,11 +264,12 @@ func _populate_content():
 				#_spawn_enemies(r, lampi(1 + r.difficulty/2, 1, 6))
 				_spawn_enemies(r, 3, "普通房间")
 			RoomData.RoomType.TREASURE:
-				#_spawn_treasure(r)
-				_spawn_enemies(r, 3, "宝物房间")
+				_spawn_treasure(r)
+				_spawn_enemies(r, 0, "宝物房间")
 			RoomData.RoomType.SHOP:
 				#_spawn_shop(r)
-				_spawn_enemies(r, 3, "商店房间")
+				_spawn_shop(r)
+				_spawn_enemies(r, 0, "商店房间")
 			RoomData.RoomType.BOSS:
 				#_spawn_boss(r)
 				_spawn_enemies(r, 3, "BOSS房间")
@@ -283,8 +296,18 @@ func _spawn_enemies(r: RoomData, base_count: int = 3, t : String = "普通房间
 		
 		e.global_position = _random_point_in_room(inst)
 
-func _spawn_shop():
-	pass
+#生成商店房间
+func _spawn_shop(r: RoomData):
+	var inst = _room_node(r.id)
+	var shop = special_rooms["shop"].instantiate()
+	inst.add_child(shop)
+
+#生成宝箱房间
+func _spawn_treasure(r: RoomData):
+	var inst = _room_node(r.id)
+	var treasure = special_rooms["treasure"].instantiate()
+	inst.add_child(treasure)
+
 
 func _room_node(room_id: int) -> Node2D:
 	for c in get_children():

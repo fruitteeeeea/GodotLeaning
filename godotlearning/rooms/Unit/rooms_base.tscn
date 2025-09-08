@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://djnv40x8ymkq6"]
+
+[node name="RoomsBase" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]

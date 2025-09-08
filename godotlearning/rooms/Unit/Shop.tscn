@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=4 uid="uid://dhjii67ytb3nl"]
+
+[ext_resource type="PackedScene" uid="uid://djnv40x8ymkq6" path="res://rooms/Unit/rooms_base.tscn" id="1_7lcpa"]
+[ext_resource type="TileSet" uid="uid://cfglmoim6jruu" path="res://rooms/Unit/original.tres" id="2_bllgk"]
+
+[node name="Shop" instance=ExtResource("1_7lcpa")]
+
+[node name="TileMapLayer" parent="." index="0"]
+tile_map_data = PackedByteArray("AAD9////AAAKAAYAAAD9/wAAAAAAAAYAAAD+////AAAKAAYAAAD+/wAAAAAAAAYAAAD/////AAACAAcAAAD//wAAAAAAAAYAAAAAAAAAAAAAAAYAAAABAAAAAAAAAAYAAAA=")
+tile_set = ExtResource("2_bllgk")

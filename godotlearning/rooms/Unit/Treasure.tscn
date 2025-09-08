@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0j2d3eyanq2y"]
+
+[ext_resource type="PackedScene" uid="uid://djnv40x8ymkq6" path="res://rooms/Unit/rooms_base.tscn" id="1_x2u6x"]
+[ext_resource type="TileSet" uid="uid://cfglmoim6jruu" path="res://rooms/Unit/original.tres" id="2_5dg1w"]
+
+[node name="Treasure" instance=ExtResource("1_x2u6x")]
+
+[node name="TileMapLayer" parent="." index="0"]
+tile_map_data = PackedByteArray(0, 0, 255, 255, 255, 255, 0, 0, 5, 0, 7, 0, 0, 0, 252, 255, 255, 255, 0, 0, 5, 0, 7, 0, 0, 0, 2, 0, 255, 255, 0, 0, 5, 0, 7, 0, 0, 0)
+tile_set = ExtResource("2_5dg1w")

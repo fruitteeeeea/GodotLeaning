@@ -6,10 +6,11 @@
 
 [node name="Shop" type="TileMapLayer" parent="."]
 visible = false
-tile_map_data = PackedByteArray("AAD//wAAAAAKAAYAAAD+/wAAAAAKAAYAAAAAAP//AAACAAcAAAAAAAAAAAAAAAYAAAABAAAAAAAAAAYAAAABAAEAAAABAAYAAAA=")
+position = Vector2(-8, 0)
+tile_map_data = PackedByteArray("AAD//wAAAAAAAAYAAAD+/wAAAAAAAAYAAAAAAP//AAACAAcAAAAAAAAAAAAAAAYAAAABAAAAAAAAAAYAAAD+////AAAKAAYAAAD/////AAAKAAYAAAACAAAAAAAAAAYAAAA=")
 tile_set = ExtResource("1_a6ri5")
 
 [node name="Tresure" type="TileMapLayer" parent="."]
-visible = false
-tile_map_data = PackedByteArray("AAD//wAAAAAFAAcAAAD9/wAAAAAFAAcAAAABAAAAAAAFAAcAAAA=")
+position = Vector2(8, 0)
+tile_map_data = PackedByteArray("AAD/////AAAFAAcAAAABAP//AAAFAAcAAAD9////AAAFAAcAAAA=")
 tile_set = ExtResource("1_a6ri5")
