@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://csj52g1uek16g"]
+
+[ext_resource type="Script" uid="uid://ddaxfhrdwnttf" path="res://TestMapGeneration0906edithome/Generator/Script/DungeonBuilder.gd" id="1_cxjsx"]
+
+[node name="DungeonBuilder" type="Node2D"]
+script = ExtResource("1_cxjsx")

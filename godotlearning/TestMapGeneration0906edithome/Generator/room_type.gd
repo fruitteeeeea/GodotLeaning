@@ -9,3 +9,5 @@ enum RoomType { START, NORMAL, BOSS, TREASURE, SHOP, CHALLENGE, DEVIL, SECRET, S
 @export var door_mask: int = 0 # Bit: 1=N, 2=E, 4=S, 8=W
 var neighbors: Array[int] = []
 var difficulty: int = 0
+
+var depth

@@ -2,6 +2,12 @@ extends Node
 
 @onready var dungeon_generator: DungeonGenerator = $".."
 
+#需要获取的内容：
+#*主线房间数量
+#*衍生房间数量
+#*隐藏房间数量
+#*不同等级敌人数量
+
 func _spwan_rooms_color():
 	var current_id := 1
 	for i in dungeon_generator.main_ids:
