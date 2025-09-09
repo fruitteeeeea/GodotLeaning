@@ -177,3 +177,21 @@ func _find_boss_room() -> RoomData:
 			max_room = r
 	
 	return max_room
+
+#隐藏房间
+func _find_secret_spots(min_adjacent := 3, max_adjacent := 4) -> Array[Vector2i]:
+	var spots : Array[Vector2i] = []
+	var dirs := [Vector2i(0,-1), Vector2i(1,0), Vector2i(0,1), Vector2i(-1,0)]
+	# 在当前边界的内圈查找空位
+	for x in range(start_pos.x - config.width/2, start_pos.x + config.width/2 + 1):
+		for y in range(start_pos.y - config.height/2, start_pos.y + config.height/2 + 1):
+			var p := Vector2i(x,y)
+			if grid.has(p): continue
+			var cnt := 0
+			for d in dirs:
+				if grid.has(p + d): cnt += 1
+			if cnt >= min_adjacent and cnt <= max_adjacent:
+				spots.append(p)
+			
+	spots.shuffle() #TODO
+	return spots #这里需要同时返回隐藏房间点和隐藏房间连接的房间
