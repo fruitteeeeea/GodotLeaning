@@ -8,6 +8,7 @@ class_name DungeonBuilder
 var rng := RandomNumberGenerator.new()
 
 @export var config : DungeonConfig #存储着关于房间生成规则的信息
+@export var use_test_room := false
 
 #实例化房间
 func build(rooms: Array[RoomData], room_size: Vector2i, _config : DungeonConfig):
@@ -15,11 +16,17 @@ func build(rooms: Array[RoomData], room_size: Vector2i, _config : DungeonConfig)
 	
 	for r in rooms:
 		var scene = config.room_scene_by_mask.get(r.door_mask)
+		
+		if use_test_room: #DEBUG相关
+			scene = preload("res://TestMapGeneration0906edithome/test_room.tscn")
+
 		var inst = scene.instantiate()
-		add_child(inst)
+		
 		inst.position = r.grid_pos * room_size
 		inst.set_meta("room_id", r.id)
 		inst.room_info = r
+		
+		add_child(inst)
 	
 	populate_content(rooms)
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://caj3hv6ntbkvc"]
 
-[ext_resource type="Texture2D" uid="uid://dkgen5k28mwha" path="res://icon.svg" id="1_ao5lr"]
+[ext_resource type="Texture2D" uid="uid://bpi6pc76a16bg" path="res://icon.svg" id="1_ao5lr"]
 
 [node name="Enemy2" type="Node2D"]
 modulate = Color(1, 0.4, 0.4, 1)

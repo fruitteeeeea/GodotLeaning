@@ -12,6 +12,9 @@ var path : Array[Vector2i] = []
 var main_ids : Array[int] = []
 var side_ids : Array[int] = []
 
+@export var branch_len := randi_range(1, 3) #额外房间深度
+
+
 func generate(_config) -> Array[RoomData]:
 	config = _config
 	
@@ -49,17 +52,19 @@ func _generate_side_branches(min_rooms : int, max_rooms : int):
 	# 分支：从主线若干点出发扩展 #注意 min_path_len 的长度要和min和max保持对应 不然会卡死
 	while rooms.size() < rng.randi_range(min_rooms, max_rooms): 
 		var anchor = path[rng.randi_range(1, path.size()-2)]
-		var branch_len := rng.randi_range(1, 3)
+		#branch_len = rng.randi_range(2, 5)
 		var pos = anchor
+		var depth = 1
 		for i in branch_len:
 			var nxt = _random_neighbor_step(pos, false)
 			if not grid.has(nxt):
-				_create_room(nxt)
+				_create_room(nxt, depth) #添加衍生房间深度信息
 				_connect_rooms(pos, nxt) # 分支必连
 				_maybe_connect_to_other_neighbors(pos) # 有概率额外连门
 				pos = nxt
 				
 				side_ids.append(grid[nxt])
+				depth += 1
 			else :
 				break
 
@@ -70,7 +75,7 @@ func _assign_room_difficulty():
 		r.difficulty = r.grid_pos.distance_to(start_pos)
 
 
-func _assign_room_types(min_path_len):
+func _assign_room_types(min_path_len): #关键函数 控制房间类型 
 	# 选 Boss：离起点最远的普通房
 	var boss = _find_boss_room()
 	boss.type = RoomData.RoomType.BOSS #补充 最好为主线房间的终点 
@@ -114,8 +119,6 @@ func _compute_door_masks():
 		r.door_mask = mask
 
 
-
-
 #===Tools工具===
  #随机寻找房间 
 func _random_neighbor_step(pos: Vector2i, avoid_backtrack := true) -> Vector2i:
@@ -131,11 +134,13 @@ func _random_neighbor_step(pos: Vector2i, avoid_backtrack := true) -> Vector2i:
 	return pos + dirs[0]
 
 #创建房间数据  使用默认值 
-func _create_room(pos: Vector2i, t := RoomData.RoomType.NORMAL):
+func _create_room(pos: Vector2i, d := 0, t := RoomData.RoomType.NORMAL):
 	var rd := RoomData.new()
 	rd.id = rooms.size()
 	rd.grid_pos = pos
 	rd.type = t
+	rd.depth = d #房间深度 主线为0 衍生为1-3
+	prints(rd.id, rd.depth)
 	rooms.append(rd)
 	grid[pos] = rd.id
 
@@ -158,8 +163,7 @@ func _maybe_connect_to_other_neighbors(pos: Vector2i, extra_prob: float = 0.25) 
 			var room_a = rooms[grid[pos]]
 			var room_b = rooms[grid[np]]
 			if not room_a.neighbors.has(room_b.id):
-				#if rng.randf() < extra_prob:
-				if rng.randf() < 1:
+				if rng.randf() < extra_prob: #额外连接房间的概率 
 					_connect_rooms(pos, np)
 					print("额外连接房间")
 
@@ -173,8 +177,10 @@ func _adjacent_to_type(r: RoomData, t: int) -> bool: #可以检测临近的房�
 func _find_boss_room() -> RoomData:
 	var max_room: RoomData = null
 	for r in rooms:
-		if max_room == null or r.difficulty > max_room.difficulty:
-			max_room = r
+		if r.depth == 0: #确保是主线上的房间 id
+			#if max_room == null or r.difficulty > max_room.difficulty:
+			if max_room == null or r.id > max_room.id: #选择主线最后一个房间
+				max_room = r
 	
 	return max_room
 

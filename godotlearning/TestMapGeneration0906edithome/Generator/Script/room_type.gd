@@ -10,4 +10,4 @@ enum RoomType { START, NORMAL, BOSS, TREASURE, SHOP, CHALLENGE, DEVIL, SECRET, S
 var neighbors: Array[int] = []
 var difficulty: int = 0
 
-var depth
+var depth := 0

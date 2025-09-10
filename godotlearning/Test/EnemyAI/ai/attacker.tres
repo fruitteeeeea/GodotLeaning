@@ -1,4 +1,4 @@
-[gd_resource type="BehaviorTree" load_steps=24 format=3 uid="uid://bwuy0av1lf1qo"]
+[gd_resource type="BehaviorTree" load_steps=25 format=3 uid="uid://bwuy0av1lf1qo"]
 
 [ext_resource type="Script" uid="uid://d0nh52p5u1y2e" path="res://ai/tasks/get_random_in_group.gd" id="1_oxtec"]
 [ext_resource type="Script" uid="uid://ct71h72pech3b" path="res://ai/tasks/select_flanking_pos.gd" id="2_esupq"]
@@ -85,8 +85,10 @@ children = [SubResource("BTPlayAnimation_r8gbe"), SubResource("BTAction_jr00x"),
 [sub_resource type="BTSelector" id="BTSelector_npfyg"]
 children = [SubResource("BTSequence_npfyg")]
 
+[sub_resource type="BTComment" id="BTComment_oxtec"]
+
 [sub_resource type="BTSequence" id="BTSequence_i0ufk"]
-children = [SubResource("BTSequence_ydphc"), SubResource("BTSelector_npfyg")]
+children = [SubResource("BTSequence_ydphc"), SubResource("BTSelector_npfyg"), SubResource("BTComment_oxtec")]
 
 [resource]
 blackboard_plan = SubResource("BlackboardPlan_bkmy3")
