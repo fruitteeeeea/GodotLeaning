@@ -1,10 +1,130 @@
-[gd_scene load_steps=3 format=4 uid="uid://dhjii67ytb3nl"]
+[gd_scene load_steps=7 format=4 uid="uid://dhjii67ytb3nl"]
 
 [ext_resource type="PackedScene" uid="uid://djnv40x8ymkq6" path="res://rooms/Unit/rooms_base.tscn" id="1_7lcpa"]
 [ext_resource type="TileSet" uid="uid://cfglmoim6jruu" path="res://rooms/Unit/original.tres" id="2_bllgk"]
+[ext_resource type="PackedScene" uid="uid://bwp6uq4uewi2b" path="res://Test/Dialogue/dialogue_trigger.tscn" id="3_bllgk"]
+[ext_resource type="Script" uid="uid://cv3wy52s5enhd" path="res://rooms/Unit/current_item.gd" id="5_7vdj8"]
+[ext_resource type="Script" uid="uid://bsncgntnshh6x" path="res://Test/ShopTest/shop_interface.gd" id="5_c0jua"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kerdv"]
 
 [node name="Shop" instance=ExtResource("1_7lcpa")]
 
 [node name="TileMapLayer" parent="." index="0"]
 tile_map_data = PackedByteArray("AAD9////AAAKAAYAAAD9/wAAAAAAAAYAAAD+////AAAKAAYAAAD+/wAAAAAAAAYAAAD/////AAACAAcAAAD//wAAAAAAAAYAAAAAAAAAAAAAAAYAAAABAAAAAAAAAAYAAAA=")
 tile_set = ExtResource("2_bllgk")
+
+[node name="DialogueTrigger" parent="." index="1" instance=ExtResource("3_bllgk")]
+
+[node name="Camera2D" type="Camera2D" parent="." index="2"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." index="3"]
+
+[node name="ShopInterface" type="Control" parent="CanvasLayer" index="0"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_c0jua")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ShopInterface" index="0"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -25.0
+offset_bottom = 25.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/margin_right = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShopInterface/MarginContainer" index="0"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer" index="0"]
+layout_mode = 2
+text = "关闭
+"
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer" index="0"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer" index="0"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" index="0"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "道具01"
+label_settings = SubResource("LabelSettings_kerdv")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" index="1"]
+layout_mode = 2
+text = "选取
+"
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer2" index="0"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer" index="0"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "道具01"
+label_settings = SubResource("LabelSettings_kerdv")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer" index="1"]
+layout_mode = 2
+text = "选取
+"
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer" index="2"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer3" index="0"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer3/HBoxContainer" index="0"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "道具01"
+label_settings = SubResource("LabelSettings_kerdv")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/MarginContainer3/HBoxContainer" index="1"]
+layout_mode = 2
+text = "选取
+"
+
+[node name="CurrentItem" type="Label" parent="CanvasLayer" index="1"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "当前物品：0"
+script = ExtResource("5_7vdj8")
+
+[connection signal="hidden" from="CanvasLayer/ShopInterface" to="CanvasLayer/ShopInterface" method="_on_hidden"]
+[connection signal="pressed" from="CanvasLayer/ShopInterface/MarginContainer/HBoxContainer/Button" to="CanvasLayer/ShopInterface" method="_on_button_pressed"]

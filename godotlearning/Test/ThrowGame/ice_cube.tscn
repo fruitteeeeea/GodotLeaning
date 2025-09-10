@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://b72dyh06rxw3s"]
+
+[ext_resource type="PackedScene" uid="uid://b5b655jkkjgrk" path="res://Test/ThrowGame/throwable_object_base.tscn" id="1_1ybv8"]
+[ext_resource type="Texture2D" uid="uid://b3lvmgu3tnfu6" path="res://icon.svg" id="2_ehgwr"]
+
+[node name="IceCube" instance=ExtResource("1_1ybv8")]
+
+[node name="Sprite2D" parent="." index="1"]
+modulate = Color(0.360784, 1, 1, 0.878431)
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("2_ehgwr")

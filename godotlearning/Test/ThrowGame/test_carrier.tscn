@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://behp84oh4w8tx"]
+
+[ext_resource type="Script" uid="uid://chu5m87bsyqw6" path="res://Test/ThrowGame/test_carrier.gd" id="1_gm7pq"]
+[ext_resource type="Texture2D" uid="uid://b3lvmgu3tnfu6" path="res://icon.svg" id="2_eroag"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gm7pq"]
+radius = 56.5685
+
+[node name="TestCarrier" type="Node2D"]
+script = ExtResource("1_gm7pq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_eroag")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_gm7pq")

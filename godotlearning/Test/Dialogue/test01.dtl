@@ -1,0 +1,3 @@
+需要买点东西吗？
+[signal arg="Open Shop"]
+do DialogueServer.display_shop()

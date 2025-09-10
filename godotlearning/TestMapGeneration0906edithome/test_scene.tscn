@@ -89,6 +89,5 @@ text = "Reload
 config = SubResource("Resource_83bad")
 
 [node name="Player" parent="." instance=ExtResource("4_n0pet")]
-position = Vector2(-56, 16)
 
 [connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]

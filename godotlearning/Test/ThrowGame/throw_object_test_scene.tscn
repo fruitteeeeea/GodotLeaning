@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3 uid="uid://fpi8osp3va1h"]
+
+[ext_resource type="PackedScene" uid="uid://behp84oh4w8tx" path="res://Test/ThrowGame/test_carrier.tscn" id="1_gbscb"]
+[ext_resource type="PackedScene" uid="uid://b72dyh06rxw3s" path="res://Test/ThrowGame/ice_cube.tscn" id="2_wdkg3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wdkg3"]
+size = Vector2(6, 205)
+
+[node name="ThrowObjectTestScene" type="Node2D"]
+
+[node name="IceCube" parent="." instance=ExtResource("2_wdkg3")]
+position = Vector2(192, 144)
+
+[node name="IceCube2" parent="." instance=ExtResource("2_wdkg3")]
+position = Vector2(160, 104)
+
+[node name="IceCube3" parent="." instance=ExtResource("2_wdkg3")]
+position = Vector2(232, 72)
+
+[node name="IceCube4" parent="." instance=ExtResource("2_wdkg3")]
+position = Vector2(248, 144)
+
+[node name="IceCube5" parent="." instance=ExtResource("2_wdkg3")]
+position = Vector2(176, 184)
+
+[node name="IceCube6" parent="." instance=ExtResource("2_wdkg3")]
+position = Vector2(152, 168)
+
+[node name="TestCarrier" parent="." instance=ExtResource("1_gbscb")]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(32, -24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(64, 160)
+shape = SubResource("RectangleShape2D_wdkg3")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(256, 160)
+shape = SubResource("RectangleShape2D_wdkg3")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(160, 264)
+rotation = 1.57079
+shape = SubResource("RectangleShape2D_wdkg3")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(160, 56)
+rotation = 1.57079
+shape = SubResource("RectangleShape2D_wdkg3")
