@@ -1,13 +1,11 @@
-[gd_scene load_steps=28 format=4 uid="uid://nh0jkjbnd5l7"]
+[gd_scene load_steps=27 format=4 uid="uid://nh0jkjbnd5l7"]
 
 [ext_resource type="Script" uid="uid://dujmsk7pdbh1q" path="res://TestMapGeneration0906edithome/test_scene.gd" id="1_x1q1v"]
 [ext_resource type="Script" uid="uid://c7xxy7a0p26u8" path="res://TestMapGeneration0906edithome/camera_2d.gd" id="4_b1j0l"]
 [ext_resource type="TileSet" uid="uid://danxik5imddkh" path="res://Test/TilemapLearning0905/Scene/00_ground.tres" id="4_mwglr"]
 [ext_resource type="PackedScene" uid="uid://b7o8fmb1wj16g" path="res://TestMapGeneration0906edithome/Player/player.tscn" id="4_n0pet"]
-[ext_resource type="PackedScene" uid="uid://dgii581f0wh7w" path="res://TestMapGeneration0906edithome/Unit/enemy_0.tscn" id="6_7ygyu"]
+[ext_resource type="PackedScene" uid="uid://d07ovthd0fn7t" path="res://TestMapGeneration0906edithome/Enemy/enemy_00.tscn" id="5_4amuo"]
 [ext_resource type="PackedScene" uid="uid://cva4nb8npjbwv" path="res://TestMapGeneration0906edithome/Generator/Tscn/DungeonGenerator.tscn" id="6_b1j0l"]
-[ext_resource type="PackedScene" uid="uid://caj3hv6ntbkvc" path="res://TestMapGeneration0906edithome/Unit/enemy_2.tscn" id="7_xmeii"]
-[ext_resource type="PackedScene" uid="uid://sjetuwckullx" path="res://TestMapGeneration0906edithome/Unit/enemy_4.tscn" id="8_jluit"]
 [ext_resource type="PackedScene" uid="uid://b5u7y1wr43txt" path="res://rooms/N.tscn" id="9_8alpj"]
 [ext_resource type="PackedScene" uid="uid://csdc010r2l4ew" path="res://rooms/E.tscn" id="10_preet"]
 [ext_resource type="PackedScene" uid="uid://mwtsbbti3xa8" path="res://rooms/S.tscn" id="11_dxwfn"]
@@ -26,6 +24,7 @@
 [ext_resource type="Script" uid="uid://6bygsw31cu75" path="res://TestMapGeneration0906edithome/Generator/Script/DungeonConfig.gd" id="24_7f6bw"]
 [ext_resource type="PackedScene" uid="uid://dhjii67ytb3nl" path="res://rooms/Unit/Shop.tscn" id="25_6vb3l"]
 [ext_resource type="PackedScene" uid="uid://c0j2d3eyanq2y" path="res://rooms/Unit/Treasure.tscn" id="26_p3qvu"]
+[ext_resource type="PackedScene" uid="uid://b72dyh06rxw3s" path="res://Test/ThrowGame/ice_cube.tscn" id="27_jluit"]
 
 [sub_resource type="Resource" id="Resource_83bad"]
 script = ExtResource("24_7f6bw")
@@ -54,9 +53,9 @@ room_scene_by_mask = {
 15: ExtResource("23_ovk01")
 }
 enemy_pools = {
-0: [ExtResource("6_7ygyu")],
-2: [ExtResource("7_xmeii")],
-4: [ExtResource("8_jluit")]
+0: [ExtResource("5_4amuo")],
+2: [ExtResource("5_4amuo")],
+4: [ExtResource("5_4amuo")]
 }
 special_rooms = {
 "shop": ExtResource("25_6vb3l"),
@@ -89,5 +88,8 @@ text = "Reload
 config = SubResource("Resource_83bad")
 
 [node name="Player" parent="." instance=ExtResource("4_n0pet")]
+
+[node name="IceCube" parent="." instance=ExtResource("27_jluit")]
+position = Vector2(-32, -16)
 
 [connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]

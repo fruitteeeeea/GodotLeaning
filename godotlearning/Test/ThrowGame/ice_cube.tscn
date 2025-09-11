@@ -1,11 +1,37 @@
-[gd_scene load_steps=3 format=3 uid="uid://b72dyh06rxw3s"]
+[gd_scene load_steps=6 format=3 uid="uid://b72dyh06rxw3s"]
 
 [ext_resource type="PackedScene" uid="uid://b5b655jkkjgrk" path="res://Test/ThrowGame/throwable_object_base.tscn" id="1_1ybv8"]
-[ext_resource type="Texture2D" uid="uid://b3lvmgu3tnfu6" path="res://icon.svg" id="2_ehgwr"]
+[ext_resource type="Texture2D" uid="uid://d056icnuvf017" path="res://Test/ThrowGame/IceCube.png" id="2_ehgwr"]
+[ext_resource type="Texture2D" uid="uid://bjbtip7n7bq4h" path="res://Test/ThrowGame/IceCubeWater.png" id="3_c2ur7"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_c2ur7"]
+particles_animation = true
+particles_anim_h_frames = 5
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_c2ur7"]
+colors = PackedColorArray(0.971129, 0.971129, 0.971129, 1, 1, 1, 1, 0)
 
 [node name="IceCube" instance=ExtResource("1_1ybv8")]
 
-[node name="Sprite2D" parent="." index="1"]
+[node name="IceCbueWater" type="CPUParticles2D" parent="." index="0"]
+material = SubResource("CanvasItemMaterial_c2ur7")
+position = Vector2(0, 5)
+emitting = false
+amount = 50
+texture = ExtResource("3_c2ur7")
+lifetime = 1.5
+gravity = Vector2(0, 0)
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_min = 0.5
+scale_amount_max = 0.5
+color_ramp = SubResource("Gradient_c2ur7")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[node name="Sprite2D" parent="." index="2"]
 modulate = Color(0.360784, 1, 1, 0.878431)
-scale = Vector2(0.125, 0.125)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_ehgwr")

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://m5bwx0fj6msf"]
+
+[ext_resource type="PackedScene" uid="uid://behp84oh4w8tx" path="res://Test/ThrowGame/test_carrier.tscn" id="1_2wnt2"]
+[ext_resource type="Script" uid="uid://cile7cprq78h4" path="res://Test/ThrowGame/player_carrier.gd" id="2_qglec"]
+
+[node name="PlayerCarrier" instance=ExtResource("1_2wnt2")]
+script = ExtResource("2_qglec")
+
+[node name="Sprite2D" parent="." index="0"]
+visible = false

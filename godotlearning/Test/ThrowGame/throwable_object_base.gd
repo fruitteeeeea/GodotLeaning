@@ -1,12 +1,13 @@
 extends CharacterBody2D
 class_name ThrowableObject
 
-
 signal landed # 投掷结束并落地（可捡起）
 
 @export var throw_speed: float = 700.0         # 默认投掷速度（像素/秒）
 @export var bounce_factor: float = 0.8         # 每次碰撞对速度的衰减（1.0 完全弹回, <1 会损失能量）
 @export var max_throw_distance: float = 400.0  # 投掷目标距离（像素）
+
+@onready var ice_cbue_water: CPUParticles2D = $IceCbueWater
 
 var decel_rate: float = 1.0 # 数值越大减速越快
 
@@ -71,6 +72,8 @@ func throw(direction: Vector2, distance: float, speed: float = -1.0) -> void:
 	if speed > 0.0:
 		throw_speed = speed
 	velocity = direction.normalized() * throw_speed
+	
+	ice_cbue_water.emitting = true
 
 
 func _physics_process(delta: float) -> void:
@@ -88,19 +91,23 @@ func _physics_process(delta: float) -> void:
 		# 记录距离（无论是否碰撞，都按尝试移动的长度累计）
 		_traveled += move_vec.length()
 		if col:
+			var collider = col.get_collider()
+			if collider is CharacterBody2D:
+				return
+			
 			# col 是 KinematicCollision2D
 			var normal = col.get_normal()
 			# 反射速度并乘以能量保留系数
 			velocity = velocity.bounce(normal) * bounce_factor
 			# 如果速度非常小，直接停止
-			if velocity.length() < 20.0:
-				_end_throw()
-				return
+			#if velocity.length() < 5.0:
+				#_end_throw()
+				#return
 		# 投掷到达目标距离后结束（也可改为按时间）
 		if _traveled >= max_throw_distance:
 			_end_throw()
 	
-		if velocity.length() < 50.0:
+		if velocity.length() < 5.0:
 			_end_throw()
 
 
@@ -109,3 +116,5 @@ func _end_throw() -> void:
 	velocity = Vector2.ZERO
 	_traveled = 0.0
 	emit_signal("landed")
+	
+	ice_cbue_water.emitting = false

@@ -1,4 +1,5 @@
 extends Node2D
+class_name Carrier
 
 var carrying: ThrowableObject = null
 
@@ -24,8 +25,6 @@ func _get_nearby_item() -> Array:
 		if i is ThrowableObject:
 			arr.append(i)
 	return arr
-	
-
 
 
 func _physics_process(delta: float) -> void:

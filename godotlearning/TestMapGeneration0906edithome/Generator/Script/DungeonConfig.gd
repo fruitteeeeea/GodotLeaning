@@ -30,9 +30,9 @@ extends Resource
 }
 
 @export var enemy_pools: Dictionary = {
-	0: [preload("res://TestMapGeneration0906edithome/Unit/enemy_0.tscn")],
-	2: [preload("res://TestMapGeneration0906edithome/Unit/enemy_2.tscn")],
-	4: [preload("res://TestMapGeneration0906edithome/Unit/enemy_4.tscn")],
+	0: [preload("res://TestMapGeneration0906edithome/Enemy/enemy_00.tscn")],
+	2: [preload("res://TestMapGeneration0906edithome/Enemy/enemy_00.tscn")],
+	4: [preload("res://TestMapGeneration0906edithome/Enemy/enemy_00.tscn")],
 }
 
 @export var special_rooms: Dictionary = {

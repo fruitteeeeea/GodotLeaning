@@ -1,0 +1,39 @@
+[gd_resource type="BehaviorTree" load_steps=9 format=3 uid="uid://bwq1tkafhdkx6"]
+
+[ext_resource type="Script" uid="uid://bicxffqmm7ek" path="res://ai/tasks/select_random_nearby_pos.gd" id="1_iynp2"]
+[ext_resource type="Script" uid="uid://df82exuqnfdb2" path="res://ai/tasks/arrive_pos.gd" id="2_rdc4t"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_khsmo"]
+var/speed/name = &"speed"
+var/speed/type = 3
+var/speed/value = 10.0
+var/speed/hint = 0
+var/speed/hint_string = ""
+
+[sub_resource type="BTRandomWait" id="BTRandomWait_pjiqt"]
+min_duration = 0.1
+max_duration = 0.5
+
+[sub_resource type="BTAction" id="BTAction_hcoh3"]
+script = ExtResource("1_iynp2")
+range_min = 300.0
+range_max = 500.0
+position_var = &"pos"
+
+[sub_resource type="BTAction" id="BTAction_wfscl"]
+script = ExtResource("2_rdc4t")
+target_position_var = &"pos"
+speed_var = &"speed"
+tolerance = 50.0
+avoid_var = &""
+
+[sub_resource type="BTTimeLimit" id="BTTimeLimit_iynp2"]
+time_limit = 3.0
+children = [SubResource("BTAction_wfscl")]
+
+[sub_resource type="BTSequence" id="BTSequence_ushv1"]
+children = [SubResource("BTRandomWait_pjiqt"), SubResource("BTAction_hcoh3"), SubResource("BTTimeLimit_iynp2")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_khsmo")
+root_task = SubResource("BTSequence_ushv1")

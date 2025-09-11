@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://d07ovthd0fn7t"]
+
+[ext_resource type="PackedScene" uid="uid://4xasdihet3rs" path="res://TestMapGeneration0906edithome/Enemy/enemy.tscn" id="1_y27xd"]
+[ext_resource type="Texture2D" uid="uid://bvqnax6mkr3rp" path="res://Asset/TinnyDungeon/tile_0108.png" id="2_khsmo"]
+[ext_resource type="BehaviorTree" uid="uid://bwq1tkafhdkx6" path="res://TestMapGeneration0906edithome/Enemy/BT_enemy00.tres" id="3_de4vh"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_de4vh"]
+
+[node name="Enemy00" instance=ExtResource("1_y27xd")]
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_khsmo")
+
+[node name="BTPlayer" parent="VisibleOnScreenEnabler2D" index="0"]
+behavior_tree = ExtResource("3_de4vh")
+blackboard_plan = SubResource("BlackboardPlan_de4vh")

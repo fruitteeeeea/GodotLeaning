@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://b7o8fmb1wj16g"]
+[gd_scene load_steps=9 format=3 uid="uid://b7o8fmb1wj16g"]
 
 [ext_resource type="Script" uid="uid://dtiph8d703ago" path="res://TestMapGeneration0906edithome/Player/player.gd" id="1_xt4pv"]
 [ext_resource type="Texture2D" uid="uid://bju85ya6r61b1" path="res://Asset/Tinny Sword/tile_0085.png" id="2_moe41"]
+[ext_resource type="PackedScene" uid="uid://m5bwx0fj6msf" path="res://Test/ThrowGame/player_carrier.tscn" id="3_kutvk"]
 
 [sub_resource type="Animation" id="Animation_xt4pv"]
 resource_name = "01"
@@ -55,3 +56,5 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_moe41")
+
+[node name="PlayerCarrier" parent="." instance=ExtResource("3_kutvk")]
