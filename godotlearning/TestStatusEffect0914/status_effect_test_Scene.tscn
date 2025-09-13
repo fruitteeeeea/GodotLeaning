@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtrw0q1qnyrks"]
+
+[ext_resource type="PackedScene" uid="uid://f3uhst6dctig" path="res://TestStatusEffect0914/StatusEffect/status_manager.tscn" id="1_s3sru"]
+[ext_resource type="Script" uid="uid://d08no7phyfyid" path="res://TestStatusEffect0914/status_effect_test_scene.gd" id="1_v16w5"]
+
+[node name="StatusEffectTestScene" type="Node2D"]
+script = ExtResource("1_v16w5")
+
+[node name="StatusManager" parent="." instance=ExtResource("1_s3sru")]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "添加一个点燃效果 
+"
+
+[node name="Button2" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "添加一个中毒效果 
+"
+
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button2" to="." method="_on_button_2_pressed"]

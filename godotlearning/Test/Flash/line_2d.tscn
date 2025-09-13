@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bh0j0iqu4kopu"]
+
+[ext_resource type="Texture2D" uid="uid://bbbyvpppt43m5" path="res://Test/Flash/FlashTexture.png" id="1_tt8iu"]
+
+[sub_resource type="Gradient" id="Gradient_bv3gx"]
+
+[node name="Line2D" type="Line2D"]
+texture_repeat = 3
+points = PackedVector2Array(-160, 48, -56, 48, 8, 72, -56, 88, -96, 88, -144, 88, -160, 112, -88, 112, -40, 120, -16, 112, 16, 104, 32, 88, -24, 24, 56, 8, 72, 32, 64, 40, 56, 72, -88, 80, -176, 56, -168, 32, -128, 8, -64, 24, -16, 64, 40, 120, 88, 120, 112, 104, 104, 64, 72, 176, 208, 152, 248, 144, 376, 120, 416, 152, 464, 192, -160, 256)
+gradient = SubResource("Gradient_bv3gx")
+texture = ExtResource("1_tt8iu")
+texture_mode = 1
+joint_mode = 2
+begin_cap_mode = 1
+end_cap_mode = 2
