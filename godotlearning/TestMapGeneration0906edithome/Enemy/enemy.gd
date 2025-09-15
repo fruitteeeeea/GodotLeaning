@@ -1,4 +1,6 @@
 extends CharacterBody2D
+class_name Enemy
+
 func _physics_process(_delta: float) -> void:
 	_post_physics_process.call_deferred()
 
@@ -6,7 +8,8 @@ var _frames_since_facing_update: int = 0
 var _is_dead: bool = false
 var _moved_this_frame: bool = false
 
-@onready var bt_player: BTPlayer = $VisibleOnScreenEnabler2D/BTPlayer
+@onready var bt_player: BTPlayer = $VisibleOnScreenEnabler2D/AIControler/BTPlayer
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 
 func _post_physics_process() -> void:

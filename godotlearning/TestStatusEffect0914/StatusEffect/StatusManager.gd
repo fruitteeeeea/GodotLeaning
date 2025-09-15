@@ -4,7 +4,7 @@ class_name StatusManager
 
 @export var active_effects: Dictionary = {} # key: StatusEffect, value: {time_left, stacks}
 
-func add_status(effect: StatusEffect, stacks: int = 1) -> void:
+func add_status(effect: StatusEffect, stacks: int = 1) -> void: #添加状态 
 	if effect in active_effects:
 		var data = active_effects[effect]
 		data.stacks = min(data.stacks + stacks, effect.max_stacks)
@@ -21,7 +21,7 @@ func _process(delta: float) -> void: #再一个数组中管理
 		effect.tick(get_parent(), delta, data.stacks)
 		data.time_left -= delta 
 		
-		if data.time_left <= 0:
+		if data.time_left <= 0: #管理异常状态的持续时间 
 			to_remove.append(effect)
 			
 	for e in to_remove:

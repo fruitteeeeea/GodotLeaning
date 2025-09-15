@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bh0j0iqu4kopu"]
 
-[ext_resource type="Texture2D" uid="uid://bbbyvpppt43m5" path="res://Test/Flash/FlashTexture.png" id="1_tt8iu"]
+[ext_resource type="Texture2D" uid="uid://qumxhet5xa07" path="res://Test/Flash/spark_05_rotated.png" id="1_tt8iu"]
 
 [sub_resource type="Gradient" id="Gradient_bv3gx"]
 

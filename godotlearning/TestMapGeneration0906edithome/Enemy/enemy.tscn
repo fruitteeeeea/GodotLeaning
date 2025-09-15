@@ -7,11 +7,6 @@ radius = 7.0
 height = 18.0
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_55sw5"]
-var/speed/name = &"speed"
-var/speed/type = 3
-var/speed/value = 10.0
-var/speed/hint = 0
-var/speed/hint_string = ""
 
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 5
@@ -22,6 +17,10 @@ shape = SubResource("CapsuleShape2D_pkaax")
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
 
-[node name="BTPlayer" type="BTPlayer" parent="VisibleOnScreenEnabler2D"]
-agent_node = NodePath("../..")
+[node name="AIControler" type="Node2D" parent="VisibleOnScreenEnabler2D"]
+
+[node name="BTPlayer" type="BTPlayer" parent="VisibleOnScreenEnabler2D/AIControler"]
+agent_node = NodePath("../../..")
 blackboard_plan = SubResource("BlackboardPlan_55sw5")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

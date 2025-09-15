@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://b84sci7hn7jxe"]
+
+[ext_resource type="Texture2D" uid="uid://e0uawwgjdhpu" path="res://TestStatusEffect0914/VisualEffect/star_06.png" id="1_tpkbg"]
+
+[sub_resource type="Curve" id="Curve_tpkbg"]
+_data = [Vector2(0, 0.270123), 0.0, 0.0, 0, 0, Vector2(0.267303, 1), 0.0, 0.0, 0, 0, Vector2(0.451074, 0.359496), 0.0, 0.0, 0, 0, Vector2(0.563246, 0.635062), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="Gradient" id="Gradient_tpkbg"]
+offsets = PackedFloat32Array(0.215223, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0.309804)
+
+[node name="HitFlash" type="CPUParticles2D"]
+texture = ExtResource("1_tpkbg")
+lifetime = 0.5
+explosiveness = 1.0
+randomness = 0.82
+lifetime_randomness = 0.75
+spread = 180.0
+gravity = Vector2(0, 9)
+initial_velocity_min = 150.0
+initial_velocity_max = 200.0
+angular_velocity_min = -180.0
+damping_max = 50.0
+scale_amount_min = 0.1
+scale_amount_max = 0.1
+scale_amount_curve = SubResource("Curve_tpkbg")
+color = Color(1, 1, 0.564706, 1)
+color_ramp = SubResource("Gradient_tpkbg")
