@@ -6,6 +6,10 @@ class_name BulletData
 @export var size: float = 1.0
 @export var speed: float = 400
 
+#子弹在弹药库中的信息
+@export var pool_weight := 1.0
+@export var pool_size := Vector2.ONE
+
 #子弹的附魔属性（火属性 冰属性 
 @export var enchantments: Array[BulletEnhanceMentData] = []
 
