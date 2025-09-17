@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://b7wc48ho21cjy"]
-
-[ext_resource type="Script" uid="uid://nra5gcmfihck" path="res://TestArmorCan0915/Scene/bullet_base.gd" id="1_b5xct"]
-
-[node name="BulletBase" type="Node2D"]
-script = ExtResource("1_b5xct")

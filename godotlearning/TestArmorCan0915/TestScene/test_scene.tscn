@@ -1,0 +1,80 @@
+[gd_scene load_steps=8 format=3 uid="uid://0pttpcmejcd6"]
+
+[ext_resource type="PackedScene" uid="uid://c2wkw67xrk2ne" path="res://TestArmorCan0915/Weapon/weapon.tscn" id="1_bfuoe"]
+[ext_resource type="Script" uid="uid://cfrxv18kydvfu" path="res://TestArmorCan0915/TestScene/test_scene.gd" id="1_wxote"]
+[ext_resource type="Script" uid="uid://bjkiblwgds4sq" path="res://TestArmorCan0915/Script/BulletData.gd" id="2_wxote"]
+[ext_resource type="Script" uid="uid://c23l1udcmw82f" path="res://TestArmorCan0915/Weapon/Magazine.gd" id="4_nqj8s"]
+[ext_resource type="Script" uid="uid://c7qpp7gxlaaqp" path="res://TestArmorCan0915/TestScene/debugg_panel.gd" id="5_136xr"]
+
+[sub_resource type="Resource" id="Resource_4pnq3"]
+script = ExtResource("4_nqj8s")
+bullets = Array[ExtResource("2_wxote")]([])
+capacity = 5
+metadata/_custom_type_script = "uid://c23l1udcmw82f"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wxote"]
+size = Vector2(608, 20)
+
+[node name="TestScene" type="Node2D"]
+script = ExtResource("1_wxote")
+
+[node name="Weapon" parent="." instance=ExtResource("1_bfuoe")]
+position = Vector2(288, 240)
+magazine = SubResource("Resource_4pnq3")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Static" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Static"]
+position = Vector2(0, 288)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Static/StaticBody2D"]
+shape = SubResource("RectangleShape2D_wxote")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Static"]
+position = Vector2(-312, -8)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Static/StaticBody2D2"]
+shape = SubResource("RectangleShape2D_wxote")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="Static"]
+position = Vector2(312, -8)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Static/StaticBody2D3"]
+shape = SubResource("RectangleShape2D_wxote")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DebuggPanel" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_136xr")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/DebuggPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BuliltBulletPool" type="Button" parent="CanvasLayer/DebuggPanel/HBoxContainer"]
+layout_mode = 2
+text = "创建新的弹药库"
+
+[node name="Reload" type="Button" parent="CanvasLayer/DebuggPanel/HBoxContainer"]
+layout_mode = 2
+text = "装填"
+
+[node name="Fire" type="Button" parent="CanvasLayer/DebuggPanel/HBoxContainer"]
+layout_mode = 2
+text = "开火"
+
+[connection signal="pressed" from="CanvasLayer/DebuggPanel/HBoxContainer/BuliltBulletPool" to="CanvasLayer/DebuggPanel" method="_on_bulilt_bullet_pool_pressed"]
+[connection signal="pressed" from="CanvasLayer/DebuggPanel/HBoxContainer/Reload" to="CanvasLayer/DebuggPanel" method="_on_reload_pressed"]
+[connection signal="pressed" from="CanvasLayer/DebuggPanel/HBoxContainer/Fire" to="CanvasLayer/DebuggPanel" method="_on_fire_pressed"]
