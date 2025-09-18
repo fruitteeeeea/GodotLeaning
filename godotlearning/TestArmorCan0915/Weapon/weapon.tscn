@@ -1,6 +1,25 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2wkw67xrk2ne"]
+[gd_scene load_steps=7 format=3 uid="uid://c2wkw67xrk2ne"]
 
 [ext_resource type="Script" uid="uid://seql0wtdl6me" path="res://TestArmorCan0915/Weapon/weapon.gd" id="1_q88ch"]
+[ext_resource type="Script" uid="uid://bjkiblwgds4sq" path="res://TestArmorCan0915/Script/BulletData.gd" id="2_it7y5"]
+[ext_resource type="Script" uid="uid://bwb5aq5c7l3b6" path="res://TestArmorCan0915/Weapon/BulletPool.gd" id="3_k4j15"]
+[ext_resource type="Script" uid="uid://c23l1udcmw82f" path="res://TestArmorCan0915/Weapon/Magazine.gd" id="4_g03xt"]
+
+[sub_resource type="Resource" id="Resource_7fss6"]
+resource_local_to_scene = true
+script = ExtResource("3_k4j15")
+bullets = Array[ExtResource("2_it7y5")]([])
+max_capacity = 20
+metadata/_custom_type_script = "uid://bwb5aq5c7l3b6"
+
+[sub_resource type="Resource" id="Resource_tlqto"]
+resource_local_to_scene = true
+script = ExtResource("4_g03xt")
+bullets = Array[ExtResource("2_it7y5")]([])
+capacity = 5
+metadata/_custom_type_script = "uid://c23l1udcmw82f"
 
 [node name="Weapon" type="Node2D"]
 script = ExtResource("1_q88ch")
+bullet_pool = SubResource("Resource_7fss6")
+magazine = SubResource("Resource_tlqto")

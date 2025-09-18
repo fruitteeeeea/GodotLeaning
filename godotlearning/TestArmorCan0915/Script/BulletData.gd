@@ -6,10 +6,6 @@ class_name BulletData
 @export var size: float = 1.0
 @export var speed: float = 400
 
-#Test 子弹测试 
-@export var color_list := [Color.RED, Color.BLUE, Color.YELLOW]
-@export var color : Color = Color.WHITE
-
 #子弹在弹药库中的信息
 @export var pool_weight := 1.0
 @export var pool_size := Vector2.ONE
@@ -19,3 +15,11 @@ class_name BulletData
 
 #子弹的额外机制（开火 击中 击杀
 @export var modifiers: Array[BulletModifierData] = [] 
+
+
+#Test 子弹测试 
+@export_category("DebuggTest")
+@export var color_list := [Color.RED, Color.BLUE, Color.YELLOW]
+@export var color : Color = Color.WHITE
+@export var description : String
+@export var pool_index : int #子弹在弹仓和弹夹中的id

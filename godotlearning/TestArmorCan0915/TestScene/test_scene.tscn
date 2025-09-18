@@ -1,35 +1,114 @@
-[gd_scene load_steps=8 format=3 uid="uid://0pttpcmejcd6"]
+[gd_scene load_steps=19 format=3 uid="uid://0pttpcmejcd6"]
 
 [ext_resource type="PackedScene" uid="uid://c2wkw67xrk2ne" path="res://TestArmorCan0915/Weapon/weapon.tscn" id="1_bfuoe"]
 [ext_resource type="Script" uid="uid://cfrxv18kydvfu" path="res://TestArmorCan0915/TestScene/test_scene.gd" id="1_wxote"]
 [ext_resource type="Script" uid="uid://bjkiblwgds4sq" path="res://TestArmorCan0915/Script/BulletData.gd" id="2_wxote"]
+[ext_resource type="Resource" uid="uid://0btwx0vr6lka" path="res://TestArmorCan0915/TestResource/CriticalHitBullet.tres" id="3_ialbg"]
+[ext_resource type="Script" uid="uid://bwb5aq5c7l3b6" path="res://TestArmorCan0915/Weapon/BulletPool.gd" id="4_fjaau"]
+[ext_resource type="Resource" uid="uid://cjrmljab0fj5a" path="res://TestArmorCan0915/TestResource/FlameBllet.tres" id="4_gctli"]
 [ext_resource type="Script" uid="uid://c23l1udcmw82f" path="res://TestArmorCan0915/Weapon/Magazine.gd" id="4_nqj8s"]
 [ext_resource type="Script" uid="uid://c7qpp7gxlaaqp" path="res://TestArmorCan0915/TestScene/debugg_panel.gd" id="5_136xr"]
+[ext_resource type="Resource" uid="uid://cl2ofwrsktk14" path="res://TestArmorCan0915/TestResource/HealBullet.tres" id="5_lkyro"]
+[ext_resource type="Script" uid="uid://dsm1kmgyycsjd" path="res://TestArmorCan0915/Script/BulletEnhanceMentData.gd" id="6_lhr7w"]
+[ext_resource type="Script" uid="uid://bytdj6li0dp7y" path="res://TestArmorCan0915/Script/BulletModifierData.gd" id="7_cxv8e"]
+[ext_resource type="Texture2D" uid="uid://b3lvmgu3tnfu6" path="res://icon.svg" id="9_gctli"]
 
-[sub_resource type="Resource" id="Resource_4pnq3"]
+[sub_resource type="Resource" id="Resource_ktjt1"]
+resource_local_to_scene = true
+script = ExtResource("2_wxote")
+base_damage = 10.0
+size = 1.0
+speed = 400.0
+pool_weight = 1.0
+pool_size = Vector2(1, 1)
+enchantments = Array[ExtResource("6_lhr7w")]([])
+modifiers = Array[ExtResource("7_cxv8e")]([])
+color_list = [Color(1, 0, 0, 1), Color(0, 0, 1, 1), Color(1, 1, 0, 1)]
+color = Color(1, 0.439216, 0.262745, 1)
+description = "子弹会造成暴击。"
+pool_index = 0
+metadata/_custom_type_script = "uid://bjkiblwgds4sq"
+
+[sub_resource type="Resource" id="Resource_foj2y"]
+resource_local_to_scene = true
+script = ExtResource("2_wxote")
+base_damage = 10.0
+size = 1.0
+speed = 400.0
+pool_weight = 1.0
+pool_size = Vector2(1, 1)
+enchantments = Array[ExtResource("6_lhr7w")]([])
+modifiers = Array[ExtResource("7_cxv8e")]([])
+color_list = [Color(1, 0, 0, 1), Color(0, 0, 1, 1), Color(1, 1, 0, 1)]
+color = Color(1, 0.439216, 0.262745, 1)
+description = "子弹会造成暴击。"
+pool_index = 0
+metadata/_custom_type_script = "uid://bjkiblwgds4sq"
+
+[sub_resource type="Resource" id="Resource_gctli"]
+resource_local_to_scene = true
+script = ExtResource("4_fjaau")
+bullets = Array[ExtResource("2_wxote")]([])
+max_capacity = 20
+metadata/_custom_type_script = "uid://bwb5aq5c7l3b6"
+
+[sub_resource type="Resource" id="Resource_lkyro"]
+resource_local_to_scene = true
 script = ExtResource("4_nqj8s")
 bullets = Array[ExtResource("2_wxote")]([])
 capacity = 5
 metadata/_custom_type_script = "uid://c23l1udcmw82f"
+
+[sub_resource type="LabelSettings" id="LabelSettings_ialbg"]
+font_size = 96
+font_color = Color(1, 1, 1, 0.337255)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wxote"]
 size = Vector2(608, 20)
 
 [node name="TestScene" type="Node2D"]
 script = ExtResource("1_wxote")
+special_bullet_array = Array[ExtResource("2_wxote")]([ExtResource("3_ialbg"), ExtResource("4_gctli"), ExtResource("5_lkyro"), SubResource("Resource_ktjt1"), SubResource("Resource_foj2y"), null])
 
 [node name="Weapon" parent="." instance=ExtResource("1_bfuoe")]
 position = Vector2(288, 240)
-magazine = SubResource("Resource_4pnq3")
+bullet_pool = SubResource("Resource_gctli")
+magazine = SubResource("Resource_lkyro")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Static" type="Node2D" parent="."]
 
+[node name="Label" type="Label" parent="Static"]
+offset_left = -296.0
+offset_top = -88.0
+offset_right = 192.0
+offset_bottom = 56.0
+text = "弹仓"
+label_settings = SubResource("LabelSettings_ialbg")
+
+[node name="Label2" type="Label" parent="Static"]
+offset_left = -296.0
+offset_top = 168.0
+offset_right = 192.0
+offset_bottom = 312.0
+text = "弹夹"
+label_settings = SubResource("LabelSettings_ialbg")
+
 [node name="StaticBody2D" type="StaticBody2D" parent="Static"]
-position = Vector2(0, 288)
+position = Vector2(0, 72)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Static/StaticBody2D"]
+shape = SubResource("RectangleShape2D_wxote")
+
+[node name="Sprite2D" type="Sprite2D" parent="Static/StaticBody2D"]
+scale = Vector2(4.75, 0.125)
+texture = ExtResource("9_gctli")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="Static"]
+position = Vector2(0, 304)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Static/StaticBody2D4"]
 shape = SubResource("RectangleShape2D_wxote")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="Static"]
@@ -45,6 +124,11 @@ rotation = 1.5708
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Static/StaticBody2D3"]
 shape = SubResource("RectangleShape2D_wxote")
+
+[node name="BulletPoolSpwaner" type="Marker2D" parent="Static"]
+
+[node name="MagazineSwpaner" type="Marker2D" parent="Static"]
+position = Vector2(0, 192)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -74,6 +158,26 @@ text = "装填"
 [node name="Fire" type="Button" parent="CanvasLayer/DebuggPanel/HBoxContainer"]
 layout_mode = 2
 text = "开火"
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer"]
+layout_mode = 2
+
+[node name="BulletPool" type="Label" parent="CanvasLayer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Magazine" type="Label" parent="CanvasLayer/PanelContainer/VBoxContainer"]
+layout_mode = 2
 
 [connection signal="pressed" from="CanvasLayer/DebuggPanel/HBoxContainer/BuliltBulletPool" to="CanvasLayer/DebuggPanel" method="_on_bulilt_bullet_pool_pressed"]
 [connection signal="pressed" from="CanvasLayer/DebuggPanel/HBoxContainer/Reload" to="CanvasLayer/DebuggPanel" method="_on_reload_pressed"]

@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://brenrlccc0yi0"]
+[gd_scene load_steps=5 format=3 uid="uid://brenrlccc0yi0"]
 
 [ext_resource type="PackedScene" uid="uid://b7wc48ho21cjy" path="res://TestArmorCan0915/Weapon/bullet_base.tscn" id="1_wqh8y"]
 [ext_resource type="Script" uid="uid://df8jmr320dh0w" path="res://TestArmorCan0915/TestScene/test_bullet.gd" id="2_gcdnw"]
-[ext_resource type="Script" uid="uid://bapvl71igarlb" path="res://TestArmorCan0915/TestScene/rigid_body_2d.gd" id="3_8vytf"]
 [ext_resource type="Texture2D" uid="uid://b3lvmgu3tnfu6" path="res://icon.svg" id="5_66tyl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8vytf"]
@@ -11,14 +10,17 @@ size = Vector2(32, 32)
 [node name="TestBullet" instance=ExtResource("1_wqh8y")]
 script = ExtResource("2_gcdnw")
 
-[node name="RigidBody2D" type="RigidBody2D" parent="." index="0"]
-script = ExtResource("3_8vytf")
-
-[node name="Icon" type="Sprite2D" parent="RigidBody2D" index="0"]
+[node name="Icon" type="Sprite2D" parent="." index="0"]
 rotation = 3.14159
 scale = Vector2(0.375, 0.375)
 texture = ExtResource("5_66tyl")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D" index="1"]
+[node name="ColorRect" type="ColorRect" parent="." index="1"]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 24.0
+offset_bottom = 24.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="2"]
 scale = Vector2(1.5, 1.5)
 shape = SubResource("RectangleShape2D_8vytf")

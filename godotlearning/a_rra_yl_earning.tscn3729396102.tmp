@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://n6ke5itxdlsl"]
+
+[ext_resource type="Script" uid="uid://b3cxyetba15a5" path="res://a_rra_yl_earning.gd" id="1_oruae"]
+
+[node name="ArrayLearnming" type="Node2D"]
+script = ExtResource("1_oruae")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0

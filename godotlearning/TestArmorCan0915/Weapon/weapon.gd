@@ -12,6 +12,7 @@ func fire():
 		reload()
 		return
 #
+	#TODO 随机选中弹夹中的子弹 
 	#var bullet = magazine.bullets.pop_front() #发射子弹函数 发射弹夹最前面的子弹 
 	#var bullet_scene = preload("res://Bullet.tscn").instantiate()
 	#bullet_scene.data = bullet

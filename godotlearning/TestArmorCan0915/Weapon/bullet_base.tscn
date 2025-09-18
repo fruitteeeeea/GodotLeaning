@@ -10,14 +10,16 @@ script = ExtResource("4_h7dbv")
 base_damage = 10.0
 size = 1.0
 speed = 400.0
-color_list = [Color(1, 0, 0, 1), Color(0, 0, 1, 1), Color(1, 1, 0, 1)]
-color = Color(1, 1, 1, 1)
 pool_weight = 1.0
 pool_size = Vector2(1, 1)
 enchantments = Array[ExtResource("2_d3ipo")]([])
 modifiers = Array[ExtResource("3_i311c")]([])
+color_list = [Color(1, 0, 0, 1), Color(0, 0, 1, 1), Color(1, 1, 0, 1)]
+color = Color(1, 1, 1, 1)
+description = ""
+pool_index = 0
 metadata/_custom_type_script = "uid://bjkiblwgds4sq"
 
-[node name="BulletBase" type="Node2D"]
+[node name="BulletBase" type="RigidBody2D"]
 script = ExtResource("1_b5xct")
 bullet_info = SubResource("Resource_unycc")
