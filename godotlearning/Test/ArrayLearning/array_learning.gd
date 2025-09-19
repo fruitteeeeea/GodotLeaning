@@ -6,6 +6,19 @@ extends Node2D
 @onready var label: Label = $CanvasLayer/Control/VBoxContainer/Label
 @onready var label_2: Label = $CanvasLayer/Control/VBoxContainer/Label2
 
+@onready var cards_manager: Node2D = $CanvasLayer/Cards/CardsManager
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("mouse_left"):
+		for i in range(3):
+			cards_manager.operate_cards(5)
+			await get_tree().create_timer(.1).timeout
+	if event.is_action_pressed("mouse_right"):
+		for i in range(3):
+			cards_manager.operate_cards(-2)
+			await get_tree().create_timer(.1).timeout
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
