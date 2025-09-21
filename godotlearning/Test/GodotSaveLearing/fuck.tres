@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TestPlayerStatus" load_steps=2 format=3 uid="uid://stuu6osffghv"]
+
+[ext_resource type="Script" uid="uid://ikewrsmn45rs" path="res://Test/GodotSaveLearing/PlayerStatus.gd" id="1_ymtjk"]
+
+[resource]
+script = ExtResource("1_ymtjk")
+level = 5
+position = Vector2(0, 0)
+name = "player001"

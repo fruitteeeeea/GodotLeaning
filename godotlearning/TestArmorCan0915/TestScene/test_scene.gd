@@ -23,7 +23,7 @@ var is_locked := false
 func _ready() -> void:
 	complete_bullet_pool() #完成子弹池子 
 	spwan_test_bullet()
-	built_connection()
+	built_connection() #建立信号连接 
 	
 	#rebuilt_bullet_pool()
 
@@ -83,9 +83,9 @@ func built_connection():
 
 func _on_bullet_reloaded(bullet : BulletData):
 	var bullet_scene = test_bullet_dict[bullet.pool_index] as TestBullet#对应的测试子弹场景 
-	bullet_scene.hide()
+	#bullet_scene.hide()
 	print("隐藏一个子弹", bullet)
-	#bullet_scene.queue_free()
+	bullet_scene.queue_free()
 
 
 #func rebuilt_bullet_pool():

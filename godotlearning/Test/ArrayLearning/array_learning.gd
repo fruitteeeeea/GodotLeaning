@@ -11,12 +11,12 @@ extends Node2D
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("mouse_left"):
-		for i in range(3):
-			cards_manager.operate_cards(5)
+		for i in range(5):
+			cards_manager.operate_cards(1)
 			await get_tree().create_timer(.1).timeout
 	if event.is_action_pressed("mouse_right"):
-		for i in range(3):
-			cards_manager.operate_cards(-2)
+		for i in range(5):
+			cards_manager.operate_cards(-1)
 			await get_tree().create_timer(.1).timeout
 
 

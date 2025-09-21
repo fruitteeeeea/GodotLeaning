@@ -12,9 +12,9 @@ func _physics_process(delta: float) -> void:
 	bullet_pool.text = str(weapon.bullet_pool.bullets)
 	magazine.text = str(weapon.magazine.bullets)
 
+
 func _on_bulilt_bullet_pool_pressed() -> void:
 	test_scene.rebuilt_bullet_pool()
-	
 
 
 func _on_reload_pressed() -> void:

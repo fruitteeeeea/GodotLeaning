@@ -1,26 +1,31 @@
 extends Resource
 class_name Magazine
 
-signal bullet_loaded(bullet : BulletData) #子弹被装载进入弹夹的时候发出 
+signal on_bullet_loaded(bullet : BulletData) #子弹被装载进入弹夹的时候发出 
 
 @export var bullets: Array[BulletData] = []
+
+var bullet_instances : Array[BulletInstance] = [] #存储运行时的子弹 
+
 @export var capacity: int = 5
 
 func reload(pool: BulletPool) -> void:
 	bullets.clear()
 	
 	#var weighted_list: Array = []
-#
+
 	#for b in pool.bullets: # 用 pool_weight 作为唯一的抽取权重
 		#var weight = int(b.pool_weight * 10) # 放大倍数，避免小数影响
 		#for i in range(weight):
 			#weighted_list.append(b) 
 	
 	var bullet_list = pool.pick_random_bullet(capacity)
+	
 	for b in bullet_list:
 		bullets.append(b)
-		bullet_loaded.emit(b)
+		on_bullet_loaded.emit(b)
 		
+	
 	#for i in range(capacity):
 		#if weighted_list.is_empty():
 			#break 
@@ -30,6 +35,7 @@ func reload(pool: BulletPool) -> void:
 		# 装填特效
 		#if chosen.reload_effect != "":
 			#_apply_reload_effect(chosen)
+
 
 func _apply_reload_effect(bullet: BulletData): #执行装填效果 
 	match bullet.reload_effect:

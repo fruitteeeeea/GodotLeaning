@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgjnui85t08b0"]
+
+[ext_resource type="Script" uid="uid://bueyortapfllc" path="res://Test/GodotSaveLearing/save_load_test.gd" id="1_mg3rc"]
+
+[node name="SaveLoadTest" type="Node2D"]
+script = ExtResource("1_mg3rc")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -47.0
+offset_top = -51.0
+offset_right = 47.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 20
+
+[node name="Control" type="Control" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+
+[node name="Save" type="Button" parent="CanvasLayer/Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Save
+"
+
+[node name="Load" type="Button" parent="CanvasLayer/Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Load
+"
+
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/HBoxContainer/Save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/HBoxContainer/Load" to="." method="_on_load_pressed"]

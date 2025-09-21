@@ -16,7 +16,7 @@ func _ready() -> void:
 	operate_cards(1)
 
 
-var amplitude := 5  # 正弦波振幅（上下偏移距离）
+var amplitude := 1.5  # 正弦波振幅（上下偏移距离）
 var frequency := 2.0  # 波动速度
 var phase_offset := 0.5 # 每张牌之间的相位差
 
@@ -24,8 +24,13 @@ func _process(delta: float) -> void:
 	var i := 0
 	var time = Time.get_ticks_msec() / 1000.0 # 秒为单位
 	for card in cards_posx_info.keys():
+		var base_amplitude := amplitude
+		var a_scale = 1.0 / max(1, float(cards_posx_info.size()) / 10.0)  # 数量多就缩小振幅
+		var p_amplitude = base_amplitude * a_scale
+		
+		
 		var base_pos = cards_posx_info[card]  # 基础点（只含 X 坐标）
-		var y_offset = sin(time * frequency + i * phase_offset) * amplitude
+		var y_offset = sin(time * frequency + (i % 10) * phase_offset) * p_amplitude
 		card.position = Vector2(base_pos.x, base_pos.y + y_offset)
 		i += 1
 
@@ -70,7 +75,8 @@ func operate_cards(n := 0):
 				break
 			var card = cards_posx_info.keys()[-1] # 最后一个卡片
 			cards_posx_info.erase(card)
-			card.queue_free()
+			card.outof_arry()
+			#card.queue_free()
 	
 	# 重新对齐剩余卡片的位置
 	_update_card_positions(positions)
@@ -90,9 +96,9 @@ func _update_card_positions(positions: Array) -> void:
 		#cards_posx_info[card] = target_pos
 		
 		var target_pos = Vector2(positions[i], card.position.y) #这里不要修改posy
-		
 		card.move_to(target_pos)  # 调用卡片内部 tween
 		cards_posx_info[card] = target_pos
+		
 		i += 1
 
 # ===== 弧线排列：返回位置 + 旋转 =====

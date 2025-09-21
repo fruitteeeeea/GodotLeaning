@@ -8,6 +8,7 @@
 size = Vector2(32, 32)
 
 [node name="TestBullet" instance=ExtResource("1_wqh8y")]
+can_sleep = false
 script = ExtResource("2_gcdnw")
 
 [node name="Icon" type="Sprite2D" parent="." index="0"]
