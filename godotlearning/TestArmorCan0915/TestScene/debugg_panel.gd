@@ -10,7 +10,7 @@ extends Control
 
 func _physics_process(delta: float) -> void:
 	bullet_pool.text = str(weapon.bullet_pool.bullets)
-	magazine.text = str(weapon.magazine.bullets)
+	magazine.text = str(weapon.magazine.bullet_instances)
 
 
 func _on_bulilt_bullet_pool_pressed() -> void:

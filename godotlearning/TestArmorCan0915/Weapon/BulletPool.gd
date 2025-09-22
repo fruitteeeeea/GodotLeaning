@@ -2,16 +2,17 @@ extends Resource
 class_name BulletPool
 
 signal bullet_added(bullet : BulletData)
-signal bullet_picked(bullet : BulletData)
 signal bullet_remove(bullet : BulletData)
 
-@export var bullets: Array[BulletData] = [] #当前弹仓的数据 （基准 
-@export var max_capacity: int = 20 # 初始容量（1x1 子弹算1格，1x2 算2格）
+#可以返回当前子弹数组 bullet_instance
 
+@export var bullets: Array[BulletData] = [] #当前弹仓的数据 （基准 
 var bullet_instances : Array[BulletInstance] = [] #运行时候的子弹 
 
-#升级 缩小其中一枚子弹的体积 放大一枚子弹的体积 
+@export var max_capacity: int = 20 # 初始容量（1x1 子弹算1格，1x2 算2格） #TODO 同时考虑体积和重量
 
+
+#====武器操作====
 func restore_bullet_pool():
 	bullet_instances.clear()
 	if !bullets.size() > 0:
@@ -23,29 +24,35 @@ func restore_bullet_pool():
 		bi.data = i
 		bullet_instances.append(bi)
 
-
-func pick_random_bullet(_nb : int) -> Array: #注意 这里的子弹被挑选了 也不会消失 
+#TODO 是否有更高的概率抽中
+func pick_random_bullet(_nb : int, weight : Dictionary = {}) -> Array[BulletInstance]: #注意 这里的子弹被挑选了 也不会消失 
 	var bullet_picked_list := []
 	var nb = min(_nb, bullets.size()) #返回最小值 
 	
-	bullets.shuffle() #打乱顺序
+	#var weighted_list: Array = []
+
+	#for b in pool.bullets: # 用 pool_weight 作为唯一的抽取权重
+		#var weight = int(b.pool_weight * 10) # 放大倍数，避免小数影响
+		#for i in range(weight):
+			#weighted_list.append(b) 
+
+	bullet_instances.shuffle() #打乱顺序
 	
 	for b in range(nb):
-		if bullets.is_empty():
+		if bullet_instances.is_empty():
 			break
 		
-		var bullet = bullets.pop_front()
+		var bullet = bullet_instances.pop_front() #子弹一次只会被选中一遍
 		bullet_picked_list.append(bullet)
-		bullet_picked.emit(bullet)
-		bullet_remove.emit(bullet)
 		print(bullets)
 		printt("最后挑选的子弹是", bullet)
 	
-	
-	#printt("最后挑选的子弹是", bullet_picked_list)
-	return bullet_picked_list
+	restore_bullet_pool() #恢复一下原样
+	return bullet_picked_list #返回带有指定数量BulletInstance的数组 
 
 
+func get_bullet_pool() -> Array[BulletInstance]:
+	return bullet_instances
 
 #====工房操作====
 func get_total_size() -> int:
@@ -59,6 +66,7 @@ func can_add_bullet(bullet: BulletData) -> bool: #检查是否可以添加子弹
 	return get_total_size() + bullet.pool_size.x * bullet.pool_size.y <= max_capacity
 
 
+#升级 缩小其中一枚子弹的体积 放大一枚子弹的体积 
 func add_bullet(bullet: BulletData) -> void: #添加子弹 
 	if can_add_bullet(bullet):
 		bullets.append(bullet)

@@ -13,7 +13,7 @@ class_name BulletData
 #子弹的附魔属性（火属性 冰属性 
 @export var enchantments: Array[BulletEnhanceMentData] = []
 
-#子弹的额外机制（开火 击中 击杀
+#子弹的额外机制（开火 装填 击中 击杀
 @export var modifiers: Array[BulletModifierData] = [] 
 
 

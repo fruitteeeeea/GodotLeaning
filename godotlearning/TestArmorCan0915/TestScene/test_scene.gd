@@ -46,15 +46,11 @@ func complete_bullet_pool() -> void: #完成并分配 武器子弹池
 		print("成功添加序号 ", current_index)
 		current_index += 1
 		
-	
 	#===创建子弹数据数列===
-	
-	
 	for i in arr: #添加子弹 
 		weapon.bullet_pool.add_bullet(i)
 	
-	for i in weapon.bullet_pool.bullets:
-		print(i.description)
+	weapon.bullet_pool.restore_bullet_pool() #根据给予的数列生成子弹实例
 
 
 func spwan_test_bullet():
@@ -78,7 +74,7 @@ func spwan_test_bullet():
 
 
 func built_connection():
-	weapon.magazine.bullet_loaded.connect(_on_bullet_reloaded)
+	weapon.magazine.on_bullet_loaded.connect(_on_bullet_reloaded)
 
 
 func _on_bullet_reloaded(bullet : BulletData):

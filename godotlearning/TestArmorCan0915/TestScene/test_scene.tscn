@@ -55,7 +55,6 @@ metadata/_custom_type_script = "uid://bwb5aq5c7l3b6"
 [sub_resource type="Resource" id="Resource_lkyro"]
 resource_local_to_scene = true
 script = ExtResource("4_nqj8s")
-bullets = Array[ExtResource("2_wxote")]([])
 capacity = 5
 metadata/_custom_type_script = "uid://c23l1udcmw82f"
 
