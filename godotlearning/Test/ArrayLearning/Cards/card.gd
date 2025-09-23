@@ -1,6 +1,11 @@
 extends Control
 class_name Card
 
+signal hovered(card: Node)
+signal unhovered(card: Node)
+
+@export var card_color : Color
+
 var posx_tween : Tween
 var scale_tween : Tween
 var rotate_tween : Tween
@@ -8,13 +13,12 @@ var pop_tween : Tween
 
 var show_tween : Tween
 
-
 @onready var offset: Control = $Offset
 
-signal hovered(card: Node)
-signal unhovered(card: Node)
-
 func _ready() -> void:
+	if card_color:
+		modulate = card_color #颜色 
+	
 	mouse_entered.connect(func(): emit_signal("hovered", self))
 	mouse_entered.connect(do_scale.bind(Vector2(.9, .9), 0.3, true))
 	

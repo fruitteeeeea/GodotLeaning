@@ -1,8 +1,8 @@
 extends Resource
 class_name Magazine
 
-signal on_bullet_loaded(bullet : BulletData) #子弹被装载进入弹夹的时候发出 
-signal on_bullet_fired(bullet : BulletData)
+signal on_bullet_loaded(bullet : BulletInstance) #子弹被装载进入弹夹的时候发出 
+signal on_bullet_fired(bullet : BulletInstance)
 
 var bullet_instances : Array[BulletInstance] = [] #存储运行时的子弹 
 
@@ -24,7 +24,7 @@ func get_fire_nullet() -> BulletInstance: #获取需要发射的子弹
 		return
 	
 	var bi = bullet_instances.pop_front() as BulletInstance
-	on_bullet_fired.emit(bi.data) #如果选中子弹有发射特效 需要触发发射特效 
+	on_bullet_fired.emit(bi) #如果选中子弹有发射特效 需要触发发射特效 
 	return bi
 
 

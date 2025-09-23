@@ -1,6 +1,5 @@
 extends Node2D
-
-@onready var cards: Control = $".."
+class_name CardsManager
 
 const CARD = preload("res://Test/ArrayLearning/Cards/card.tscn")
 @onready var debug_drawer: Node2D = $"../DebugDrawer"
@@ -12,8 +11,8 @@ const CARD = preload("res://Test/ArrayLearning/Cards/card.tscn")
 @export var cards_posx_info := {} # {card_node: Vector2}
 var current_cards := 0
 
-func _ready() -> void:
-	operate_cards(1)
+#func _ready() -> void:
+	#operate_cards(1)
 
 
 var amplitude := 1.5  # 正弦波振幅（上下偏移距离）
@@ -35,19 +34,18 @@ func _process(delta: float) -> void:
 		i += 1
 
 
-func operate_cards(n := 0):
-	debug_drawer.clear_circles()
-	
-	# 更新卡片数量（不能小于 0）
-	current_cards = max(current_cards + n, 0)
+func reset_cards():
+	cards_posx_info.clear()
+	current_cards = 0
+	for i in get_children():
+		i.queue_free()
+	pass
 
+func operate_cards(data : BulletData, n := 0):
 	# 计算新位置列表
 	var positions: Array = get_card_positions(current_cards)
+	reorganize_cards(positions, n)
 
-	# 先更新 Debug 圆圈
-	for p in positions:
-		debug_drawer.add_circle(Vector2(p, 0))
-		
 	# 如果只是刷新位置，不需要增减
 	if n == 0:
 		_update_card_positions(positions)
@@ -55,32 +53,59 @@ func operate_cards(n := 0):
 	
 	if n > 0: # 添加卡片
 		for i in range(n):
-			var card = CARD.instantiate()
-			
-			card.hovered.connect(_on_card_hovered)
-			card.unhovered.connect(_on_card_unhovered)
-			
-			add_child(card)
-			
-			# 把卡片放到对应位置
-			var pos = positions[cards_posx_info.size()]
-			card.position = Vector2(pos, 0)
-			
-			# 记录字典
-			cards_posx_info[card] = card.position
+			add_cards(data)
 	
 	elif n < 0: # 删除卡片
 		for i in range(-n):
 			if cards_posx_info.size() == 0:
 				break
-			var card = cards_posx_info.keys()[-1] # 最后一个卡片
-			cards_posx_info.erase(card)
-			card.outof_arry()
-			#card.queue_free()
+			#var card = cards_posx_info.keys()[-1] # 最后一个卡片
+			var card = cards_posx_info.keys().pick_random() # 随机一个卡片
+			remove_cards(card)
 	
 	# 重新对齐剩余卡片的位置
 	_update_card_positions(positions)
 	#_update_card_positions(get_arc_positions(current_cards, 300, PI/3))
+
+#重新整理一下卡片
+func reorganize_cards(positions : Array, n := 0) -> void:
+	debug_drawer.clear_circles()
+	
+	# 更新卡片数量（不能小于 0）
+	current_cards = max(current_cards + n, 0)
+
+	# 先更新 Debug 圆圈
+	for p in positions:
+		debug_drawer.add_circle(Vector2(p, 0))
+
+
+func add_cards(_data : Resource) -> void:
+	var card = CARD.instantiate()
+	
+	if _data:
+		card.card_color = _data.color
+	
+	card.hovered.connect(_on_card_hovered)
+	card.unhovered.connect(_on_card_unhovered)
+	
+	add_child(card)
+	
+	# 把卡片放到对应位置
+	var positions = get_card_positions(current_cards)
+	var pos = positions[cards_posx_info.size()]
+	card.position = Vector2(pos, 0)
+	
+	# 记录字典
+	cards_posx_info[card] = card.position
+
+
+func remove_cards(card : Card) -> void:
+	if !cards_posx_info.has(card):
+		print("未找到卡片 无法移除")
+		return  
+	
+	cards_posx_info.erase(card)
+	card.outof_arry() #删除卡片
 
 
 func _update_card_positions(positions: Array) -> void:

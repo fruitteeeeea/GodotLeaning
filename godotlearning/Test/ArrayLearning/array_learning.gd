@@ -6,17 +6,17 @@ extends Node2D
 @onready var label: Label = $CanvasLayer/Control/VBoxContainer/Label
 @onready var label_2: Label = $CanvasLayer/Control/VBoxContainer/Label2
 
-@onready var cards_manager: Node2D = $CanvasLayer/Cards/CardsManager
-
+@onready var cards_manager: CardsManager = $CanvasLayer/Cards/CardsManager
+const NORMAL_BULLET = preload("res://TestArmorCan0915/TestResource/NormalBullet.tres")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("mouse_left"):
 		for i in range(5):
-			cards_manager.operate_cards(1)
+			cards_manager.operate_cards(NORMAL_BULLET, 1)
 			await get_tree().create_timer(.1).timeout
 	if event.is_action_pressed("mouse_right"):
 		for i in range(5):
-			cards_manager.operate_cards(-1)
+			cards_manager.operate_cards(NORMAL_BULLET, -1)
 			await get_tree().create_timer(.1).timeout
 
 

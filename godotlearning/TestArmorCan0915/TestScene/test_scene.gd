@@ -13,10 +13,7 @@ const TEST_BULLET = preload("res://TestArmorCan0915/TestScene/test_bullet.tscn")
 @export var test_bullet_pool := [] #存储实例化的测试子弹节点 
 @export var test_bullet_dict : Dictionary = {}
 
-#@export var magazine := []
-#
-#@export var pool_size := 20
-#@export var magazine_size := 5
+
 
 var is_locked := false
 
@@ -39,13 +36,6 @@ func complete_bullet_pool() -> void: #完成并分配 武器子弹池
 		arr.append(new_data)
 
 	arr.shuffle()
-	
-	var current_index = 0 #为子弹添加序号
-	for i in arr:
-		i.pool_index = current_index
-		print("成功添加序号 ", current_index)
-		current_index += 1
-		
 	#===创建子弹数据数列===
 	for i in arr: #添加子弹 
 		weapon.bullet_pool.add_bullet(i)
@@ -53,7 +43,7 @@ func complete_bullet_pool() -> void: #完成并分配 武器子弹池
 	weapon.bullet_pool.restore_bullet_pool() #根据给予的数列生成子弹实例
 
 
-func spwan_test_bullet():
+func spwan_test_bullet(): #生成子弹方块 
 	if is_locked:
 		return
 	
@@ -146,34 +136,3 @@ func reload():
 	
 	weapon.magazine.reload(weapon.bullet_pool)
 	print(weapon.magazine.bullets)
-
-	#if is_locked or bullet_pool.size() < magazine_size:
-		#return
-	#
-	#is_locked = true
-	#for i in range(magazine_size):
-		#
-		#var bullet = bullet_pool.pick_random()
-		#
-		#bullet_pool.erase(bullet)
-		#magazine.append(bullet)
-		#
-		#bullet.modulate.a *= .5
-		#
-		#await get_tree().create_timer(.1).timeout
-		#
-	#
-	#is_locked = false
-#
-#
-#func fire():
-	#if is_locked or magazine.size() <= 0:
-		#return
-	#
-	#is_locked = true
-	#var bullet = magazine.pick_random()
-	#magazine.erase(bullet)
-	#bullet.queue_free()
-		#
-	#is_locked = false
-	#pass

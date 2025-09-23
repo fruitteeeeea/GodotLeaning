@@ -26,7 +26,7 @@ func restore_bullet_pool():
 
 #TODO 是否有更高的概率抽中
 func pick_random_bullet(_nb : int, weight : Dictionary = {}) -> Array[BulletInstance]: #注意 这里的子弹被挑选了 也不会消失 
-	var bullet_picked_list := []
+	var bullet_picked_list : Array[BulletInstance] = []
 	var nb = min(_nb, bullets.size()) #返回最小值 
 	
 	#var weighted_list: Array = []
