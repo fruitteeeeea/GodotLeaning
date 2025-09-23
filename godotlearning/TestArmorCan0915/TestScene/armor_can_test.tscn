@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://r6hl1cinmweg" path="res://TestArmorCan0915/TestScene/armor_can_test.gd" id="1_67rp3"]
 [ext_resource type="PackedScene" uid="uid://b6yq8uha6j81n" path="res://TestArmorCan0915/Scene/cards_manager.tscn" id="2_udgb4"]
-[ext_resource type="Resource" uid="uid://0btwx0vr6lka" path="res://TestArmorCan0915/TestResource/CriticalHitBullet.tres" id="3_pe3bf"]
+[ext_resource type="Resource" uid="uid://0btwx0vr6lka" path="res://TestArmorCan0915/TestResource/BulletData/CriticalHitBullet.tres" id="3_pe3bf"]
 [ext_resource type="PackedScene" uid="uid://c2wkw67xrk2ne" path="res://TestArmorCan0915/Weapon/weapon.tscn" id="3_qodah"]
 [ext_resource type="Script" uid="uid://bjkiblwgds4sq" path="res://TestArmorCan0915/Script/BulletData.gd" id="4_8hbpa"]
 [ext_resource type="Resource" uid="uid://cjrmljab0fj5a" path="res://TestArmorCan0915/TestResource/FlameBllet.tres" id="4_54vig"]
-[ext_resource type="Resource" uid="uid://cl2ofwrsktk14" path="res://TestArmorCan0915/TestResource/HealBullet.tres" id="5_kot4y"]
+[ext_resource type="Resource" uid="uid://cl2ofwrsktk14" path="res://TestArmorCan0915/TestResource/BulletData/HealBullet.tres" id="5_kot4y"]
 [ext_resource type="Script" uid="uid://bwb5aq5c7l3b6" path="res://TestArmorCan0915/Weapon/BulletPool.gd" id="5_um06y"]
 [ext_resource type="Script" uid="uid://c23l1udcmw82f" path="res://TestArmorCan0915/Weapon/Magazine.gd" id="6_pe3bf"]
 [ext_resource type="PackedScene" uid="uid://cwvfdhqod0lnt" path="res://TestArmorCan0915/Scene/debug_drawer.tscn" id="10_54vig"]

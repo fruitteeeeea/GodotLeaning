@@ -41,7 +41,7 @@ func reset_cards():
 		i.queue_free()
 	pass
 
-func operate_cards(data : BulletData, n := 0):
+func operate_cards(data : BulletInstance = null, n := 0):
 	# 计算新位置列表
 	var positions: Array = get_card_positions(current_cards)
 	reorganize_cards(positions, n)
@@ -79,11 +79,12 @@ func reorganize_cards(positions : Array, n := 0) -> void:
 		debug_drawer.add_circle(Vector2(p, 0))
 
 
-func add_cards(_data : Resource) -> void:
+func add_cards(_data : BulletInstance) -> void:
 	var card = CARD.instantiate()
 	
 	if _data:
-		card.card_color = _data.color
+		
+		card.card_color = _data.data.color
 	
 	card.hovered.connect(_on_card_hovered)
 	card.unhovered.connect(_on_card_unhovered)
@@ -107,6 +108,8 @@ func remove_cards(card : Card) -> void:
 	cards_posx_info.erase(card)
 	card.outof_arry() #删除卡片
 
+	operate_cards()
+
 
 func _update_card_positions(positions: Array) -> void:
 	var i := 0
@@ -114,35 +117,11 @@ func _update_card_positions(positions: Array) -> void:
 		if i >= positions.size():
 			break
 		
-		#var target_pos = positions[i]["pos"]
-		#var target_rot = positions[i]["rot"]
-		#card.move_to(target_pos)     # 平滑移动
-		#card.rotate_to(target_rot)   # 需要在 Card.gd 里加 rotate_to()
-		#cards_posx_info[card] = target_pos
-		
 		var target_pos = Vector2(positions[i], card.position.y) #这里不要修改posy
 		card.move_to(target_pos)  # 调用卡片内部 tween
 		cards_posx_info[card] = target_pos
 		
 		i += 1
-
-# ===== 弧线排列：返回位置 + 旋转 =====
-func get_arc_positions(num_cards: int, radius: float, arc_angle: float) -> Array:
-	var positions: Array = []
-	var center_angle = PI / 2  # 中心朝上，可以改成 PI/4 之类的
-
-	for i in range(num_cards):
-		var t = 0.0
-		if num_cards > 1:
-			t = float(i) / (num_cards - 1)
-		var angle = center_angle - arc_angle / 2 + t * arc_angle
-
-		var pos = Vector2(cos(angle), -sin(angle)) * radius
-		positions.append({
-			"pos": pos,
-			"rot": angle - PI/2  # 卡片旋转方向对齐弧度
-		})
-	return positions
 
 
 func get_card_positions(n: int) -> Array[float]: #仅仅计算位置 

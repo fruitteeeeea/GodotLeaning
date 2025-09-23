@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BulletModifierData" load_steps=2 format=3 uid="uid://ckm3l35tjhuju"]
+
+[ext_resource type="Script" uid="uid://bytdj6li0dp7y" path="res://TestArmorCan0915/Script/BulletModifierData.gd" id="1_gh81x"]
+
+[resource]
+script = ExtResource("1_gh81x")
+trigger = 0
+effect = "heal_player"
+value = 100.0
+metadata/_custom_type_script = "uid://bytdj6li0dp7y"

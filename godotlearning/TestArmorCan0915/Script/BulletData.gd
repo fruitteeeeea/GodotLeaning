@@ -16,6 +16,14 @@ class_name BulletData
 #子弹的额外机制（开火 装填 击中 击杀
 @export var modifiers: Array[BulletModifierData] = [] 
 
+#根据 trigger 获取对应的 modifier
+func get_modifiers(trigger_type: BulletModifierData.TriggerEvent) -> Array[BulletModifierData]:
+	var list : Array[BulletModifierData] = []
+	for m in modifiers:
+		if m.trigger == trigger_type:
+			list.append(m)
+	return list
+
 
 #Test 子弹测试 
 @export_category("DebuggTest")

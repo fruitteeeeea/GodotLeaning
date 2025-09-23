@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BulletModifierData" load_steps=2 format=3 uid="uid://ctg8v0jjnnxcc"]
+
+[ext_resource type="Script" uid="uid://bytdj6li0dp7y" path="res://TestArmorCan0915/Script/BulletModifierData.gd" id="1_m754d"]
+
+[resource]
+script = ExtResource("1_m754d")
+trigger = 1
+effect = "criti_hit"
+value = 100.0
+metadata/_custom_type_script = "uid://bytdj6li0dp7y"

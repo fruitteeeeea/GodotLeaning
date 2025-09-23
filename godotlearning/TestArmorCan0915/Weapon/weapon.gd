@@ -13,8 +13,8 @@ var bullet_list := [] #维持的子弹
 var effect_list := [] #维持的效果 
 
 func _ready() -> void:
-	magazine.on_bullet_loaded.connect(trigger_effect.bind("ON_RELOAD"))
-	magazine.on_bullet_fired.connect(trigger_effect.bind("ON_FIRE"))
+	magazine.on_bullet_loaded.connect(check_bullet_trigeer.bind(BulletModifierData.TriggerEvent.ON_RELOAD))
+	magazine.on_bullet_fired.connect(check_bullet_trigeer.bind(BulletModifierData.TriggerEvent.ON_FIRE))
 
 #装填
 func reload():
@@ -29,34 +29,31 @@ func fire() -> BulletInstance: #返回一个发射子弹的类型
 	#TODO 随机选中弹夹中的子弹 
 	var bullet = magazine.get_fire_nullet() as BulletInstance#发射子弹函数 发射弹夹最前面的子弹 
 	return bullet
+	
+	
 	#var bullet_scene = preload("res://Bullet.tscn").instantiate()
 	#bullet_scene.data = bullet
 	#get_tree().current_scene.add_child(bullet_scene)
 
-#触发效果
-func trigger_effect( bullet: BulletInstance, effect : String,):
-	match effect:
-		"ON_RELOAD":
-			_apply_effect(bullet, "ON_RELOAD")
-			print("触发了装填特效")
-		"ON_FIRE":
-			print("触发了开火特效")
-		"ON_HIT":
-			print("触发了击中特效")
-		"ON_KILL":
-			print("触发了击杀特效")
-		_:
-			print("未找到特效", effect)
+#检查子弹是否拥有指定的 trigger 的Modifier
+func check_bullet_trigeer(bullet_instance : BulletInstance, trigger_type : BulletModifierData.TriggerEvent) -> void: #如果有对应的效果 需要执行的 
+	var modifiers = bullet_instance.data.get_modifiers(trigger_type)
+	for m in modifiers:
+		_apply_effect(m)
 
-#特殊效果 
-func _apply_effect(bullet: BulletInstance, Type : String): #执行装填效果 
-	return
-	
-	var data = bullet.data
-	match data.reload_effect:
+#在此处应用 BulletModifier 的 Effect
+func _apply_effect(modifier: BulletModifierData): #执行装填效果 
+	match modifier.effect:
 		"heal_player":
 			#Player.instance.hp += 5
-			print("触发弹药装填效果 ： 治疗玩家生命")
+			print("触发弹药装填效果 ： 治疗玩家生命") #TODO 这里区分一下 触发的效果 
+		
+		"criti_hit":
+			print("触发弹药发射效果 ： 暴击几率增加")
+		
 		"buff_reload_speed":
 			#Player.instance.apply_buff("reload_speed", 1.5, 3.0)
 			print("触发弹药装填效果 ： 换弹速度提升")
+
+		_:
+			return
