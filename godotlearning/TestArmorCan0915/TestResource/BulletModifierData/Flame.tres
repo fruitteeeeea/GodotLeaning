@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="BulletModifierData" load_steps=2 format=3 uid="uid://5oax86yialol"]
+
+[ext_resource type="Script" uid="uid://bytdj6li0dp7y" path="res://TestArmorCan0915/Script/BulletModifierData.gd" id="1_qcwrb"]
+
+[resource]
+script = ExtResource("1_qcwrb")
+trigger = 2
+modifiers_type = "on hit"
+effect_description = ""
+effect = "fire_enemy"
+value = 0.0
+metadata/_custom_type_script = "uid://bytdj6li0dp7y"

@@ -8,6 +8,7 @@ signal bullet_remove(bullet : BulletData)
 
 @export var bullets: Array[BulletData] = [] #当前弹仓的数据 （基准 
 var bullet_instances : Array[BulletInstance] = [] #运行时候的子弹 
+#资源文件总是会指向一块内存。使用BulletInstance 来存储运行时子弹数据 
 
 @export var max_capacity: int = 20 # 初始容量（1x1 子弹算1格，1x2 算2格） #TODO 同时考虑体积和重量
 
@@ -44,8 +45,6 @@ func pick_random_bullet(_nb : int, weight : Dictionary = {}) -> Array[BulletInst
 		
 		var bullet = bullet_instances.pop_front() #子弹一次只会被选中一遍
 		bullet_picked_list.append(bullet)
-		print(bullets)
-		printt("最后挑选的子弹是", bullet)
 	
 	restore_bullet_pool() #恢复一下原样
 	return bullet_picked_list #返回带有指定数量BulletInstance的数组 

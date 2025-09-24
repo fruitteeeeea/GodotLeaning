@@ -5,6 +5,8 @@
 [resource]
 script = ExtResource("1_gh81x")
 trigger = 0
+modifiers_type = "on reload"
+effect_description = "治疗玩家。"
 effect = "heal_player"
 value = 100.0
 metadata/_custom_type_script = "uid://bytdj6li0dp7y"

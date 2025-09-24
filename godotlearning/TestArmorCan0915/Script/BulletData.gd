@@ -16,6 +16,11 @@ class_name BulletData
 #子弹的额外机制（开火 装填 击中 击杀
 @export var modifiers: Array[BulletModifierData] = [] 
 
+#===标签展示相关===
+@export var BulletName := "普通子弹"
+@export_enum("装填", "开火", "击中", "击杀") var TriggerType := "装填"
+@export var BulletDescription := "没有特殊效果。"
+
 #根据 trigger 获取对应的 modifier
 func get_modifiers(trigger_type: BulletModifierData.TriggerEvent) -> Array[BulletModifierData]:
 	var list : Array[BulletModifierData] = []

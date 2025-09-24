@@ -8,25 +8,23 @@ const CARD = preload("res://Test/ArrayLearning/Cards/card.tscn")
 @export var max_x := 576.0
 @export var max_spacing := 40
 
-@export var cards_posx_info := {} # {card_node: Vector2}
-var current_cards := 0
+@export var cards_posx_info := {}           # {card_node: Vector2}
+@export var card_nodes: Dictionary = {}     # {card: node}
+@export var current_cards := 0
 
+
+# ---------------- 基础操作 ----------------
 func reset_cards():
 	cards_posx_info.clear()
+	card_nodes.clear()
 	current_cards = 0
 	for i in get_children():
 		i.queue_free()
-	pass
 
+# 增/减/整理卡片
 func operate_cards(data : BulletInstance = null, n := 0):
-	# 计算新位置列表
-	var positions: Array = get_card_positions(current_cards)
-	reorganize_cards(positions, n)
-
-	# 如果只是刷新位置，不需要增减
-	if n == 0:
-		_update_card_positions(positions)
-		return
+	# 更新数量
+	current_cards = max(current_cards + n, 0)
 	
 	if n > 0: # 添加卡片
 		for i in range(n):
@@ -34,72 +32,62 @@ func operate_cards(data : BulletInstance = null, n := 0):
 	
 	elif n < 0: # 删除卡片
 		for i in range(-n):
-			if cards_posx_info.size() == 0:
-				break
-			#var card = cards_posx_info.keys()[-1] # 最后一个卡片
-			var card = cards_posx_info.keys().pick_random() # 随机一个卡片
-			remove_cards(card)
+			remove_cards(data)
 	
 	# 重新对齐剩余卡片的位置
-	_update_card_positions(positions)
-	#_update_card_positions(get_arc_positions(current_cards, 300, PI/3))
+	_update_card_positions(get_card_positions(current_cards))
 
-#重新整理一下卡片
-func reorganize_cards(positions : Array, n := 0) -> void:
-	debug_drawer.clear_circles()
-	
-	# 更新卡片数量（不能小于 0）
-	current_cards = max(current_cards + n, 0)
+# ---------------- 内部函数 ----------------
 
-	# 先更新 Debug 圆圈
-	for p in positions:
-		debug_drawer.add_circle(Vector2(p, 0))
-
-
-func add_cards(_data : BulletInstance) -> void:
+func add_cards(_data : BulletInstance = null) -> void:
 	var card = CARD.instantiate()
 	
 	if _data:
-		
-		card.card_color = _data.data.color
+		#card.card_color = _data.data.color
+		card.data = _data.data
 	
 	card.hovered.connect(_on_card_hovered)
 	card.unhovered.connect(_on_card_unhovered)
 	
 	add_child(card)
 	
-	# 把卡片放到对应位置
-	var positions = get_card_positions(current_cards)
-	var pos = positions[cards_posx_info.size()]
-	card.position = Vector2(pos, 0)
-	
-	# 记录字典
-	cards_posx_info[card] = card.position
+	cards_posx_info[card] = Vector2.ZERO  # 先放字典，等位置计算
+	card_nodes[card] = _data   # 绑定对应的 BulletInstance
 
 
-func remove_cards(card : Card) -> void:
-	if !cards_posx_info.has(card):
-		print("未找到卡片 无法移除")
-		return  
-	
-	cards_posx_info.erase(card)
-	card.outof_arry() #删除卡片
+func remove_cards(_data: BulletInstance = null) -> void:
+	var target_card: Card = null
 
-	operate_cards()
+	if _data: # 根据 BulletInstance 找卡片
+		for card in card_nodes.keys():
+			if card_nodes[card] == _data:
+				target_card = card
+				break
+	else: # 随机移除一张
+		if cards_posx_info.size() > 0:
+			target_card = cards_posx_info.keys().pick_random()
+
+	if target_card:
+		cards_posx_info.erase(target_card)
+		card_nodes.erase(target_card)
+		target_card.outof_arry()
 
 
 func _update_card_positions(positions: Array) -> void:
+	debug_drawer.clear_circles()   # 清空之前的
 	var i := 0
 	for card in cards_posx_info.keys():
 		if i >= positions.size():
 			break
 		
-		var target_pos = Vector2(positions[i], card.position.y) #这里不要修改posy
-		card.move_to(target_pos)  # 调用卡片内部 tween
+		var target_pos = Vector2(positions[i], 0) # 保持 Y 不动
+		card.move_to(target_pos)                  # 调用卡片内部 tween
 		cards_posx_info[card] = target_pos
 		
+		debug_drawer.add_circle(target_pos) # 在调试器上画圆圈
 		i += 1
 
+# ---------------- 位置计算 ----------------
 
 func get_card_positions(n: int) -> Array[float]: #仅仅计算位置 
 	var positions: Array[float] = []
@@ -137,7 +125,7 @@ func get_card_positions(n: int) -> Array[float]: #仅仅计算位置
 		
 	return positions
 
-#====管理卡片悬停====
+# ---------------- 卡片悬停 ----------------
 @export var hover_spacing := 60
 
 var hover_index := -1  # 当前鼠标悬停的卡片索引，-1 表示没有

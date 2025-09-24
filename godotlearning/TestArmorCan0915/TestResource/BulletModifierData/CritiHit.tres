@@ -5,6 +5,8 @@
 [resource]
 script = ExtResource("1_m754d")
 trigger = 1
+modifiers_type = "on fire"
+effect_description = "接下来数次攻击会造成暴击。"
 effect = "criti_hit"
 value = 100.0
 metadata/_custom_type_script = "uid://bytdj6li0dp7y"

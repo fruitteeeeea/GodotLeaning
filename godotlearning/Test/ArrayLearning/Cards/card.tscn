@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://keanat2xgbl1"]
+[gd_scene load_steps=4 format=3 uid="uid://keanat2xgbl1"]
 
 [ext_resource type="Script" uid="uid://bibjuiolt7pi1" path="res://Test/ArrayLearning/Cards/card.gd" id="1_qp4nn"]
 [ext_resource type="Texture2D" uid="uid://b3lvmgu3tnfu6" path="res://icon.svg" id="2_2wrio"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qp4nn"]
+font_size = 32
 
 [node name="Card" type="Control"]
 layout_mode = 3
@@ -31,3 +34,46 @@ offset_bottom = 44.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_2wrio")
+
+[node name="Info" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -192.0
+offset_top = -352.0
+offset_right = 192.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 160
+
+[node name="PanelContainer" type="PanelContainer" parent="Info"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Info/PanelContainer"]
+layout_mode = 2
+
+[node name="BulletName" type="Label" parent="Info/PanelContainer/HBoxContainer"]
+layout_mode = 2
+text = "Buff01"
+label_settings = SubResource("LabelSettings_qp4nn")
+
+[node name="PanelContainer" type="PanelContainer" parent="Info/PanelContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Info/PanelContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+color = Color(0.976471, 0.658824, 0.145098, 1)
+
+[node name="TriggerType" type="Label" parent="Info/PanelContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+text = "装填"
+label_settings = SubResource("LabelSettings_qp4nn")
+
+[node name="Description" type="Label" parent="Info/PanelContainer/HBoxContainer"]
+layout_mode = 2
+text = "治疗玩家。"
+label_settings = SubResource("LabelSettings_qp4nn")

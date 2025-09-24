@@ -6,6 +6,12 @@ signal unhovered(card: Node)
 
 @export var card_color : Color
 
+@export var data : BulletData
+@onready var bullet_name: Label = $Info/PanelContainer/HBoxContainer/BulletName
+@onready var trigger_type: Label = $Info/PanelContainer/HBoxContainer/PanelContainer/TriggerType
+@onready var description: Label = $Info/PanelContainer/HBoxContainer/Description
+
+
 var posx_tween : Tween
 var scale_tween : Tween
 var rotate_tween : Tween
@@ -14,16 +20,21 @@ var pop_tween : Tween
 var show_tween : Tween
 
 @onready var offset: Control = $Offset
+@onready var info: MarginContainer = $Info
 
 func _ready() -> void:
-	if card_color:
-		modulate = card_color #颜色 
+	if data:
+		offset.modulate = data.color #颜色 
+		bullet_name.text = data.BulletName
+		trigger_type.text = data.TriggerType
+		description.text = data.description
+	
 	
 	mouse_entered.connect(func(): emit_signal("hovered", self))
-	mouse_entered.connect(do_scale.bind(Vector2(.9, .9), 0.3, true))
+	mouse_entered.connect(do_scale.bind(Vector2(1.4, 1.4), 0.3, true))
 	
 	mouse_exited.connect(func(): emit_signal("unhovered", self))
-	mouse_exited.connect(do_scale.bind(Vector2(.5, .5), 0.3, false))
+	mouse_exited.connect(do_scale.bind(Vector2(1.0, 1.0), 0.3, false))
 	
 	into_arry()
  
@@ -79,12 +90,14 @@ func do_scale(target, duration, up : bool = true):
 	if up:
 		z_index = 2
 		pop_up()
+		info.show()
 	else :
 		z_index = 0
 		pop_up(0.0)
+		info.hide()
 	
 	var scale_tween := create_tween()
-	scale_tween.tween_property(self, "scale", target, duration) \
+	scale_tween.tween_property(offset, "scale", target, duration) \
 		.set_trans(Tween.TRANS_EXPO) \
 		.set_ease(Tween.EASE_OUT)
 		
@@ -93,11 +106,11 @@ func do_scale(target, duration, up : bool = true):
 	
 	var degree = randf_range(-30.0, 30.0)
 	rotate_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO).set_parallel()
-	rotate_tween.tween_property(self, "rotation_degrees", degree, .1)
+	rotate_tween.tween_property(offset, "rotation_degrees", degree, .1)
 	rotate_tween.set_trans(Tween.TRANS_ELASTIC)
-	rotate_tween.tween_property(self, "rotation_degrees", 0, .5).set_delay(.1)
+	rotate_tween.tween_property(offset, "rotation_degrees", 0, .5).set_delay(.1)
 
-func pop_up(posy : float = -35.0):
+func pop_up(posy : float = -25.0):
 	if pop_tween:
 		pop_tween.kill()
 	
