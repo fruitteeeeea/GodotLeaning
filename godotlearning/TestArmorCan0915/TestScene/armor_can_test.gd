@@ -15,16 +15,18 @@ var is_locked := true
 
 func _ready() -> void:
 	
-	
 	complete_bullet_pool()
 	spwan_bullet_card()
 	pass
 
 
-func connect_cards_with_magazine(): #将弹夹与卡片管理器结合在一起 
+func connect_cards_managersignal(): #将弹夹与卡片管理器结合在一起 
+	#var bullet_pool = weapon.bullet_pool as BulletPool
+	#bullet_pool.bullet_added.connect(cards_manager.add_cards)
+
 	var magazine = weapon.magazine as Magazine
 	magazine.on_bullet_loaded.connect(cards_manager_2.add_cards)
-	pass
+
 
 func complete_bullet_pool() -> void: #完成并分配 武器子弹池 #只在最开始执行一次
 	var arr = []

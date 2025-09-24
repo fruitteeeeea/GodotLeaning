@@ -11,29 +11,6 @@ const CARD = preload("res://Test/ArrayLearning/Cards/card.tscn")
 @export var cards_posx_info := {} # {card_node: Vector2}
 var current_cards := 0
 
-#func _ready() -> void:
-	#operate_cards(1)
-
-
-var amplitude := 1.5  # 正弦波振幅（上下偏移距离）
-var frequency := 2.0  # 波动速度
-var phase_offset := 0.5 # 每张牌之间的相位差
-
-func _process(delta: float) -> void:
-	var i := 0
-	var time = Time.get_ticks_msec() / 1000.0 # 秒为单位
-	for card in cards_posx_info.keys():
-		var base_amplitude := amplitude
-		var a_scale = 1.0 / max(1, float(cards_posx_info.size()) / 10.0)  # 数量多就缩小振幅
-		var p_amplitude = base_amplitude * a_scale
-		
-		
-		var base_pos = cards_posx_info[card]  # 基础点（只含 X 坐标）
-		var y_offset = sin(time * frequency + (i % 10) * phase_offset) * p_amplitude
-		card.position = Vector2(base_pos.x, base_pos.y + y_offset)
-		i += 1
-
-
 func reset_cards():
 	cards_posx_info.clear()
 	current_cards = 0

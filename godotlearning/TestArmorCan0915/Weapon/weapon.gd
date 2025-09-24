@@ -28,6 +28,9 @@ func fire() -> BulletInstance: #返回一个发射子弹的类型
 
 	#TODO 随机选中弹夹中的子弹 
 	var bullet = magazine.get_fire_nullet() as BulletInstance#发射子弹函数 发射弹夹最前面的子弹 
+	
+	print(bullet.data)
+	
 	return bullet
 	
 	

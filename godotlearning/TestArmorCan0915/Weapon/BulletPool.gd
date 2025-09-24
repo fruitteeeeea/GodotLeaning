@@ -70,7 +70,7 @@ func can_add_bullet(bullet: BulletData) -> bool: #检查是否可以添加子弹
 func add_bullet(bullet: BulletData) -> void: #添加子弹 
 	if can_add_bullet(bullet):
 		bullets.append(bullet)
-		bullet_added.emit(bullets)
+		bullet_added.emit(bullet)
 
 
 func remove_bullet(bullet: BulletData) -> void: #移除子弹 
