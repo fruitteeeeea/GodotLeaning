@@ -52,12 +52,13 @@ bullet_pool = SubResource("Resource_54vig")
 magazine = SubResource("Resource_kot4y")
 
 [node name="CardsManager" parent="." instance=ExtResource("2_udgb4")]
-position = Vector2(0, 320)
+position = Vector2(320, 320)
 
 [node name="CardsManager2" parent="." instance=ExtResource("2_udgb4")]
-position = Vector2(0, 448)
+position = Vector2(320, 448)
 
 [node name="DebugDrawer" parent="." instance=ExtResource("10_54vig")]
+position = Vector2(320, 64)
 
 [node name="Reload" type="Button" parent="."]
 offset_left = 256.0

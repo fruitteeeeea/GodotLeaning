@@ -4,8 +4,11 @@ class_name CardsManager
 const CARD = preload("res://Test/ArrayLearning/Cards/card.tscn")
 @onready var debug_drawer: Node2D = $"../DebugDrawer"
 
-@export var min_x := 64.0
-@export var max_x := 576.0
+
+@export var overall_width := 512.0 #会以card manager自身为中心 向左右两边扩散 
+@export var min_x := overall_width / 2 * -1
+@export var max_x := overall_width / 2
+
 @export var max_spacing := 40
 
 @export var cards_posx_info := {}           # {card_node: Vector2}
