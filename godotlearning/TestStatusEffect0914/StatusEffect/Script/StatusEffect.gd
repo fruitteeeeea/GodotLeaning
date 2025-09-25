@@ -3,7 +3,7 @@ class_name StatusEffect
 
 @export var name: String
 @export var duration: float = 5.0
-@export var max_stacks: int = 1
+@export var max_stacks: int = 5
 
 @export var tick_interval: float = 0.0 # 0 表示每帧触发, >0 表示间隔触发
 var _tick_timer: float = 0.0

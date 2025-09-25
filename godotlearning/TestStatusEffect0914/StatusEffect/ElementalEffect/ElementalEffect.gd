@@ -3,7 +3,6 @@ class_name ElementalEffect
 
 @export_enum("Normal", "Fire", "Ice", "Poison") var elemental_type := "Normal"
 
-
 @export_category("AttributeBase")
 @export var damage_per_tick: float = 5.0
 
@@ -13,6 +12,9 @@ class_name ElementalEffect
 @export var target_petrify := [false, false, false] #目标是否石化 
 @export var target_fear := [false, false, false] #目标是否恐惧
 
+
+@export_category("Visual")
+@export var status_effect_icon : String = ""
 
 @export_category("Debugg")
 @export var debugg_string_apply := "效果添加" #TEST

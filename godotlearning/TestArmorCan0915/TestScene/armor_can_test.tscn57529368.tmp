@@ -1,0 +1,87 @@
+[gd_scene load_steps=14 format=3 uid="uid://cipixtr831jtr"]
+
+[ext_resource type="Script" uid="uid://r6hl1cinmweg" path="res://TestArmorCan0915/TestScene/armor_can_test.gd" id="1_67rp3"]
+[ext_resource type="PackedScene" uid="uid://b6yq8uha6j81n" path="res://TestArmorCan0915/Scene/cards_manager.tscn" id="2_udgb4"]
+[ext_resource type="Resource" uid="uid://0btwx0vr6lka" path="res://TestArmorCan0915/TestResource/BulletData/CriticalHitBullet.tres" id="3_pe3bf"]
+[ext_resource type="PackedScene" uid="uid://c2wkw67xrk2ne" path="res://TestArmorCan0915/Weapon/weapon.tscn" id="3_qodah"]
+[ext_resource type="Script" uid="uid://bjkiblwgds4sq" path="res://TestArmorCan0915/Script/BulletData.gd" id="4_8hbpa"]
+[ext_resource type="Resource" uid="uid://cjrmljab0fj5a" path="res://TestArmorCan0915/TestResource/BulletData/FlameBllet.tres" id="4_54vig"]
+[ext_resource type="Resource" uid="uid://cl2ofwrsktk14" path="res://TestArmorCan0915/TestResource/BulletData/HealBullet.tres" id="5_kot4y"]
+[ext_resource type="Script" uid="uid://bwb5aq5c7l3b6" path="res://TestArmorCan0915/Weapon/BulletPool.gd" id="5_um06y"]
+[ext_resource type="Script" uid="uid://c23l1udcmw82f" path="res://TestArmorCan0915/Weapon/Magazine.gd" id="6_pe3bf"]
+[ext_resource type="PackedScene" uid="uid://cwvfdhqod0lnt" path="res://TestArmorCan0915/Scene/debug_drawer.tscn" id="10_54vig"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_54vig"]
+font_size = 96
+font_color = Color(1, 1, 1, 0.337255)
+
+[sub_resource type="Resource" id="Resource_54vig"]
+resource_local_to_scene = true
+script = ExtResource("5_um06y")
+bullets = Array[ExtResource("4_8hbpa")]([])
+max_capacity = 10
+metadata/_custom_type_script = "uid://bwb5aq5c7l3b6"
+
+[sub_resource type="Resource" id="Resource_kot4y"]
+resource_local_to_scene = true
+script = ExtResource("6_pe3bf")
+capacity = 5
+is_reloading = false
+metadata/_custom_type_script = "uid://c23l1udcmw82f"
+
+[node name="ArmorCanTest" type="Node2D"]
+script = ExtResource("1_67rp3")
+test_bullet_pool = Array[ExtResource("4_8hbpa")]([ExtResource("3_pe3bf"), ExtResource("4_54vig"), ExtResource("5_kot4y"), ExtResource("5_kot4y"), ExtResource("3_pe3bf"), ExtResource("3_pe3bf")])
+
+[node name="Label" type="Label" parent="."]
+offset_top = 248.0
+offset_right = 488.0
+offset_bottom = 392.0
+text = "弹仓"
+label_settings = SubResource("LabelSettings_54vig")
+
+[node name="Label2" type="Label" parent="."]
+offset_top = 384.0
+offset_right = 488.0
+offset_bottom = 528.0
+text = "弹夹"
+label_settings = SubResource("LabelSettings_54vig")
+
+[node name="Weapon" parent="." instance=ExtResource("3_qodah")]
+bullet_pool = SubResource("Resource_54vig")
+magazine = SubResource("Resource_kot4y")
+
+[node name="CardsManager" parent="." instance=ExtResource("2_udgb4")]
+position = Vector2(320, 320)
+
+[node name="CardsManager2" parent="." instance=ExtResource("2_udgb4")]
+position = Vector2(320, 448)
+
+[node name="DebugDrawer" parent="." instance=ExtResource("10_54vig")]
+position = Vector2(320, 64)
+
+[node name="Reload" type="Button" parent="."]
+offset_left = 256.0
+offset_top = 544.0
+offset_right = 317.0
+offset_bottom = 575.0
+text = "Reload
+"
+
+[node name="Fire" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 320.0
+offset_top = 544.0
+offset_right = 358.0
+offset_bottom = 575.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Fire
+"
+
+[connection signal="pressed" from="Reload" to="." method="_on_reload_pressed"]
+[connection signal="pressed" from="Fire" to="." method="_on_fire_pressed"]

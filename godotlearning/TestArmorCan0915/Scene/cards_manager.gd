@@ -1,7 +1,7 @@
 extends Node2D
 class_name CardsManager
 
-const CARD = preload("res://Test/ArrayLearning/Cards/card.tscn")
+const CARD = preload("res://TestArmorCan0915/Cards/card.tscn")
 @onready var debug_drawer: Node2D = $"../DebugDrawer"
 
 
