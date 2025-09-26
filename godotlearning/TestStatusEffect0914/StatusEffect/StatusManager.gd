@@ -1,7 +1,7 @@
 extends Node
 class_name StatusManager
 
-signal status_added(effect : StatusEffect)
+signal status_added(effect : StatusEffect, stacks : int) #应该补充当前层数
 signal status_removed(effect : StatusEffect)
 
 @export var active_effects: Dictionary = {} # key: StatusEffect, value: {time_left, stacks}
@@ -16,8 +16,6 @@ func _on_effect_added(manager : StatusManager, effect :StatusEffect) -> void:
 
 
 func add_status(effect: StatusEffect, stacks: int = 1) -> void: #添加状态 
-	status_added.emit(effect)
-	
 	if effect in active_effects:
 		var data = active_effects[effect]
 		data.stacks = min(data.stacks + stacks, effect.max_stacks)
@@ -25,6 +23,9 @@ func add_status(effect: StatusEffect, stacks: int = 1) -> void: #添加状态
 	else:
 		active_effects[effect] = { "time_left": effect.duration, "stacks": stacks }
 		effect.apply(get_parent(), stacks) #GPT这里是通过层数来确定 叠加伤害
+	
+	var final_stacks = active_effects[effect]["stacks"]
+	status_added.emit(effect, final_stacks)
 
 
 func _process(delta: float) -> void: #再一个数组中管理 

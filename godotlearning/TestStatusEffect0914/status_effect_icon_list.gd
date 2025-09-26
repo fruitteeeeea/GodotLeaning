@@ -10,14 +10,18 @@ func _ready() -> void:
 		status_manager.status_removed.connect(remove_status_icon)
 
  
-func add_status_icon(status : StatusEffect) -> void:
-	if status is ElementalEffect:
-		var label = Label.new()
-		label.text = status.status_effect_icon
-		call_deferred("add_child", label)
-		effect_and_icon[status] = label
-	
-	print("添加了一个异常状态 %")
+func add_status_icon(status : StatusEffect, stacks : int) -> void:
+	if status is ElementalEffect: #区分一下 如果有这个图标的话 直接修改
+		var label : Label
+
+		if status in effect_and_icon:
+			label = effect_and_icon[status]
+		else :
+			label = Label.new()
+			add_child(label)
+			effect_and_icon[status] = label
+		
+		label.text = status.status_effect_icon + "X" + str(stacks)
 
 
 func remove_status_icon(status : StatusEffect) -> void:

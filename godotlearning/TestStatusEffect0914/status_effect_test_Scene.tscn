@@ -63,7 +63,6 @@ status_manager = NodePath("../../../../../Dummy00/StatusManager")
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer/HBoxContainer2/StatusEffectIconList"]
 layout_mode = 2
-text = "🔥X1"
 
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Control/MarginContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(500, 0)
