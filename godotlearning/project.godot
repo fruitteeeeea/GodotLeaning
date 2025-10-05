@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 DialogueServer="*res://Test/Dialogue/DialogueServer.gd"
-StatusEffectServer="*res://Move/Status(Arc/StatusEffect0928/Server/StatusEffectServer.tscn"
 
 [dialogic]
 
