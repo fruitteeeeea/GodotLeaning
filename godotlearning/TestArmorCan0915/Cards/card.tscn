@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bibjuiolt7pi1" path="res://TestArmorCan0915/Cards/card.gd" id="1_qp4nn"]
 [ext_resource type="Texture2D" uid="uid://b3lvmgu3tnfu6" path="res://icon.svg" id="2_2wrio"]
 [ext_resource type="Texture2D" uid="uid://bquaj2dw6s2sl" path="res://TestArmorCan0915/Asset/CardFlash.png" id="3_l6ays"]
-[ext_resource type="PackedScene" uid="uid://v4p1fgyeq6j2" path="res://CardPanel/nine_patch_rect.tscn" id="4_5l34c"]
+[ext_resource type="PackedScene" uid="uid://v4p1fgyeq6j2" path="res://TestArmorCan0915/Cards/CardProgress/card_progress.tscn" id="4_5l34c"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5l34c"]
 atlas = ExtResource("3_l6ays")
@@ -99,7 +99,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_2wrio")
 
-[node name="NinePatchRect" parent="Offset/TextureRect" instance=ExtResource("4_5l34c")]
+[node name="CardProgress" parent="Offset/TextureRect" instance=ExtResource("4_5l34c")]
 layout_mode = 0
 offset_top = 152.0
 offset_bottom = 280.0

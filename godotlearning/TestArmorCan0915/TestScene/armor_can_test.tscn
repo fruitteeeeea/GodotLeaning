@@ -83,5 +83,13 @@ grow_vertical = 0
 text = "Fire
 "
 
+[node name="random add" type="Button" parent="."]
+offset_left = 208.0
+offset_top = 576.0
+offset_right = 324.0
+offset_bottom = 607.0
+text = "random add"
+
 [connection signal="pressed" from="Reload" to="." method="_on_reload_pressed"]
 [connection signal="pressed" from="Fire" to="." method="_on_fire_pressed"]
+[connection signal="pressed" from="random add" to="." method="_on_random_add_pressed"]

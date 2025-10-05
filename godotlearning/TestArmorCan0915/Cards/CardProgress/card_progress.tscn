@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://v4p1fgyeq6j2"]
 
-[ext_resource type="Texture2D" uid="uid://cc0vu2hmmvapf" path="res://CardPanel/panel-015.png" id="1_tae1o"]
-[ext_resource type="Script" uid="uid://buowk1oovgb8o" path="res://CardPanel/nine_patch_rect.gd" id="2_5iow5"]
-[ext_resource type="Texture2D" uid="uid://d3kpe72o8dakg" path="res://CardPanel/star_01.png" id="3_0wx0j"]
+[ext_resource type="Texture2D" uid="uid://cc0vu2hmmvapf" path="res://TestArmorCan0915/Cards/CardProgress/panel-015.png" id="1_tae1o"]
+[ext_resource type="Script" uid="uid://buowk1oovgb8o" path="res://TestArmorCan0915/Cards/CardProgress/card_progress.gd" id="2_5iow5"]
+[ext_resource type="Texture2D" uid="uid://d3kpe72o8dakg" path="res://TestArmorCan0915/Cards/CardProgress/star_01.png" id="3_0wx0j"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0wx0j"]
 blend_mode = 1
@@ -47,13 +47,12 @@ turbulence_noise_scale = 4.59
 gradient = SubResource("Gradient_n4823")
 use_hdr = true
 
-[node name="NinePatchRect" type="NinePatchRect"]
+[node name="CardProgress" type="NinePatchRect"]
 modulate = Color(1, 1, 1, 0.501961)
 self_modulate = Color(0.309804, 0.764706, 0.968627, 1)
 clip_contents = true
-offset_top = 280.0
 offset_right = 152.0
-offset_bottom = 408.0
+offset_bottom = 128.0
 rotation = -1.57079
 size_flags_vertical = 4
 texture = ExtResource("1_tae1o")

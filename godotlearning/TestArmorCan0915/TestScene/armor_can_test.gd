@@ -82,3 +82,11 @@ func fire() -> void:
 	cards_manager_2.operate_cards(bullet, -1) #移除指定的卡片 
 	
 	is_locked = false
+
+
+func _on_random_add_pressed() -> void:
+	#给随机卡片升级
+	if !cards_manager_2.card_nodes.keys().size() > 0: return
+	var card = cards_manager_2.card_nodes.keys().pick_random() as Card
+	card.add_progress.emit(randf_range(.1, .3) * 2)
+	pass

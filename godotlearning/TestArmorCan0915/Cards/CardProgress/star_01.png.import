@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d3kpe72o8dakg"
-path="res://.godot/imported/star_01.png-173e5ac3e7c783884a1a5f6aa60bd6b5.ctex"
+path="res://.godot/imported/star_01.png-7aa9f039b21b290ce97e74cb630e6c1f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CardPanel/star_01.png"
-dest_files=["res://.godot/imported/star_01.png-173e5ac3e7c783884a1a5f6aa60bd6b5.ctex"]
+source_file="res://TestArmorCan0915/Cards/CardProgress/star_01.png"
+dest_files=["res://.godot/imported/star_01.png-7aa9f039b21b290ce97e74cb630e6c1f.ctex"]
 
 [params]
 

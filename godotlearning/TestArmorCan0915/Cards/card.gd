@@ -4,26 +4,32 @@ class_name Card
 signal hovered(card: Node)
 signal unhovered(card: Node)
 
+signal add_progress(pro : float) #进度调整加
+signal buff_activated(buff : Resource) #激活debuff
+
 @export var card_color : Color
 @onready var animated_sprite_2d: AnimatedSprite2D = $Offset/AnimatedSprite2D
+
+@onready var offset: Control = $Offset
+@onready var info: MarginContainer = $Info
 
 @export var data : BulletData
 @onready var bullet_name: Label = $Info/PanelContainer/HBoxContainer/BulletName
 @onready var trigger_type: Label = $Info/PanelContainer/HBoxContainer/PanelContainer/TriggerType
 @onready var description: Label = $Info/PanelContainer/HBoxContainer/Description
 
-
 var posx_tween : Tween
 var scale_tween : Tween
+var show_tween : Tween
 var rotate_tween : Tween
 var pop_tween : Tween
 
-var show_tween : Tween
-
-@onready var offset: Control = $Offset
-@onready var info: MarginContainer = $Info
+@onready var card_progress: CardProgress = $Offset/TextureRect/CardProgress
 
 func _ready() -> void:
+	add_progress.connect(card_progress.add_progress) #链接卡片进度信号 
+	card_progress.full_charge.connect(pop_up) #链接卡片充能完成信号 
+	
 	if data:
 		offset.modulate = data.color #颜色 
 		bullet_name.text = data.BulletName
@@ -101,15 +107,7 @@ func do_scale(target, duration, up : bool = true):
 	scale_tween.tween_property(offset, "scale", target, duration) \
 		.set_trans(Tween.TRANS_EXPO) \
 		.set_ease(Tween.EASE_OUT)
-		
-	if rotate_tween:
-		rotate_tween.kill()
-	
-	var degree = randf_range(-30.0, 30.0)
-	rotate_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO).set_parallel()
-	rotate_tween.tween_property(offset, "rotation_degrees", degree, .1)
-	rotate_tween.set_trans(Tween.TRANS_ELASTIC)
-	rotate_tween.tween_property(offset, "rotation_degrees", 0, .5).set_delay(.1)
+
 
 func pop_up(posy : float = -25.0):
 	if pop_tween:
@@ -119,6 +117,15 @@ func pop_up(posy : float = -25.0):
 	
 	pop_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	pop_tween.tween_property(offset, "position:y", posy, .3)
+	
+	if rotate_tween:
+		rotate_tween.kill()
+	
+	var degree = randf_range(-30.0, 30.0)
+	rotate_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO).set_parallel()
+	rotate_tween.tween_property(offset, "rotation_degrees", degree, .1)
+	rotate_tween.set_trans(Tween.TRANS_ELASTIC)
+	rotate_tween.tween_property(offset, "rotation_degrees", 0, .5).set_delay(.1)
 
 
 func rotate_to(target_angle: float, duration := 0.3) -> void:
