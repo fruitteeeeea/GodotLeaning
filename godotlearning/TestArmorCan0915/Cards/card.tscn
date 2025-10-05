@@ -1,7 +1,66 @@
-[gd_scene load_steps=4 format=3 uid="uid://keanat2xgbl1"]
+[gd_scene load_steps=14 format=3 uid="uid://keanat2xgbl1"]
 
 [ext_resource type="Script" uid="uid://bibjuiolt7pi1" path="res://TestArmorCan0915/Cards/card.gd" id="1_qp4nn"]
 [ext_resource type="Texture2D" uid="uid://b3lvmgu3tnfu6" path="res://icon.svg" id="2_2wrio"]
+[ext_resource type="Texture2D" uid="uid://bquaj2dw6s2sl" path="res://TestArmorCan0915/Asset/CardFlash.png" id="3_l6ays"]
+[ext_resource type="PackedScene" uid="uid://v4p1fgyeq6j2" path="res://CardPanel/nine_patch_rect.tscn" id="4_5l34c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5l34c"]
+atlas = ExtResource("3_l6ays")
+region = Rect2(0, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rk5oj"]
+atlas = ExtResource("3_l6ays")
+region = Rect2(64, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_44e8m"]
+atlas = ExtResource("3_l6ays")
+region = Rect2(128, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h2rlm"]
+atlas = ExtResource("3_l6ays")
+region = Rect2(192, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knq2m"]
+atlas = ExtResource("3_l6ays")
+region = Rect2(256, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oouhx"]
+atlas = ExtResource("3_l6ays")
+region = Rect2(320, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ry3ka"]
+atlas = ExtResource("3_l6ays")
+region = Rect2(384, 0, 64, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k4svh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5l34c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rk5oj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_44e8m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h2rlm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knq2m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oouhx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ry3ka")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qp4nn"]
 font_size = 32
@@ -9,6 +68,10 @@ font_size = 32
 [node name="Card" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+offset_left = 136.0
+offset_top = 168.0
+offset_right = 136.0
+offset_bottom = 168.0
 scale = Vector2(0.5, 0.5)
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -21,6 +84,7 @@ offset_bottom = 40.0
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="Offset"]
+clip_contents = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -34,6 +98,18 @@ offset_bottom = 44.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_2wrio")
+
+[node name="NinePatchRect" parent="Offset/TextureRect" instance=ExtResource("4_5l34c")]
+layout_mode = 0
+offset_top = 152.0
+offset_bottom = 280.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Offset"]
+position = Vector2(0, -12)
+scale = Vector2(2, 1.9)
+sprite_frames = SubResource("SpriteFrames_k4svh")
+frame = 6
+frame_progress = 1.0
 
 [node name="Info" type="MarginContainer" parent="."]
 visible = false

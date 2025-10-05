@@ -11,7 +11,7 @@ class_name BulletData
 @export var pool_size := Vector2.ONE
 
 #子弹的附魔属性（火属性 冰属性 
-@export var enchantments: Array[BulletEnhanceMentData] = []
+@export var enchantments: Array[BulletEnhanceMentData] = [] 
 
 #子弹的额外机制（开火 装填 击中 击杀
 @export var modifiers: Array[BulletModifierData] = [] 
@@ -29,6 +29,12 @@ func get_modifiers(trigger_type: BulletModifierData.TriggerEvent) -> Array[Bulle
 			list.append(m)
 	return list
 
+#获取子弹的所有元素反应 
+func get_enchantments() -> Array[BulletEnhanceMentData]:
+	var list : Array[BulletEnhanceMentData]
+	for e in enchantments:
+		list.append(e) #返回子弹附带的效果 
+	return list
 
 #Test 子弹测试 
 @export_category("DebuggTest")

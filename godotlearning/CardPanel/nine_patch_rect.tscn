@@ -1,0 +1,87 @@
+[gd_scene load_steps=12 format=3 uid="uid://v4p1fgyeq6j2"]
+
+[ext_resource type="Texture2D" uid="uid://cc0vu2hmmvapf" path="res://CardPanel/panel-015.png" id="1_tae1o"]
+[ext_resource type="Script" uid="uid://buowk1oovgb8o" path="res://CardPanel/nine_patch_rect.gd" id="2_5iow5"]
+[ext_resource type="Texture2D" uid="uid://d3kpe72o8dakg" path="res://CardPanel/star_01.png" id="3_0wx0j"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0wx0j"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_n4823"]
+_limits = [-360.0, 360.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.0982533, 130.994), 0.0, 0.0, 0, 0, Vector2(0.220524, -83.3941), 0.0, 0.0, 0, 0, Vector2(0.296943, 1.87402), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_aln1n"]
+curve = SubResource("Curve_n4823")
+
+[sub_resource type="Curve" id="Curve_0wx0j"]
+_data = [Vector2(0, 0.719157), 0.0, 0.0, 0, 0, Vector2(0.124454, 1), 0.0, 0.0, 0, 0, Vector2(0.237991, 0.350338), 0.0, 0.0, 0, 0, Vector2(0.358079, 0.549974), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_n4823"]
+curve = SubResource("Curve_0wx0j")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5iow5"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1, 64, 1)
+angle_min = 1.07288e-05
+angle_max = 234.4
+angle_curve = SubResource("CurveTexture_aln1n")
+initial_velocity_min = 500.0
+initial_velocity_max = 500.0
+linear_accel_min = 200.0
+linear_accel_max = 200.0
+scale_min = 0.1
+scale_max = 0.2
+scale_curve = SubResource("CurveTexture_n4823")
+color = Color(0.882353, 0.960784, 0.996078, 1)
+turbulence_enabled = true
+turbulence_noise_strength = 0.2
+turbulence_noise_scale = 4.59
+
+[sub_resource type="Gradient" id="Gradient_n4823"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_aln1n"]
+gradient = SubResource("Gradient_n4823")
+use_hdr = true
+
+[node name="NinePatchRect" type="NinePatchRect"]
+modulate = Color(1, 1, 1, 0.501961)
+self_modulate = Color(0.309804, 0.764706, 0.968627, 1)
+clip_contents = true
+offset_top = 280.0
+offset_right = 152.0
+offset_bottom = 408.0
+rotation = -1.57079
+size_flags_vertical = 4
+texture = ExtResource("1_tae1o")
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+script = ExtResource("2_5iow5")
+
+[node name="Control" type="Control" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Control"]
+material = SubResource("CanvasItemMaterial_0wx0j")
+position = Vector2(0, 64)
+amount = 64
+texture = ExtResource("3_0wx0j")
+lifetime = 5.0
+process_material = SubResource("ParticleProcessMaterial_5iow5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Control"]
+position = Vector2(76, 64)
+scale = Vector2(2.375, 2)
+texture = SubResource("GradientTexture2D_aln1n")

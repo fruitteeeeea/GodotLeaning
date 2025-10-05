@@ -1,45 +1,19 @@
-[gd_scene load_steps=15 format=3 uid="uid://cstgk8ject0fs"]
+[gd_scene load_steps=16 format=3 uid="uid://cstgk8ject0fs"]
 
 [ext_resource type="PackedScene" uid="uid://d07ovthd0fn7t" path="res://TestMapGeneration0906edithome/Enemy/enemy_00.tscn" id="1_gei7b"]
 [ext_resource type="Script" uid="uid://dtibihjfkiwnx" path="res://TestMapGeneration0906edithome/Enemy/dummy_00.gd" id="2_c60s0"]
-[ext_resource type="PackedScene" uid="uid://b84sci7hn7jxe" path="res://TestStatusEffect0914/VisualEffect/hit_flash.tscn" id="2_jr3nd"]
+[ext_resource type="PackedScene" uid="uid://b84sci7hn7jxe" path="res://Move/Status(Arc/StatusEffect0928/VisualEffect/hit_flash.tscn" id="2_jr3nd"]
 [ext_resource type="Texture2D" uid="uid://c6ejiwmnqiiat" path="res://Asset/TinnyDungeon/tile_0121.png" id="2_o1jrl"]
-[ext_resource type="PackedScene" uid="uid://dwd4la5ad5or" path="res://TestStatusEffect0914/VisualEffect/fire_smoke.tscn" id="3_4h03v"]
+[ext_resource type="PackedScene" uid="uid://dwd4la5ad5or" path="res://Move/Status(Arc/StatusEffect0928/VisualEffect/fire_smoke.tscn" id="3_4h03v"]
 [ext_resource type="BehaviorTree" uid="uid://dsgp8qn7e8c4p" path="res://TestMapGeneration0906edithome/Enemy/BT_dummy00.tres" id="4_1oqco"]
-[ext_resource type="PackedScene" uid="uid://vonq27k0ijuj" path="res://TestStatusEffect0914/VisualEffect/poison_somke.tscn" id="4_iw3ss"]
+[ext_resource type="Script" uid="uid://c2tdq40iv0g4j" path="res://TestMapGeneration0906edithome/Enemy/ai_controler.gd" id="4_8y2y7"]
+[ext_resource type="PackedScene" uid="uid://vonq27k0ijuj" path="res://Move/Status(Arc/StatusEffect0928/VisualEffect/poison_somke.tscn" id="4_iw3ss"]
 [ext_resource type="Texture2D" uid="uid://dqnnhy2xu2djl" path="res://Asset/TinnyDungeon/tile_0117.png" id="7_rcyx0"]
 [ext_resource type="PackedScene" uid="uid://0bpek2kg7ui0" path="res://Test/Line2DTrail/trail.tscn" id="8_itif7"]
+[ext_resource type="Animation" uid="uid://b2jaiusk5gtob" path="res://Move/1006/Attack01.res" id="8_mwuu8"]
 [ext_resource type="Script" uid="uid://bcxx2rm8m50hb" path="res://Test/Line2DTrail/weapon_trail.gd" id="9_uvu6r"]
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_55sw5"]
-
-[sub_resource type="Animation" id="Animation_itif7"]
-resource_name = "01"
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Weapon:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.15, 0.2, 0.4, 1),
-"transitions": PackedFloat32Array(0.34151, 1, 0.34151, 0.34151, 0.34151),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(2, -8), Vector2(14, -4), Vector2(14, -4), Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Weapon:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.15, 0.2, 0.4, 1),
-"transitions": PackedFloat32Array(0.34151, 1, 0.34151, 0.34151, 0.34151),
-"update": 0,
-"values": [0.0, 0.0, 1.309, 1.309, 0.0]
-}
 
 [sub_resource type="Animation" id="Animation_uvu6r"]
 length = 0.001
@@ -70,18 +44,19 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uvu6r"]
 _data = {
-&"01": SubResource("Animation_itif7"),
+&"Attack01": ExtResource("8_mwuu8"),
 &"RESET": SubResource("Animation_uvu6r")
 }
 
 [node name="Dummy00" instance=ExtResource("1_gei7b")]
 scale = Vector2(4, 4)
 script = ExtResource("2_c60s0")
-stun_time = 0.0
-stun_color = Color(0.745098, 0.745098, 0.745098, 1)
 
 [node name="Sprite2D" parent="." index="0"]
 texture = ExtResource("2_o1jrl")
+
+[node name="AIControler" parent="VisibleOnScreenEnabler2D" index="0"]
+script = ExtResource("4_8y2y7")
 
 [node name="BTPlayer" parent="VisibleOnScreenEnabler2D/AIControler" index="0"]
 behavior_tree = ExtResource("4_1oqco")
@@ -109,6 +84,3 @@ texture = ExtResource("7_rcyx0")
 [node name="Trail" parent="Weapon/Hammer" index="0" instance=ExtResource("8_itif7")]
 script = ExtResource("9_uvu6r")
 active_trail = false
-
-[connection signal="EndStun" from="." to="." method="_on_end_stun"]
-[connection signal="StartStun" from="." to="." method="_on_start_stun"]

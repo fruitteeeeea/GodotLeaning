@@ -5,6 +5,7 @@ signal hovered(card: Node)
 signal unhovered(card: Node)
 
 @export var card_color : Color
+@onready var animated_sprite_2d: AnimatedSprite2D = $Offset/AnimatedSprite2D
 
 @export var data : BulletData
 @onready var bullet_name: Label = $Info/PanelContainer/HBoxContainer/BulletName
@@ -113,6 +114,8 @@ func do_scale(target, duration, up : bool = true):
 func pop_up(posy : float = -25.0):
 	if pop_tween:
 		pop_tween.kill()
+	
+	animated_sprite_2d.play("default")
 	
 	pop_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	pop_tween.tween_property(offset, "position:y", posy, .3)

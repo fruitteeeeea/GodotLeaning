@@ -21,7 +21,7 @@ resource_name = "AnimationPlayer"
 [sub_resource type="BTPlayAnimation" id="BTPlayAnimation_0ebay"]
 await_completion = 2.0
 animation_player = SubResource("BBNode_7nnqx")
-animation_name = &"01"
+animation_name = &"Attack01"
 
 [sub_resource type="BTSequence" id="BTSequence_0ebay"]
 custom_name = "Attack"

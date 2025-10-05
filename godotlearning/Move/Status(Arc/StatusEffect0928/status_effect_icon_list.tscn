@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqyjufjselwj0"]
+
+[ext_resource type="Script" uid="uid://c3rdcitqug6km" path="res://Move/Status(Arc/StatusEffect0928/status_effect_icon_list.gd" id="1_r51vp"]
+
+[node name="StatusEffectIconList" type="HBoxContainer"]
+script = ExtResource("1_r51vp")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2

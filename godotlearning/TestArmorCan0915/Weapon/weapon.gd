@@ -21,7 +21,6 @@ func _ready() -> void:
 #装填
 func reload():
 	if magazine.reload(bullet_pool) == true:
-		print("成功装填")
 		on_magazine_reload.emit(magazine) #成功装填了
 
 #开火

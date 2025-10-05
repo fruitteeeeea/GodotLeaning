@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BurnStatus" load_steps=2 format=3 uid="uid://ee2x4amxm82o"]
+
+[ext_resource type="Script" uid="uid://dwhrd0qm6hmx2" path="res://Move/Status(Arc/StatusEffect0928/StatusEffect/ElementalEffect/BurnStatus.gd" id="1_y6uv1"]
+
+[resource]
+script = ExtResource("1_y6uv1")
+elemental_type = "Fire"
+damage_per_tick = 5.0
+target_stun = [true, false, false]
+target_petrify = [false, false, false]
+target_fear = [false, false, false]
+status_effect_icon = "🔥"
+debugg_string_apply = "着火了!"
+debugg_string_tick = "燃烧🔥"
+debugg_string_remove = "火焰熄灭了"
+name = ""
+duration = 5.0
+max_stacks = 5
+tick_interval = 0.5
+is_buff = false
+metadata/_custom_type_script = "uid://dwhrd0qm6hmx2"
