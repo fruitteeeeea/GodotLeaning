@@ -1,2 +1,0 @@
-extends ElementalEffect
-class_name BurnStatus
