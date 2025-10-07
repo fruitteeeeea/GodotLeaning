@@ -56,6 +56,7 @@ position = Vector2(320, 320)
 
 [node name="CardsManager2" parent="." instance=ExtResource("2_udgb4")]
 position = Vector2(320, 448)
+horizontal_arran = false
 min_x = -256.0
 max_x = 256.0
 

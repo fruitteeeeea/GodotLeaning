@@ -4,17 +4,20 @@ class_name CardsManager
 const CARD = preload("res://TestArmorCan0915/Cards/card.tscn")
 @onready var debug_drawer: Node2D = $"../DebugDrawer"
 
+@export var horizontal_arran := true
 
 @export var overall_width := 512.0 #会以card manager自身为中心 向左右两边扩散 
-@export var min_x := overall_width / 2 * -1
-@export var max_x := overall_width / 2
+@export var min_x := overall_width / 2 * -1   #最左边的点
+@export var max_x := overall_width / 2        #最右边的点
 
-@export var max_spacing := 65
+@export var max_spacing := 65     #最大间隔
+@export var hover_spacing := 60   #悬停间隔
 
-@export var cards_posx_info := {}           # {card_node: Vector2}
-@export var card_nodes: Dictionary = {}     # {card: node}
-@export var current_cards := 0
+var cards_posx_info := {}           # {card_node: Vector2}
+var card_nodes: Dictionary = {}     # {card: node} #卡片对应信息
 
+var current_cards := 0
+var hover_index := -1  # 当前鼠标悬停的卡片索引，-1 表示没有
 
 # ---------------- 基础操作 ----------------
 func reset_cards():
@@ -48,12 +51,12 @@ func operate_cards(_bull : BulletInstance = null, _card : Card = null, n := 0):
 func _add_cards(_bull : BulletInstance = null) -> void:
 	var card = CARD.instantiate() as Card
 	
-	if _bull:
+	if _bull: #赋值数据
 		card.data = _bull.data
 	
 	card.card_full_charged.connect(operate_cards.bind(-1)) #卡片充能完成时 移除卡片 
 	
-	card.hovered.connect(_on_card_hovered)
+	card.hovered.connect(_on_card_hovered) #卡片悬停 
 	card.unhovered.connect(_on_card_unhovered)
 	
 	add_child(card)
@@ -90,7 +93,12 @@ func _update_card_positions(positions: Array) -> void:
 		if i >= positions.size():
 			break
 		
-		var target_pos = Vector2(positions[i], 0) # 保持 Y 不动
+		var target_pos : Vector2 
+		if horizontal_arran: #判断是否为水平排布
+			target_pos = Vector2(positions[i], 0) # 保持 Y 不动
+		else :
+			target_pos = Vector2(0, positions[i]) # 保持 X 不动
+
 		card.move_to(target_pos)                  # 调用卡片内部 tween
 		cards_posx_info[card] = target_pos
 		
@@ -136,10 +144,6 @@ func get_card_positions(n: int) -> Array[float]: #仅仅计算位置
 	return positions
 
 # ---------------- 卡片悬停 ----------------
-@export var hover_spacing := 60
-
-var hover_index := -1  # 当前鼠标悬停的卡片索引，-1 表示没有
-
 func _on_card_hovered(card: Node) -> void:
 	hover_index = cards_posx_info.keys().find(card)
 	_update_card_positions(get_card_positions(cards_posx_info.size()))

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://xdx7jvhc6mdv"]
+
+[ext_resource type="Script" uid="uid://drotm3mypolwl" path="res://TestArmorCan0915/Server/card_server.gd" id="1_32wre"]
+
+[node name="CardServer" type="Node"]
+script = ExtResource("1_32wre")
