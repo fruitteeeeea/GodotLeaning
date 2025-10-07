@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cc0vu2hmmvapf" path="res://TestArmorCan0915/Cards/CardProgress/panel-015.png" id="1_tae1o"]
 [ext_resource type="Script" uid="uid://buowk1oovgb8o" path="res://TestArmorCan0915/Cards/CardProgress/card_progress.gd" id="2_5iow5"]
-[ext_resource type="Texture2D" uid="uid://d3kpe72o8dakg" path="res://TestArmorCan0915/Cards/CardProgress/star_01.png" id="3_0wx0j"]
+[ext_resource type="Texture2D" uid="uid://458whei1ccu3" path="res://TestArmorCan0915/Cards/Particle.png" id="3_cjoi6"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0wx0j"]
 blend_mode = 1
@@ -33,8 +33,8 @@ initial_velocity_min = 500.0
 initial_velocity_max = 500.0
 linear_accel_min = 200.0
 linear_accel_max = 200.0
-scale_min = 0.1
-scale_max = 0.2
+scale_min = 3.0
+scale_max = 3.0
 scale_curve = SubResource("CurveTexture_n4823")
 color = Color(0.882353, 0.960784, 0.996078, 1)
 turbulence_enabled = true
@@ -76,7 +76,7 @@ mouse_filter = 2
 material = SubResource("CanvasItemMaterial_0wx0j")
 position = Vector2(0, 64)
 amount = 64
-texture = ExtResource("3_0wx0j")
+texture = ExtResource("3_cjoi6")
 lifetime = 5.0
 process_material = SubResource("ParticleProcessMaterial_5iow5")
 
