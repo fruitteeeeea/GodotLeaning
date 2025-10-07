@@ -45,8 +45,9 @@ func complete_bullet_pool() -> void: #完成并分配 武器子弹池 #只在最
 func spwan_bullet_card() -> void:
 	is_locked = true
 	for i in weapon.bullet_pool.get_bullet_pool():
-		var bull = i
-		cards_manager.operate_cards(bull, null, 1)
+		var bull = i as BulletInstance
+		CardServer.manager_add_cards(cards_manager, i)
+		#cards_manager.add_cards(i)
 		#await get_tree().create_timer(.1).timeout
 
 	is_locked = false
@@ -61,11 +62,10 @@ func _on_fire_pressed() -> void:
 
 
 func _on_magazine_relaod(magazine : Magazine) -> void:
-	cards_manager_2.reset_cards()
+	CardServer.reset_card_manager(cards_manager_2)
 	for i in magazine.get_magazine():
 		var bull = i as BulletInstance
-		
-		cards_manager_2.operate_cards(bull, null, 1)
+		CardServer.manager_add_cards(cards_manager_2, i)
 
 
 func fire() -> void:
@@ -74,19 +74,20 @@ func fire() -> void:
 	
 	is_locked = true
 	
-	var bullet = weapon.fire() as BulletInstance 
-	if !bullet:
+	var bull = weapon.fire() as BulletInstance 
+	if !bull:
 		is_locked = false
 		return
 
-	cards_manager_2.operate_cards(bullet, null, -1) #移除指定的卡片 
+	CardServer.manager_remove_card(cards_manager_2, bull)
 	
 	is_locked = false
 
-
+#给随机卡片升级
 func _on_random_add_pressed() -> void:
-	#给随机卡片升级
-	if !cards_manager_2.card_nodes.keys().size() > 0: return
-	var card = cards_manager_2.card_nodes.keys().pick_random() as Card
+	if !CardServer.cards_manager_info.has(cards_manager_2): return
+	var list = CardServer.cards_manager_info[cards_manager_2]
+	if !list.size() > 0: return
+	var node = list.keys().pick_random()
+	var card = CardServer.find_card(cards_manager_2, node) as Card
 	card.add_progress.emit(randf_range(.1, .3) * 10)
-	pass

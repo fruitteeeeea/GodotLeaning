@@ -11,7 +11,7 @@ signal hovered(card: Node)
 signal unhovered(card: Node)
 
 signal add_progress(pro : float) #进度调整加
-signal card_full_charged(bull : BulletInstance, data : BulletData)
+signal card_full_charged()
 signal buff_activated(buff : Resource) #激活debuff
 
 # ===============================
@@ -43,14 +43,13 @@ var pop_tween : Tween
 
 func _ready() -> void:
 	add_progress.connect(card_progress.add_progress) #链接卡片进度信号 
-	card_progress.full_charge.connect(func() : card_full_charged.emit(null, self)) #链接卡片充能完成信号 
+	card_progress.full_charge.connect(func() : card_full_charged.emit()) #链接卡片充能完成信号 
 	
 	if data:
 		offset.modulate = data.color #颜色 
 		bullet_name.text = data.BulletName
 		trigger_type.text = data.TriggerType
 		description.text = data.description
-	
 	
 	mouse_entered.connect(func(): emit_signal("hovered", self))
 	mouse_entered.connect(do_scale.bind(Vector2(1.4, 1.4), 0.3, true))

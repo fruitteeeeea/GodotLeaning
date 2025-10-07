@@ -20,13 +20,6 @@ func _ready() -> void:
 	
 	control.position.x = next_sizex #注意是posx 然后在最底端
 
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("mouse_left"):
-		add_progress(.1)
-	if event.is_action_pressed("mouse_right"):
-		add_progress(-.1)
-
 #输入需要增加的百分比 
 func add_progress(pre : float) -> void:
 	var final_add_scalex = max_sizex * pre

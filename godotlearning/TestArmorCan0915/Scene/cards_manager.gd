@@ -1,7 +1,6 @@
 extends Node2D
 class_name CardsManager
 
-const CARD = preload("res://TestArmorCan0915/Cards/card.tscn")
 @onready var debug_drawer: Node2D = $"../DebugDrawer"
 
 @export var horizontal_arran := true
@@ -14,99 +13,32 @@ const CARD = preload("res://TestArmorCan0915/Cards/card.tscn")
 @export var hover_spacing := 60   #悬停间隔
 
 var cards_posx_info := {}           # {card_node: Vector2}
-var card_nodes: Dictionary = {}     # {card: node} #卡片对应信息
-
 var current_cards := 0
 var hover_index := -1  # 当前鼠标悬停的卡片索引，-1 表示没有
 
 # ---------------- 基础操作 ----------------
-func reset_cards():
-	cards_posx_info.clear()
-	card_nodes.clear()
-	current_cards = 0
-	for i in get_children():
-		i.queue_free()
-
-# 增/减/整理卡片
-func operate_cards(_bull : BulletInstance = null, _card : Card = null, n := 0):
-	# 更新数量
-	current_cards = max(current_cards + n, 0)
+#增加卡片 
+func add_cards(_card : Card = null,) -> void:
+	add_child(_card)
+	cards_posx_info[_card] = Vector2.ZERO  # 先放字典，等位置计算
 	
-	if n > 0: # 添加卡片
-		for i in range(n):
-			_add_cards(_bull)
-	
-	elif n < 0: # 删除卡片
-		for i in range(-n):
-			if _card:
-				_remove_cards(null, _card)
-			else :
-				_remove_cards(_bull)
-	
-	# 重新对齐剩余卡片的位置
-	_update_card_positions(get_card_positions(current_cards))
-
-# ---------------- 内部函数 ----------------
-
-func _add_cards(_bull : BulletInstance = null) -> void:
-	var card = CARD.instantiate() as Card
-	
-	if _bull: #赋值数据
-		card.data = _bull.data
-	
-	card.card_full_charged.connect(operate_cards.bind(-1)) #卡片充能完成时 移除卡片 
-	
-	card.hovered.connect(_on_card_hovered) #卡片悬停 
-	card.unhovered.connect(_on_card_unhovered)
-	
-	add_child(card)
-	
-	cards_posx_info[card] = Vector2.ZERO  # 先放字典，等位置计算
-	card_nodes[card] = _bull   # 绑定对应的 BulletInstance
+	current_cards = max(current_cards + 1, 0) # 更新数量
+	_update_card_positions(get_card_positions(current_cards)) # 重新对齐剩余卡片的位置
 
 
-func _remove_cards(_bull: BulletInstance = null, _card : Card = null) -> void:
-	var target_card: Card = null
-
-	if _bull: # 根据 BulletInstance 找卡片
-		for card in card_nodes.keys():
-			if card_nodes[card] == _bull:
-				target_card = card
-				break
-	else: # 随机移除一张
-		if cards_posx_info.size() > 0:
-			target_card = cards_posx_info.keys().pick_random()
-
-	if _card: #如果参数传了card
-		target_card = _card
-
+#减少卡片 
+func remove_cards(_card : Card = null) -> void:
+	var target_card: Card = _card
+	
 	if target_card:
 		cards_posx_info.erase(target_card)
-		card_nodes.erase(target_card)
 		target_card.outof_arry()
 
+		current_cards = max(current_cards - 1, 0) # 更新数量
+		_update_card_positions(get_card_positions(current_cards)) # 重新对齐剩余卡片的位置
 
-func _update_card_positions(positions: Array) -> void:
-	debug_drawer.clear_circles()   # 清空之前的
-	var i := 0
-	for card in cards_posx_info.keys():
-		if i >= positions.size():
-			break
-		
-		var target_pos : Vector2 
-		if horizontal_arran: #判断是否为水平排布
-			target_pos = Vector2(positions[i], 0) # 保持 Y 不动
-		else :
-			target_pos = Vector2(0, positions[i]) # 保持 X 不动
-
-		card.move_to(target_pos)                  # 调用卡片内部 tween
-		cards_posx_info[card] = target_pos
-		
-		debug_drawer.add_circle(target_pos) # 在调试器上画圆圈
-		i += 1
 
 # ---------------- 位置计算 ----------------
-
 func get_card_positions(n: int) -> Array[float]: #仅仅计算位置 
 	var positions: Array[float] = []
 	if n <= 0:
@@ -143,10 +75,33 @@ func get_card_positions(n: int) -> Array[float]: #仅仅计算位置
 		
 	return positions
 
+
+# ---------------- 内部函数 ----------------
+func _update_card_positions(positions: Array) -> void:
+	debug_drawer.clear_circles()   # 清空之前的
+	var i := 0
+	for card in cards_posx_info.keys():
+		if i >= positions.size():
+			break
+		
+		var target_pos : Vector2 
+		if horizontal_arran: #判断是否为水平排布
+			target_pos = Vector2(positions[i], 0) # 保持 Y 不动
+		else :
+			target_pos = Vector2(0, positions[i]) # 保持 X 不动
+
+		card.move_to(target_pos)                  # 调用卡片内部 tween
+		cards_posx_info[card] = target_pos
+		
+		debug_drawer.add_circle(target_pos) # 在调试器上画圆圈
+		i += 1
+
+
 # ---------------- 卡片悬停 ----------------
 func _on_card_hovered(card: Node) -> void:
 	hover_index = cards_posx_info.keys().find(card)
 	_update_card_positions(get_card_positions(cards_posx_info.size()))
+
 
 func _on_card_unhovered(card: Node) -> void:
 	hover_index = -1
