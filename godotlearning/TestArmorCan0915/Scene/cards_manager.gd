@@ -9,7 +9,7 @@ const CARD = preload("res://TestArmorCan0915/Cards/card.tscn")
 @export var min_x := overall_width / 2 * -1
 @export var max_x := overall_width / 2
 
-@export var max_spacing := 40
+@export var max_spacing := 65
 
 @export var cards_posx_info := {}           # {card_node: Vector2}
 @export var card_nodes: Dictionary = {}     # {card: node}
@@ -25,29 +25,33 @@ func reset_cards():
 		i.queue_free()
 
 # 增/减/整理卡片
-func operate_cards(data : BulletInstance = null, n := 0):
+func operate_cards(_bull : BulletInstance = null, _card : Card = null, n := 0):
 	# 更新数量
 	current_cards = max(current_cards + n, 0)
 	
 	if n > 0: # 添加卡片
 		for i in range(n):
-			add_cards(data)
+			_add_cards(_bull)
 	
 	elif n < 0: # 删除卡片
 		for i in range(-n):
-			remove_cards(data)
+			if _card:
+				_remove_cards(null, _card)
+			else :
+				_remove_cards(_bull)
 	
 	# 重新对齐剩余卡片的位置
 	_update_card_positions(get_card_positions(current_cards))
 
 # ---------------- 内部函数 ----------------
 
-func add_cards(_data : BulletInstance = null) -> void:
-	var card = CARD.instantiate()
+func _add_cards(_bull : BulletInstance = null) -> void:
+	var card = CARD.instantiate() as Card
 	
-	if _data:
-		#card.card_color = _data.data.color
-		card.data = _data.data
+	if _bull:
+		card.data = _bull.data
+	
+	card.card_full_charged.connect(operate_cards.bind(-1)) #卡片充能完成时 移除卡片 
 	
 	card.hovered.connect(_on_card_hovered)
 	card.unhovered.connect(_on_card_unhovered)
@@ -55,20 +59,23 @@ func add_cards(_data : BulletInstance = null) -> void:
 	add_child(card)
 	
 	cards_posx_info[card] = Vector2.ZERO  # 先放字典，等位置计算
-	card_nodes[card] = _data   # 绑定对应的 BulletInstance
+	card_nodes[card] = _bull   # 绑定对应的 BulletInstance
 
 
-func remove_cards(_data: BulletInstance = null) -> void:
+func _remove_cards(_bull: BulletInstance = null, _card : Card = null) -> void:
 	var target_card: Card = null
 
-	if _data: # 根据 BulletInstance 找卡片
+	if _bull: # 根据 BulletInstance 找卡片
 		for card in card_nodes.keys():
-			if card_nodes[card] == _data:
+			if card_nodes[card] == _bull:
 				target_card = card
 				break
 	else: # 随机移除一张
 		if cards_posx_info.size() > 0:
 			target_card = cards_posx_info.keys().pick_random()
+
+	if _card: #如果参数传了card
+		target_card = _card
 
 	if target_card:
 		cards_posx_info.erase(target_card)

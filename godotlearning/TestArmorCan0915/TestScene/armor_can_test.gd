@@ -45,8 +45,8 @@ func complete_bullet_pool() -> void: #完成并分配 武器子弹池 #只在最
 func spwan_bullet_card() -> void:
 	is_locked = true
 	for i in weapon.bullet_pool.get_bullet_pool():
-		var data = i
-		cards_manager.operate_cards(data, 1)
+		var bull = i
+		cards_manager.operate_cards(bull, null, 1)
 		#await get_tree().create_timer(.1).timeout
 
 	is_locked = false
@@ -63,9 +63,9 @@ func _on_fire_pressed() -> void:
 func _on_magazine_relaod(magazine : Magazine) -> void:
 	cards_manager_2.reset_cards()
 	for i in magazine.get_magazine():
-		var data = i
+		var bull = i as BulletInstance
 		
-		cards_manager_2.operate_cards(data, 1)
+		cards_manager_2.operate_cards(bull, null, 1)
 
 
 func fire() -> void:
@@ -79,7 +79,7 @@ func fire() -> void:
 		is_locked = false
 		return
 
-	cards_manager_2.operate_cards(bullet, -1) #移除指定的卡片 
+	cards_manager_2.operate_cards(bullet, null, -1) #移除指定的卡片 
 	
 	is_locked = false
 
@@ -88,5 +88,5 @@ func _on_random_add_pressed() -> void:
 	#给随机卡片升级
 	if !cards_manager_2.card_nodes.keys().size() > 0: return
 	var card = cards_manager_2.card_nodes.keys().pick_random() as Card
-	card.add_progress.emit(randf_range(.1, .3) * 2)
+	card.add_progress.emit(randf_range(.1, .3) * 10)
 	pass
