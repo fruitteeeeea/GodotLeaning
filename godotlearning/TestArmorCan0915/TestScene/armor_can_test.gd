@@ -95,10 +95,10 @@ func fire() -> void:
 	is_locked = false
 
 #给随机卡片升级
-func _on_random_add_pressed() -> void:
-	if !CardServer.cards_manager_info.has(buff_list): return
-	var list = CardServer.cards_manager_info[buff_list]
-	if !list.size() > 0: return
-	var node = list.keys().pick_random()
-	var card = CardServer.find_card(buff_list, node) as Card
-	card.add_progress.emit(randf_range(.1, .3) * 10)
+#func _on_random_add_pressed() -> void:
+	#if !CardServer.cards_manager_info.has(buff_list): return
+	#var list = CardServer.cards_manager_info[buff_list]
+	#if !list.size() > 0: return
+	#var node = list.keys().pick_random()
+	#var card = CardServer.find_card(buff_list, node) as Card
+	#card.add_progress.emit(randf_range(.1, .3) * 10)

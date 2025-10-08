@@ -19,11 +19,6 @@ signal buff_activated(buff : Resource) #激活debuff
 # ===============================
 @export var data : BulletData
 
-#充能类型 
-enum ChargeEvent { ON_RELOAD, ON_FIRE, ON_HIT, ON_KILL } #不同阶段触发的充能 
-@export var charger: ChargeEvent = ChargeEvent.ON_FIRE #默认是开火充能
-@export_range(0.0, 1.0, .05) var charger_nb := .3
-
 # ===============================
 # 节点引用
 # ===============================
@@ -36,7 +31,6 @@ enum ChargeEvent { ON_RELOAD, ON_FIRE, ON_HIT, ON_KILL } #不同阶段触发的�
 @onready var trigger_type: Label = $Info/PanelContainer/HBoxContainer/PanelContainer/TriggerType
 @onready var description: Label = $Info/PanelContainer/HBoxContainer/Description
 
-
 # ===============================
 # Tween 变量
 # ===============================
@@ -48,14 +42,11 @@ var pop_tween : Tween
 
 
 func _add_charge():
-	add_progress.emit(charger_nb)
+	add_progress.emit(data.charger_nb)
 
 
 func _ready() -> void:
-	match charger: #根据自身的充能类型 链接卡片充能信号 
-		ChargeEvent.ON_FIRE: 
-			CardServer.add_fire_progress.connect(_add_charge)
-	
+
 	add_progress.connect(card_progress.add_progress) #链接卡片进度信号 
 	card_progress.full_charge.connect(func() : card_full_charged.emit()) #链接卡片充能完成信号 
 	
@@ -64,6 +55,16 @@ func _ready() -> void:
 		bullet_name.text = data.BulletName
 		trigger_type.text = data.TriggerType
 		description.text = data.description
+		
+		match data.charger: #根据自身的充能类型 链接卡片充能信号 
+			data.ChargeEvent.ON_LOAD:
+				CardServer.add_load_progress.connect(_add_charge)
+			data.ChargeEvent.ON_FIRE: 
+				CardServer.add_fire_progress.connect(_add_charge)
+			data.ChargeEvent.ON_HITT: 
+				CardServer.add_hitt_progress.connect(_add_charge)
+			data.ChargeEvent.ON_KILL: 
+				CardServer.add_kill_progress.connect(_add_charge)
 	
 	mouse_entered.connect(func(): emit_signal("hovered", self))
 	mouse_entered.connect(do_scale.bind(Vector2(1.4, 1.4), 0.3, true))

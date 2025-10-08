@@ -16,6 +16,11 @@ class_name BulletData
 #子弹的额外机制（开火 装填 击中 击杀
 @export var modifiers: Array[BulletModifierData] = [] 
 
+#充能类型 
+enum ChargeEvent { ON_LOAD, ON_FIRE, ON_HITT, ON_KILL } #不同阶段触发的充能 
+@export var charger: ChargeEvent = ChargeEvent.ON_FIRE #默认是开火充能
+@export_range(0.0, 1.0, .05) var charger_nb := .3 
+
 #===标签展示相关===
 @export var BulletName := "普通子弹"
 @export_enum("装填", "开火", "击中", "击杀") var TriggerType := "装填"

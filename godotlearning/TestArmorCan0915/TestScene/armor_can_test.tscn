@@ -97,13 +97,6 @@ grow_vertical = 0
 text = "Fire
 "
 
-[node name="random add" type="Button" parent="."]
-offset_left = 200.0
-offset_top = 512.0
-offset_right = 316.0
-offset_bottom = 543.0
-text = "random add"
-
 [node name="EmitCardSignal" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -159,7 +152,6 @@ scale = Vector2(0.5, 0.5)
 
 [connection signal="pressed" from="Reload" to="." method="_on_reload_pressed"]
 [connection signal="pressed" from="Fire" to="." method="_on_fire_pressed"]
-[connection signal="pressed" from="random add" to="." method="_on_random_add_pressed"]
 [connection signal="pressed" from="EmitCardSignal/EmitReload" to="EmitCardSignal" method="_on_emit_reload_pressed"]
 [connection signal="pressed" from="EmitCardSignal/EmitFire" to="EmitCardSignal" method="_on_emit_fire_pressed"]
 [connection signal="pressed" from="EmitCardSignal/EmitHit" to="EmitCardSignal" method="_on_emit_hit_pressed"]
