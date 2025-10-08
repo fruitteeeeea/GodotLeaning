@@ -2,8 +2,6 @@ extends Resource
 class_name Magazine
 
 signal on_bullet_loaded(bullet : BulletInstance) #子弹被装载进入弹夹的时候发出 
-signal on_loaded_trigger(modifier : BulletModifierData) #触发装填特效时
-
 signal on_bullet_fired(bullet : BulletInstance)
 
 var bullet_instances : Array[BulletInstance] = [] #存储运行时的子弹 

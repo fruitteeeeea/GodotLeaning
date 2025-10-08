@@ -1,6 +1,11 @@
 extends Node
 #管理卡片的服务器 
 
+signal add_load_progress()   #各种能触发卡片进度条的信号 
+signal add_fire_progress()
+signal add_hitt_progress()
+signal add_kill_progress()
+
 const CARD = preload("res://TestArmorCan0915/Cards/card.tscn") #卡片场景
 
 @export var cards_manager_info : Dictionary = {
@@ -16,6 +21,7 @@ func hud_add_manager(_path : String, _manager : CardsManager, _pos : Vector2, _h
 
 #根据输入的管理器和节点 返回对应的卡片 
 func find_card(_manager : CardsManager, _node : Node) -> Card:
+	if !cards_manager_info[_manager].has(_node) : return null
 	var card : Card = cards_manager_info[_manager][_node]
 	if card:
 		return card

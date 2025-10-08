@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cipixtr831jtr"]
+[gd_scene load_steps=16 format=3 uid="uid://cipixtr831jtr"]
 
 [ext_resource type="Script" uid="uid://r6hl1cinmweg" path="res://TestArmorCan0915/TestScene/armor_can_test.gd" id="1_67rp3"]
 [ext_resource type="PackedScene" uid="uid://b6yq8uha6j81n" path="res://TestArmorCan0915/Scene/cards_manager.tscn" id="2_udgb4"]
@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://bwb5aq5c7l3b6" path="res://TestArmorCan0915/Weapon/BulletPool.gd" id="5_um06y"]
 [ext_resource type="Script" uid="uid://c23l1udcmw82f" path="res://TestArmorCan0915/Weapon/Magazine.gd" id="6_pe3bf"]
 [ext_resource type="PackedScene" uid="uid://cwvfdhqod0lnt" path="res://TestArmorCan0915/Scene/debug_drawer.tscn" id="10_54vig"]
+[ext_resource type="Script" uid="uid://cfsphxqxe2i8t" path="res://TestArmorCan0915/Scene/cards_manager.gd" id="10_gg6f5"]
+[ext_resource type="Script" uid="uid://b82rlt2abikgi" path="res://TestArmorCan0915/TestScene/emit_card_signal.gd" id="11_kot4y"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_54vig"]
 font_size = 96
@@ -51,22 +53,32 @@ label_settings = SubResource("LabelSettings_54vig")
 bullet_pool = SubResource("Resource_54vig")
 magazine = SubResource("Resource_kot4y")
 
-[node name="CardsManager" parent="." instance=ExtResource("2_udgb4")]
+[node name="BulletPool" parent="." instance=ExtResource("2_udgb4")]
 position = Vector2(320, 320)
 
-[node name="CardsManager2" parent="." instance=ExtResource("2_udgb4")]
+[node name="BuffList" parent="." instance=ExtResource("2_udgb4")]
 position = Vector2(320, 448)
 min_x = -256.0
 max_x = 256.0
+
+[node name="Magazine" type="Node2D" parent="."]
+position = Vector2(64, 320)
+script = ExtResource("10_gg6f5")
+metadata/_custom_type_script = "uid://cfsphxqxe2i8t"
+
+[node name="ActivatedBuff" parent="." instance=ExtResource("2_udgb4")]
+position = Vector2(64, 320)
+horizontal_arran = false
+max_x = 512.0
 
 [node name="DebugDrawer" parent="." instance=ExtResource("10_54vig")]
 position = Vector2(320, 64)
 
 [node name="Reload" type="Button" parent="."]
 offset_left = 256.0
-offset_top = 544.0
+offset_top = 480.0
 offset_right = 317.0
-offset_bottom = 575.0
+offset_bottom = 511.0
 text = "Reload
 "
 
@@ -77,9 +89,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 320.0
-offset_top = 544.0
+offset_top = 480.0
 offset_right = 358.0
-offset_bottom = 575.0
+offset_bottom = 511.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "Fire
@@ -87,11 +99,68 @@ text = "Fire
 
 [node name="random add" type="Button" parent="."]
 offset_left = 200.0
-offset_top = 576.0
+offset_top = 512.0
 offset_right = 316.0
-offset_bottom = 607.0
+offset_bottom = 543.0
 text = "random add"
+
+[node name="EmitCardSignal" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("11_kot4y")
+
+[node name="EmitReload" type="Button" parent="EmitCardSignal"]
+layout_mode = 0
+offset_left = 192.0
+offset_top = 576.0
+offset_right = 256.0
+offset_bottom = 640.0
+text = "load
+"
+
+[node name="EmitFire" type="Button" parent="EmitCardSignal"]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 576.0
+offset_right = 320.0
+offset_bottom = 640.0
+text = "fire"
+
+[node name="EmitHit" type="Button" parent="EmitCardSignal"]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 576.0
+offset_right = 384.0
+offset_bottom = 640.0
+text = "hitt
+"
+
+[node name="EmitKill" type="Button" parent="EmitCardSignal"]
+layout_mode = 0
+offset_left = 384.0
+offset_top = 576.0
+offset_right = 448.0
+offset_bottom = 640.0
+text = "kill"
+
+[node name="CurrentMagazineBullet" type="Label" parent="."]
+offset_top = 64.0
+offset_right = 40.0
+offset_bottom = 87.0
+scale = Vector2(0.5, 0.5)
+
+[node name="CurrentMagazineSpecialBullet" type="Label" parent="."]
+offset_top = 128.0
+offset_right = 40.0
+offset_bottom = 151.0
+scale = Vector2(0.5, 0.5)
 
 [connection signal="pressed" from="Reload" to="." method="_on_reload_pressed"]
 [connection signal="pressed" from="Fire" to="." method="_on_fire_pressed"]
 [connection signal="pressed" from="random add" to="." method="_on_random_add_pressed"]
+[connection signal="pressed" from="EmitCardSignal/EmitReload" to="EmitCardSignal" method="_on_emit_reload_pressed"]
+[connection signal="pressed" from="EmitCardSignal/EmitFire" to="EmitCardSignal" method="_on_emit_fire_pressed"]
+[connection signal="pressed" from="EmitCardSignal/EmitHit" to="EmitCardSignal" method="_on_emit_hit_pressed"]
+[connection signal="pressed" from="EmitCardSignal/EmitKill" to="EmitCardSignal" method="_on_emit_kill_pressed"]

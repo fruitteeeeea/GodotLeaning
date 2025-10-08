@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="BulletData" load_steps=4 format=3 uid="uid://cjrmljab0fj5a"]
+[gd_resource type="Resource" script_class="BulletData" load_steps=5 format=3 uid="uid://cjrmljab0fj5a"]
 
 [ext_resource type="Script" uid="uid://dsm1kmgyycsjd" path="res://TestArmorCan0915/Script/BulletEnhanceMentData.gd" id="1_6tplw"]
 [ext_resource type="Script" uid="uid://bytdj6li0dp7y" path="res://TestArmorCan0915/Script/BulletModifierData.gd" id="2_bjyec"]
+[ext_resource type="Resource" uid="uid://5oax86yialol" path="res://TestArmorCan0915/TestResource/BulletModifierData/Flame.tres" id="3_p2t2d"]
 [ext_resource type="Script" uid="uid://bjkiblwgds4sq" path="res://TestArmorCan0915/Script/BulletData.gd" id="3_pdbqi"]
 
 [resource]
@@ -13,7 +14,7 @@ speed = 400.0
 pool_weight = 1.0
 pool_size = Vector2(1, 1)
 enchantments = Array[ExtResource("1_6tplw")]([])
-modifiers = Array[ExtResource("2_bjyec")]([])
+modifiers = Array[ExtResource("2_bjyec")]([ExtResource("3_p2t2d")])
 BulletName = "燃烧子弹"
 TriggerType = "击中"
 BulletDescription = "击中敌人会使其点燃。"
