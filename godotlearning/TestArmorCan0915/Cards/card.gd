@@ -7,7 +7,7 @@ class_name Card
 # ===============================
 # 信号定义
 # ===============================
-signal hovered(card: Node)
+signal hovered(card: Node) #传递给card manager 调整悬停时的卡组位置 
 signal unhovered(card: Node)
 
 signal add_progress(pro : float) #进度调整加
@@ -41,12 +41,7 @@ var rotate_tween : Tween
 var pop_tween : Tween
 
 
-func _add_charge():
-	add_progress.emit(data.charger_nb)
-
-
 func _ready() -> void:
-
 	add_progress.connect(card_progress.add_progress) #链接卡片进度信号 
 	card_progress.full_charge.connect(func() : card_full_charged.emit()) #链接卡片充能完成信号 
 	
@@ -56,22 +51,6 @@ func _ready() -> void:
 		trigger_type.text = data.TriggerType
 		description.text = data.description
 		
-		match data.charger: #根据自身的充能类型 链接卡片充能信号 
-			data.ChargeEvent.ON_LOAD:
-				CardServer.add_load_progress.connect(_add_charge)
-			data.ChargeEvent.ON_FIRE: 
-				CardServer.add_fire_progress.connect(_add_charge)
-			data.ChargeEvent.ON_HITT: 
-				CardServer.add_hitt_progress.connect(_add_charge)
-			data.ChargeEvent.ON_KILL: 
-				CardServer.add_kill_progress.connect(_add_charge)
-	
-	mouse_entered.connect(func(): emit_signal("hovered", self))
-	mouse_entered.connect(do_scale.bind(Vector2(1.4, 1.4), 0.3, true))
-	
-	mouse_exited.connect(func(): emit_signal("unhovered", self))
-	mouse_exited.connect(do_scale.bind(Vector2(1.0, 1.0), 0.3, false))
-	
 	into_arry()
  
 
@@ -103,7 +82,6 @@ func outof_arry():
 	
 	show_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC).set_parallel()
 	show_tween.tween_property(offset, "position:y", -25.0, up_time)
-	#show_tween.tween_property(offset, "scale:x", scale.x * -2, up_time)
 	
 	show_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
 	show_tween.tween_property(offset, "position:y", -245.0, .3).set_delay(up_time + show_time)
@@ -163,7 +141,7 @@ func rotate_to(target_angle: float, duration := 0.3) -> void:
 
 
 # ===============================
-# 内部工具：随机旋转回弹
+# 内部工具：随机旋转回弹 /鼠标悬停 /卡片充能
 # ===============================
 func _play_rotation_bounce() -> void:
 	if rotate_tween:
@@ -175,3 +153,17 @@ func _play_rotation_bounce() -> void:
 	rotate_tween.tween_property(offset, "rotation_degrees", degree, 0.1)
 	rotate_tween.set_trans(Tween.TRANS_ELASTIC)
 	rotate_tween.tween_property(offset, "rotation_degrees", 0.0, 0.5).set_delay(0.1)
+
+#卡片信号 在CardServer中依据Card Manager的配置完成链接
+func _on_hovered() -> void: #鼠标悬停 
+	emit_signal("hovered", self)
+	do_scale(Vector2(1.4, 1.4), 0.3, true)
+
+
+func _on_unhovered() -> void:
+	emit_signal("unhovered", self)
+	do_scale(Vector2(1.0, 1.0), 0.3, false)
+
+
+func _add_charge():
+	add_progress.emit(data.charger_nb)

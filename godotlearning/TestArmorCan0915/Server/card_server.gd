@@ -22,6 +22,8 @@ func hud_add_manager(_path : String, _manager : CardsManager, _pos : Vector2, _h
 #根据输入的管理器和节点 返回对应的卡片 
 func find_card(_manager : CardsManager, _node : Node) -> Card:
 	if !cards_manager_info[_manager].has(_node) : return null
+	if !cards_manager_info[_manager][_node] : return null
+	
 	var card : Card = cards_manager_info[_manager][_node]
 	if card:
 		return card
@@ -47,23 +49,41 @@ func manager_add_cards(_manager : CardsManager, _node : Node,) -> void:
 	if _node: #赋值数据 #确保node 拥有卡片需要的数据 
 		card.data = _node.data
 	
-	card.card_full_charged.connect(func (): manager_remove_card(_manager, _node)) #卡片充能完成时 移除卡片 
-	_node.tree_exiting.connect(func (): cards_manager_info[_manager].erase[_node])
-	card.hovered.connect(_manager._on_card_hovered) #卡片悬停 
-	card.unhovered.connect(_manager._on_card_unhovered)
+	#卡片充能
+	if _manager.can_charge:
+		var _d : BulletData = _node.data
+		match _node.data.charger: #根据自身的充能类型 链接卡片充能信号 
+			_d.ChargeEvent.ON_LOAD:
+				add_load_progress.connect(card._add_charge)
+			_d.ChargeEvent.ON_FIRE: 
+				add_fire_progress.connect(card._add_charge)
+			_d.ChargeEvent.ON_HITT: 
+				add_hitt_progress.connect(card._add_charge)
+			_d.ChargeEvent.ON_KILL: 
+				add_kill_progress.connect(card._add_charge)
+		#充能完成 移除卡片 
+		card.card_full_charged.connect(func (): manager_remove_card(_manager, _node)) #卡片充能完成时 移除卡片 
+
+	#卡片悬停 
+	if _manager.can_hover:
+		card.hovered.connect(_manager._on_card_hovered) 
+		card.mouse_entered.connect(card._on_hovered)
+		
+		card.unhovered.connect(_manager._on_card_unhovered)
+		card.mouse_exited.connect(card._on_unhovered)
 	
 	_manager.add_cards(card)
 
 	if !cards_manager_info.has(_manager): #初始化字典 #管理器对应的值是字典{节点 ： 卡片}
 		cards_manager_info[_manager] = {} 
 	
-	cards_manager_info[_manager][_node] = card
+	cards_manager_info[_manager][_node] = card #字典添加对应卡片的节点 
+	_node.tree_exiting.connect(func (): cards_manager_info[_manager].erase[_node])
 
 
 func manager_remove_card(_manager : CardsManager, _node : Node,) -> void:
-	var card = find_card(_manager, _node)
+	var card = find_card(_manager, _node) #看看是否有对应卡片 
 	if card:
 		_manager.remove_cards(card) #寻找到节点对应的卡片 
-		
-	if cards_manager_info[_manager][_node]:
 		cards_manager_info[_manager].erase(_node)
+		

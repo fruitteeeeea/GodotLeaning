@@ -36,17 +36,31 @@ script = ExtResource("1_67rp3")
 test_bullet_pool = Array[ExtResource("4_8hbpa")]([ExtResource("3_pe3bf"), ExtResource("4_54vig"), ExtResource("5_kot4y"), ExtResource("5_kot4y"), ExtResource("3_pe3bf"), ExtResource("3_pe3bf")])
 
 [node name="Label" type="Label" parent="."]
-offset_top = 248.0
+offset_top = 16.0
 offset_right = 488.0
-offset_bottom = 392.0
+offset_bottom = 160.0
 text = "弹仓"
 label_settings = SubResource("LabelSettings_54vig")
 
 [node name="Label2" type="Label" parent="."]
-offset_top = 384.0
+offset_top = 472.0
 offset_right = 488.0
-offset_bottom = 528.0
+offset_bottom = 616.0
 text = "弹夹"
+label_settings = SubResource("LabelSettings_54vig")
+
+[node name="Label3" type="Label" parent="."]
+offset_top = 360.0
+offset_right = 488.0
+offset_bottom = 504.0
+text = "待激活Buff"
+label_settings = SubResource("LabelSettings_54vig")
+
+[node name="Label4" type="Label" parent="."]
+offset_top = 248.0
+offset_right = 529.0
+offset_bottom = 392.0
+text = "已激活Buff"
 label_settings = SubResource("LabelSettings_54vig")
 
 [node name="Weapon" parent="." instance=ExtResource("3_qodah")]
@@ -54,15 +68,18 @@ bullet_pool = SubResource("Resource_54vig")
 magazine = SubResource("Resource_kot4y")
 
 [node name="BulletPool" parent="." instance=ExtResource("2_udgb4")]
-position = Vector2(320, 320)
+position = Vector2(320, 96)
+can_hover = true
 
 [node name="BuffList" parent="." instance=ExtResource("2_udgb4")]
 position = Vector2(320, 448)
 min_x = -256.0
 max_x = 256.0
+can_charge = true
+can_hover = true
 
 [node name="Magazine" type="Node2D" parent="."]
-position = Vector2(64, 320)
+position = Vector2(320, 544)
 script = ExtResource("10_gg6f5")
 metadata/_custom_type_script = "uid://cfsphxqxe2i8t"
 
@@ -139,15 +156,15 @@ offset_bottom = 640.0
 text = "kill"
 
 [node name="CurrentMagazineBullet" type="Label" parent="."]
-offset_top = 64.0
+offset_top = 16.0
 offset_right = 40.0
-offset_bottom = 87.0
+offset_bottom = 39.0
 scale = Vector2(0.5, 0.5)
 
 [node name="CurrentMagazineSpecialBullet" type="Label" parent="."]
-offset_top = 128.0
+offset_top = 40.0
 offset_right = 40.0
-offset_bottom = 151.0
+offset_bottom = 63.0
 scale = Vector2(0.5, 0.5)
 
 [connection signal="pressed" from="Reload" to="." method="_on_reload_pressed"]

@@ -12,6 +12,10 @@ class_name CardsManager
 @export var max_spacing := 65     #最大间隔
 @export var hover_spacing := 60   #悬停间隔
 
+@export_category("CardManagerFunc")
+@export var can_charge := false
+@export var can_hover := false
+
 var cards_posx_info := {}           # {card_node: Vector2}
 var current_cards := 0
 var hover_index := -1  # 当前鼠标悬停的卡片索引，-1 表示没有

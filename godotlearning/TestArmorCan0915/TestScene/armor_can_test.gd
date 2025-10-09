@@ -64,13 +64,16 @@ func _on_fire_pressed() -> void:
 	fire()
 
 
-func _on_magazine_relaod(magazine : Magazine) -> void:
+func _on_magazine_relaod(_magazine : Magazine) -> void:
 	CardServer.reset_card_manager(buff_list)
+	CardServer.reset_card_manager(magazine)
+	
 	var narmal = []
 	var specials = []
 	
-	for b in magazine.get_magazine():
+	for b in _magazine.get_magazine():
 		narmal.append(b.data.BulletName)
+		CardServer.manager_add_cards(magazine, b)
 		if b.data.modifiers.size() > 0:
 			specials.append(b.data.BulletName)
 			CardServer.manager_add_cards(buff_list, b) #现在只加载有效的卡片 
@@ -90,7 +93,7 @@ func fire() -> void:
 		is_locked = false
 		return
 
-	CardServer.manager_remove_card(buff_list, bull)
+	CardServer.manager_remove_card(magazine, bull)
 	
 	is_locked = false
 
