@@ -2,46 +2,44 @@ extends Node2D
 class_name Weapon
 
 #发射子弹 #effect_list #bullet_list
+@export var max_bullet_pool_capacity := 10.0
+@export var max_magazine_capacity := 10.0
 
-signal on_magazine_reload(magazine : Magazine)
-
-signal on_bullet_hit(bullet : BulletInstance)
-signal on_bullet_kill(bullet : BulletInstance)
-
-@export var bullet_pool: BulletPool
-@export var magazine: Magazine
-
-var bullet_list := [] #维持的子弹
-var effect_list := [] #维持的效果 
-
-func _ready() -> void:
-	magazine.on_bullet_loaded.connect(check_bullet_trigeer.bind(BulletModifierData.TriggerEvent.ON_RELOAD))
-	magazine.on_bullet_fired.connect(check_bullet_trigeer.bind(BulletModifierData.TriggerEvent.ON_FIRE))
-
-#装填
-func reload():
-	if magazine.reload(bullet_pool) == true:
-		on_magazine_reload.emit(magazine) #成功装填了
-
-#开火
-func fire() -> BulletInstance: #返回一个发射子弹的类型 
-	if magazine.bullet_instances.is_empty():
-		reload()
-		return
-
-	if magazine.is_reloading:
-		print("reload")
-		return
-
-	#TODO 随机选中弹夹中的子弹 
-	var bullet = magazine.get_fire_nullet() as BulletInstance#发射子弹函数 发射弹夹最前面的子弹 
-	return bullet
+#@export var bullet_pool: BulletPool
+#@export var magazine: Magazine
+#
+#var bullet_list := [] #维持的子弹
+#var effect_list := [] #维持的效果 
+#
+##func _ready() -> void:
+	##magazine.on_bullet_loaded.connect(check_bullet_trigeer.bind(BulletModifierData.TriggerEvent.ON_RELOAD))
+	##magazine.on_bullet_fired.connect(check_bullet_trigeer.bind(BulletModifierData.TriggerEvent.ON_FIRE))
+#
+##装填
+#func reload():
+	#magazine.reload(bullet_pool) 
+#
+#
+##开火
+#func fire() -> BulletInstance: #返回一个发射子弹的类型 
+	#if magazine.bullet_instances.is_empty():
+		#reload()
+		#return
+#
+	#if magazine.is_reloading:
+		#print("reload")
+		#return
+#
+	##TODO 随机选中弹夹中的子弹 
+	#var bullet = magazine.get_fire_nullet() as BulletInstance#发射子弹函数 发射弹夹最前面的子弹 
+	#return bullet
 
 #检查子弹是否拥有指定的 trigger 的Modifier
 func check_bullet_trigeer(bullet_instance : BulletInstance, trigger_type : BulletModifierData.TriggerEvent) -> void: #如果有对应的效果 需要执行的 
 	var modifiers = bullet_instance.data.get_modifiers(trigger_type)
 	for m in modifiers:
 		_apply_effect(m)
+
 
 #在此处应用 BulletModifier 的 Effect
 func _apply_effect(modifier: BulletModifierData): #执行装填效果 

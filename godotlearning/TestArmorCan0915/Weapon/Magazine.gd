@@ -20,7 +20,8 @@ func reload(pool: BulletPool) -> bool: #从子弹池子里获得bo 装填至bull
 		bi.queue_free() #及其重要 需要手动清除
 	bullet_instances.clear()
 
-	var bullet_list : Array[BulletInstance] = pool.pick_random_bullet(capacity)
+	#var bullet_list : Array[BulletInstance] = pool.pick_random_bullet(capacity)
+	var bullet_list : Array[DataContainer] = PlayerWeaponServer.bullet_pool_pick_random_bullet(capacity)
 	
 	for bi in bullet_list:
 		bullet_instances.append(bi)

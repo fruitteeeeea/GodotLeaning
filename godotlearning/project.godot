@@ -20,6 +20,7 @@ Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 DialogueServer="*res://Test/Dialogue/DialogueServer.gd"
 CardServer="*res://TestArmorCan0915/Server/card_server.tscn"
 PlayerBehaviorServer="*res://TestArmorCan0915/Server/player_behavior_server.tscn"
+PlayerWeaponServer="*res://TestArmorCan0915/Server/player_weapon_server.gd"
 
 [dialogic]
 

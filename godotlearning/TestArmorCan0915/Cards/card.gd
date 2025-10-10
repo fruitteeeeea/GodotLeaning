@@ -50,6 +50,8 @@ var rotate_tween : Tween
 var pop_tween : Tween
 
 
+
+
 func _ready() -> void:
 	match card_progress_type:
 		"Recharge":

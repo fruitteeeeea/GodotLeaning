@@ -10,7 +10,7 @@ const CARD = preload("res://TestArmorCan0915/Cards/card.tscn") #卡片场景
 	#键 ： 卡片管理器  #值 ： 卡片管理器的字典，分别对应 节点 : 卡片
 	#作用：通过输入的节点 快速找到对应卡片 方便后续操作 
 	#卡片只需要专注于卡片本身的操作 
-} #TODO 这个字典内置到manager里面。
+} #FIXME 这个字典需要被移除
 
 #添加卡片管理器 
 #1.添加路径 2.管理器 3.屏幕上的位置 4.水平位置 5.名称
@@ -18,7 +18,7 @@ func hud_add_manager(_path : String, _manager : CardsManager, _pos : Vector2, _h
 	pass
 
 #根据输入的管理器和节点 返回对应的卡片 
-func find_card(_manager : CardsManager, _node : Node) -> Card:
+func _find_card(_manager : CardsManager, _node : DataContainer) -> Card:
 	if !cards_manager_info.has(_manager) : return null #管理器 
 	if !cards_manager_info[_manager].has(_node) : return null #管理器对应节点 
 	if !cards_manager_info[_manager][_node] : return null
@@ -40,9 +40,9 @@ func reset_card_manager(_manager : CardsManager,) -> void:
 	if cards_manager_info.has(_manager) : cards_manager_info[_manager].clear() 
 
 
-#添加卡片 
+#FIXME 输入数据添加卡片
 #1. 添加卡片的管理器 2.卡片关联的节点 3.卡片类型
-func manager_add_cards(_manager : CardsManager, _node : Node) -> void:
+func manager_add_cards(_manager : CardsManager, _node : DataContainer) -> void:
 	var card = CARD.instantiate() as Card
 	
 	if _node: #赋值数据 #确保node 拥有卡片需要的数据 
@@ -90,11 +90,12 @@ func manager_add_cards(_manager : CardsManager, _node : Node) -> void:
 	
 	cards_manager_info[_manager][_node] = card #字典添加对应卡片的节点
 	#card.card_removed.connect(_node.queue_free)
-	_node.tree_exiting.connect(func (): cards_manager_info[_manager].erase(_node))
+	#_node.tree_exiting.connect(func (): cards_manager_info[_manager].erase(_node))
 
 
-func manager_remove_card(_manager : CardsManager, _node : Node,) -> void:
-	var card = find_card(_manager, _node) #看看是否有对应卡片 
+#FIXME 输入卡片移除
+func manager_remove_card(_manager : CardsManager, _node : DataContainer,) -> void:
+	var card = _find_card(_manager, _node) #看看是否有对应卡片 
 	if card:
 		cards_manager_info[_manager].erase(_node) #！先删除键
 		_manager.remove_cards(card) #寻找到节点对应的卡片 

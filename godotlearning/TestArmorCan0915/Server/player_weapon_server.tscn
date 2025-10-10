@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlu13u8yald7w"]
+
+[ext_resource type="Script" uid="uid://0cq6kh2df6ma" path="res://TestArmorCan0915/Server/player_weapon_server.gd" id="1_wp6j5"]
+
+[node name="PlayerWeaponServer" type="Node2D"]
+script = ExtResource("1_wp6j5")

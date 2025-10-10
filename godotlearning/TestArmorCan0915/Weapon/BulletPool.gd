@@ -15,7 +15,10 @@ var bullet_instances : Array[BulletInstance] = [] #运行时候的子弹
 
 #====武器操作====
 func restore_bullet_pool():
+	for i in bullet_instances:
+		i.queue_free() #手动清理
 	bullet_instances.clear()
+	
 	if !bullets.size() > 0:
 		print("BulletPool未找到BulletData")
 		return
@@ -26,16 +29,9 @@ func restore_bullet_pool():
 		bullet_instances.append(bi)
 
 #TODO 是否有更高的概率抽中
-func pick_random_bullet(_nb : int, weight : Dictionary = {}) -> Array[BulletInstance]: #注意 这里的子弹被挑选了 也不会消失 
+func pick_random_bullet(_nb : int) -> Array[BulletInstance]: #注意 这里的子弹被挑选了 也不会消失 
 	var bullet_picked_list : Array[BulletInstance] = []
 	var nb = min(_nb, bullets.size()) #返回最小值 
-	
-	#var weighted_list: Array = []
-
-	#for b in pool.bullets: # 用 pool_weight 作为唯一的抽取权重
-		#var weight = int(b.pool_weight * 10) # 放大倍数，避免小数影响
-		#for i in range(weight):
-			#weighted_list.append(b) 
 
 	bullet_instances.shuffle() #打乱顺序
 	
