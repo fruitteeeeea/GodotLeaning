@@ -99,7 +99,7 @@ func _update_card_positions(positions: Array) -> void:
 		card.move_to(target_pos)                  # 调用卡片内部 tween
 		cards_posx_info[card] = target_pos
 		
-		debug_drawer.add_circle(target_pos) # 在调试器上画圆圈
+		#debug_drawer.add_circle(target_pos) # 在调试器上画圆圈
 		i += 1
 
 

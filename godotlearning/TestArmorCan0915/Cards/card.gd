@@ -13,12 +13,14 @@ signal unhovered(card: Node)
 
 #卡片buff
 signal add_progress(pro : float) #进度调整加
-signal card_buff_activated()
+signal card_buff_activated() #FIXME 这个信号的起名太迷惑了 应该改成系统性的
+
+#CardMissionStart 
+#CardMissionComplete
 
 signal reduce_progress(pro : float) #进度条减少
-signal card_buff_finished()
+signal card_buff_finished() 
 
-signal buff_activated(buff : Resource) #激活debuff
 
 signal card_removed()
 
@@ -57,9 +59,10 @@ func _ready() -> void:
 		"Recharge":
 			add_progress.connect(card_progress.add_progress) #链接卡片进度信号 
 			card_progress.buff_activated.connect(func() :
-				CardServer.card_fully_charge.emit(self)
+				CardServer.card_fully_charge.emit(self) #充能完成  #FIXME
 				card_buff_activated.emit()) #链接卡片充能激活信号 
 		"ColdDown":
+			card_buff_activated.emit()
 			card_progress.buff_finished.connect(func() :
 				CardServer.card_buff_finished.emit(self)
 				card_buff_finished.emit()) #链接卡片buff结束信号 
@@ -111,6 +114,7 @@ func outof_arry():
 	
 	await show_tween.finished
 	card_removed.emit()
+	await get_tree().process_frame
 	queue_free()
 
 

@@ -6,16 +6,17 @@ const NORMAL_BULLET = preload("res://TestArmorCan0915/TestResource/BulletData/No
 
 @onready var bullet_pool: CardsManager = $BulletPool #管理bullet pool
 @onready var buff_list: CardsManager = $BuffList #管理magazine
-
 @onready var magazine: CardsManager = $Magazine
 @onready var activated_buff: CardsManager = $ActivatedBuff
 
 @export var test_bullet_pool : Array[BulletData]
+@export var test_bullet_pool_capacity := 20.0
+@export var test_magazine_capacity := 10.0
 
 var is_locked := true
 
 func _ready() -> void:
-	#Engine.time_scale *= 1000.0
+	Engine.time_scale *= 1000.0
 	CardServer.card_fully_charge.connect(_on_card_fully_charge)
 	
 	complete_bullet_pool()
@@ -23,6 +24,9 @@ func _ready() -> void:
 
 
 func complete_bullet_pool() -> void: #完成并分配 武器子弹池 #只在最开始执行一次
+	#注意先设定武器容量
+	PlayerWeaponServer.setup_weapon_capacity(test_bullet_pool_capacity, test_magazine_capacity)
+	
 	var arr = []
 	for i in test_bullet_pool: #添加现有的特殊子弹 
 		if i is BulletData:
@@ -37,7 +41,7 @@ func complete_bullet_pool() -> void: #完成并分配 武器子弹池 #只在最
 	#===创建子弹数据数列===
 	for i in arr: #添加子弹 
 		PlayerWeaponServer.add_bullet(i)
-	
+	 
 	PlayerWeaponServer.restore_bullet_pool() #根据给予的数列生成子弹实例
 
 
@@ -110,8 +114,3 @@ func _on_timer_timeout() -> void:
 		PlayerBehaviorServer.emit_signal("player_hitt")
 	elif rng > .75:
 		PlayerBehaviorServer.emit_signal("player_load")
-
-
-func _on_orphan_timeout() -> void:
-	#print(str(magazine.get_child_count()))
-	pass

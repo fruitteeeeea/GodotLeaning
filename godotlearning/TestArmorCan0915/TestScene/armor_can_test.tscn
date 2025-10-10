@@ -18,6 +18,7 @@ font_color = Color(1, 1, 1, 0.337255)
 [node name="ArmorCanTest" type="Node2D"]
 script = ExtResource("1_67rp3")
 test_bullet_pool = Array[ExtResource("4_8hbpa")]([ExtResource("3_pe3bf"), ExtResource("4_54vig"), ExtResource("5_kot4y"), ExtResource("5_kot4y"), ExtResource("3_pe3bf"), ExtResource("3_pe3bf")])
+test_bullet_pool_capacity = 10.0
 
 [node name="Label" type="Label" parent="."]
 offset_top = 112.0
@@ -158,10 +159,6 @@ scale = Vector2(0.5, 0.5)
 wait_time = 0.5
 autostart = true
 
-[node name="Orphan" type="Timer" parent="."]
-autostart = true
-ignore_time_scale = true
-
 [connection signal="pressed" from="Reload" to="." method="_on_reload_pressed"]
 [connection signal="pressed" from="Fire" to="." method="_on_fire_pressed"]
 [connection signal="pressed" from="EmitCardSignal/EmitReload" to="EmitCardSignal" method="_on_emit_reload_pressed"]
@@ -169,4 +166,3 @@ ignore_time_scale = true
 [connection signal="pressed" from="EmitCardSignal/EmitHit" to="EmitCardSignal" method="_on_emit_hit_pressed"]
 [connection signal="pressed" from="EmitCardSignal/EmitKill" to="EmitCardSignal" method="_on_emit_kill_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="timeout" from="Orphan" to="." method="_on_orphan_timeout"]

@@ -142,6 +142,11 @@ func get_magazine() -> Array[DataContainer]: #获取当前弹夹
 #===Weapon的功能===
 func ____Weapon____(): pass
 
+func setup_weapon_capacity(pool_capa : int, magaz_capa : int) -> void:
+	bullet_pool_max_capacity = pool_capa
+	magazine_max_capacity = magaz_capa
+
+
 func fire() -> DataContainer: #返回一个
 	if runtime_magazine.is_empty():
 		reload()

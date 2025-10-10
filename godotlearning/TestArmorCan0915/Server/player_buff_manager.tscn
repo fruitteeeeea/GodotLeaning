@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://qjyf6rnwaogj"]
+
+[ext_resource type="Script" uid="uid://c3w5peamtxta2" path="res://TestArmorCan0915/Server/player_buff_manager.gd" id="1_ifcs1"]
+
+[node name="PlayerBuffManager" type="Node2D"]
+script = ExtResource("1_ifcs1")
