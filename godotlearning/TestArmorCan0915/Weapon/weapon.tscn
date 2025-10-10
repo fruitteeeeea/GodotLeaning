@@ -16,6 +16,7 @@ metadata/_custom_type_script = "uid://bwb5aq5c7l3b6"
 resource_local_to_scene = true
 script = ExtResource("4_g03xt")
 capacity = 5
+is_reloading = false
 metadata/_custom_type_script = "uid://c23l1udcmw82f"
 
 [node name="Weapon" type="Node2D"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2u3h7qlth8rd"
-path="res://.godot/imported/PanelBase.png-7da33c1793d72035886502756eaaab26.ctex"
+uid="uid://cfpy2l0si0r6p"
+path="res://.godot/imported/ShotGunBullet.png-4c9a7342efe969998ec3c3f983cf9fd4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://TestHud1010edithome/PanelBase.png"
-dest_files=["res://.godot/imported/PanelBase.png-7da33c1793d72035886502756eaaab26.ctex"]
+source_file="res://TestHud1010edithome/Asset/ShotGunBullet.png"
+dest_files=["res://.godot/imported/ShotGunBullet.png-4c9a7342efe969998ec3c3f983cf9fd4.ctex"]
 
 [params]
 

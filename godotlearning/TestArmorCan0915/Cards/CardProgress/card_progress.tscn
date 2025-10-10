@@ -29,9 +29,9 @@ emission_box_extents = Vector3(1, 64, 1)
 angle_min = 1.07288e-05
 angle_max = 234.4
 angle_curve = SubResource("CurveTexture_aln1n")
-initial_velocity_min = 500.0
+initial_velocity_min = 300.0
 initial_velocity_max = 500.0
-linear_accel_min = 200.0
+linear_accel_min = 150.0
 linear_accel_max = 200.0
 scale_min = 3.0
 scale_max = 3.0
@@ -61,6 +61,7 @@ patch_margin_top = 20
 patch_margin_right = 20
 patch_margin_bottom = 20
 script = ExtResource("2_5iow5")
+progress_type = "ColdDown"
 
 [node name="Control" type="Control" parent="."]
 clip_contents = true

@@ -1,16 +1,16 @@
 extends Control
 
 func _on_emit_reload_pressed() -> void:
-	CardServer.emit_signal("add_load_progress")
+	PlayerBehaviorServer.emit_signal("player_load")
 
 
 func _on_emit_fire_pressed() -> void:
-	CardServer.emit_signal("add_fire_progress")
+	PlayerBehaviorServer.emit_signal("player_fire")
 
 
 func _on_emit_hit_pressed() -> void:
-	CardServer.emit_signal("add_hitt_progress")
+	PlayerBehaviorServer.emit_signal("player_hitt")
 
 
 func _on_emit_kill_pressed() -> void:
-	CardServer.emit_signal("add_kill_progress")
+	PlayerBehaviorServer.emit_signal("player_kill")

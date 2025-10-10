@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://csqelhahmfj6m"]
+
+[ext_resource type="Script" uid="uid://d0olgv3dp3e6b" path="res://TestArmorCan0915/Server/player_behavior_server.gd" id="1_ypgsa"]
+
+[node name="PlayerBehaviorServer" type="Node"]
+script = ExtResource("1_ypgsa")

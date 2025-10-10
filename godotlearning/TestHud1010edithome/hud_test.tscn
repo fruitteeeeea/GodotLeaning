@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bf7f04hit47mv"]
+[gd_scene load_steps=3 format=3 uid="uid://bf7f04hit47mv"]
 
-[ext_resource type="Texture2D" uid="uid://d2u3h7qlth8rd" path="res://TestHud1010edithome/PanelBase.png" id="1_8fudf"]
+[ext_resource type="Texture2D" uid="uid://t70urgbfpmjy" path="res://TestHud1010edithome/Asset/tile_0068.png" id="1_8fudf"]
+[ext_resource type="Texture2D" uid="uid://cfpy2l0si0r6p" path="res://TestHud1010edithome/Asset/ShotGunBullet.png" id="2_tlxxc"]
 
 [node name="HUDTest" type="Control"]
 layout_mode = 3
@@ -10,12 +11,86 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="NinePatchRect" type="NinePatchRect" parent="."]
-layout_mode = 0
-offset_right = 144.0
-offset_bottom = 112.0
+[node name="Magazine" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -74.0
+offset_top = -43.0
+grow_horizontal = 0
+grow_vertical = 0
 texture = ExtResource("1_8fudf")
-patch_margin_left = 12
-patch_margin_top = 12
-patch_margin_right = 12
-patch_margin_bottom = 12
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 7
+
+[node name="Slot" type="Node2D" parent="Magazine"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Magazine/Slot"]
+position = Vector2(13, 21)
+texture = ExtResource("2_tlxxc")
+hframes = 2
+frame = 1
+
+[node name="Sprite2D2" type="Sprite2D" parent="Magazine/Slot"]
+position = Vector2(29, 21)
+texture = ExtResource("2_tlxxc")
+hframes = 2
+frame = 1
+
+[node name="Sprite2D3" type="Sprite2D" parent="Magazine/Slot"]
+position = Vector2(45, 21)
+texture = ExtResource("2_tlxxc")
+hframes = 2
+frame = 1
+
+[node name="Sprite2D4" type="Sprite2D" parent="Magazine/Slot"]
+position = Vector2(61, 21)
+texture = ExtResource("2_tlxxc")
+hframes = 2
+frame = 1
+
+[node name="Bullet" type="Node2D" parent="Magazine"]
+
+[node name="ShotGunBullet" type="Sprite2D" parent="Magazine/Bullet"]
+position = Vector2(13, 21)
+texture = ExtResource("2_tlxxc")
+hframes = 2
+
+[node name="ShotGunBullet2" type="Sprite2D" parent="Magazine/Bullet"]
+position = Vector2(29, 21)
+texture = ExtResource("2_tlxxc")
+hframes = 2
+
+[node name="ShotGunBullet3" type="Sprite2D" parent="Magazine/Bullet"]
+position = Vector2(45, 21)
+texture = ExtResource("2_tlxxc")
+hframes = 2
+
+[node name="ShotGunBullet4" type="Sprite2D" parent="Magazine/Bullet"]
+position = Vector2(61, 21)
+texture = ExtResource("2_tlxxc")
+hframes = 2
+
+[node name="BulletPool" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -189.5
+offset_top = -163.0
+offset_right = 189.5
+offset_bottom = 163.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_8fudf")
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 7

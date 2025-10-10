@@ -15,15 +15,11 @@ const NORMAL_BULLET = preload("res://TestArmorCan0915/TestResource/BulletData/No
 var is_locked := true
 
 func _ready() -> void:
-	
-	connect_cards_managersignal()
+	Engine.time_scale *= 10.0
+	CardServer.card_fully_charge.connect(_on_card_fully_charge)
 	
 	complete_bullet_pool()
 	spwan_bullet_card()
-
-
-func connect_cards_managersignal(): #将弹夹与卡片管理器结合在一起 
-	weapon.on_magazine_reload.connect(_on_magazine_relaod)
 
 
 func complete_bullet_pool() -> void: #完成并分配 武器子弹池 #只在最开始执行一次
@@ -50,22 +46,14 @@ func spwan_bullet_card() -> void:
 	for i in weapon.bullet_pool.get_bullet_pool():
 		var bull = i as BulletInstance
 		CardServer.manager_add_cards(bullet_pool, i)
-		#cards_manager.add_cards(i)
-		#await get_tree().create_timer(.1).timeout
 
 	is_locked = false
 
 
 func _on_reload_pressed() -> void:
+	var _magazine =  weapon.magazine
 	weapon.reload()
-
-
-func _on_fire_pressed() -> void:
-	fire()
-
-
-func _on_magazine_relaod(_magazine : Magazine) -> void:
-	CardServer.reset_card_manager(buff_list)
+	
 	CardServer.reset_card_manager(magazine)
 	
 	var narmal = []
@@ -76,13 +64,11 @@ func _on_magazine_relaod(_magazine : Magazine) -> void:
 		CardServer.manager_add_cards(magazine, b)
 		if b.data.modifiers.size() > 0:
 			specials.append(b.data.BulletName)
-			CardServer.manager_add_cards(buff_list, b) #现在只加载有效的卡片 
 	
 	$CurrentMagazineBullet.text = str(narmal)
 	$CurrentMagazineSpecialBullet.text = str(specials)
 
-
-func fire() -> void:
+func _on_fire_pressed() -> void:
 	if is_locked:
 		return
 	
@@ -90,18 +76,42 @@ func fire() -> void:
 	
 	var bull = weapon.fire() as BulletInstance 
 	if !bull:
+		_on_reload_pressed()
 		is_locked = false
 		return
 
 	CardServer.manager_remove_card(magazine, bull)
 	
+	if bull.data.modifiers.size() > 0: #如果是特殊子弹 则添加卡片
+		CardServer.manager_add_cards(buff_list, bull) #现在只加载有效的卡片 
+	
+	
 	is_locked = false
 
-#给随机卡片升级
-#func _on_random_add_pressed() -> void:
-	#if !CardServer.cards_manager_info.has(buff_list): return
-	#var list = CardServer.cards_manager_info[buff_list]
-	#if !list.size() > 0: return
-	#var node = list.keys().pick_random()
-	#var card = CardServer.find_card(buff_list, node) as Card
-	#card.add_progress.emit(randf_range(.1, .3) * 10)
+
+func _on_card_fully_charge(_card : Card) -> void:
+	var bull = BulletInstance.new()
+	bull.data = _card.data
+	CardServer.manager_add_cards(activated_buff, bull) #现在只加载有效的卡片 
+	print(_card)
+
+
+#随机为卡片充能
+func _on_timer_timeout() -> void: 
+	
+	_on_fire_pressed()
+	
+	var rng = randf()
+	if rng > 0.0 && rng < .25:
+		PlayerBehaviorServer.emit_signal("player_fire")
+	elif rng > .25 && rng < .5:
+		PlayerBehaviorServer.emit_signal("player_kill")
+	elif rng > .5 && rng < .75:
+		PlayerBehaviorServer.emit_signal("player_hitt")
+	elif rng > .75:
+		PlayerBehaviorServer.emit_signal("player_load")
+
+
+func _on_orphan_timeout() -> void:
+	print_orphan_nodes()
+	#print(str(magazine.get_child_count()))

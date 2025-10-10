@@ -15,6 +15,9 @@ func reload(pool: BulletPool) -> bool: #从子弹池子里获得bo 装填至bull
 		return false #返回装填失败 
 	
 	is_reloading = true
+	
+	for bi in bullet_instances:
+		bi.queue_free() #及其重要 需要手动清除
 	bullet_instances.clear()
 
 	var bullet_list : Array[BulletInstance] = pool.pick_random_bullet(capacity)

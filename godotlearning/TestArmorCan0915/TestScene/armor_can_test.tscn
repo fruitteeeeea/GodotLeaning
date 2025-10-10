@@ -84,9 +84,8 @@ script = ExtResource("10_gg6f5")
 metadata/_custom_type_script = "uid://cfsphxqxe2i8t"
 
 [node name="ActivatedBuff" parent="." instance=ExtResource("2_udgb4")]
-position = Vector2(64, 320)
-horizontal_arran = false
-max_x = 512.0
+position = Vector2(320, 320)
+can_colddown = true
 
 [node name="DebugDrawer" parent="." instance=ExtResource("10_54vig")]
 position = Vector2(320, 600)
@@ -167,9 +166,25 @@ offset_right = 40.0
 offset_bottom = 63.0
 scale = Vector2(0.5, 0.5)
 
+[node name="ActivatedBullet" type="Label" parent="."]
+offset_top = 40.0
+offset_right = 40.0
+offset_bottom = 63.0
+scale = Vector2(0.5, 0.5)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="Orphan" type="Timer" parent="."]
+autostart = true
+ignore_time_scale = true
+
 [connection signal="pressed" from="Reload" to="." method="_on_reload_pressed"]
 [connection signal="pressed" from="Fire" to="." method="_on_fire_pressed"]
 [connection signal="pressed" from="EmitCardSignal/EmitReload" to="EmitCardSignal" method="_on_emit_reload_pressed"]
 [connection signal="pressed" from="EmitCardSignal/EmitFire" to="EmitCardSignal" method="_on_emit_fire_pressed"]
 [connection signal="pressed" from="EmitCardSignal/EmitHit" to="EmitCardSignal" method="_on_emit_hit_pressed"]
 [connection signal="pressed" from="EmitCardSignal/EmitKill" to="EmitCardSignal" method="_on_emit_kill_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="Orphan" to="." method="_on_orphan_timeout"]
