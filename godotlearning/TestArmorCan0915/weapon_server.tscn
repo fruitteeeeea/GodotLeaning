@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgxvnfpiuujml"]
-
-[ext_resource type="Script" uid="uid://csnokwms6jom1" path="res://TestArmorCan0915/weapon_server.gd" id="1_y1nrb"]
-
-[node name="WeaponServer" type="Node"]
-script = ExtResource("1_y1nrb")

@@ -1,8 +1,10 @@
 extends Node
 #管理卡片的服务器 
 
-signal card_fully_charge(card : Card)
-signal card_buff_finished(card : Card)
+signal add_card_buff(card : Card) #卡片充能完成 添加buff
+
+signal card_buff_activated(card : Card) #buff激活
+signal card_buff_finished(card : Card) #buff结束
 
 const CARD = preload("res://TestArmorCan0915/Cards/card.tscn") #卡片场景
 
@@ -64,15 +66,26 @@ func manager_add_cards(_manager : CardsManager, _node : DataContainer) -> void:
 			_d.ChargeEvent.ON_KILL: 
 				PlayerBehaviorServer.player_kill.connect(card._add_charge)
 				card.tree_exiting.connect(func() : PlayerBehaviorServer.player_kill.disconnect(card._add_charge))
-				
 		
 		#充能完成 移除卡片 
 		card.card_progress_type = "Recharge"
-		card.card_buff_activated.connect(func (): manager_remove_card(_manager, _node)) #卡片buff激活时 移除卡片 
+		card.card_mission_end.connect(func (): #卡片结束时
+			add_card_buff.emit(card)  #添加buff
+			manager_remove_card(_manager, _node)) #移除卡片 
+
 
 	if _manager.can_colddown:
-		card.card_progress_type = "ColdDown"
-		card.card_buff_finished.connect(func (): manager_remove_card(_manager, _node)) #卡片buff结束时 移除卡片 
+		var temp_contain := DataContainer.new()
+		temp_contain.data = card.data
+		
+		card.card_progress_type = "ColdDown" 
+		
+		#==这里要确保 card 在生命周期内被正确释放 否则会导致 temp_contain 内存直流
+		card.card_mission_start.connect(func () : 
+			PlayerBuffManager.add_buff(temp_contain)) 
+		card.card_mission_end.connect(func (): #卡片buff结束时
+			PlayerBuffManager.remove_buff(temp_contain)
+			manager_remove_card(_manager, _node)) #移除卡片 
 
 
 	#卡片悬停 
@@ -89,9 +102,6 @@ func manager_add_cards(_manager : CardsManager, _node : DataContainer) -> void:
 		cards_manager_info[_manager] = {} 
 	
 	cards_manager_info[_manager][_node] = card #字典添加对应卡片的节点
-	#card.card_removed.connect(_node.queue_free)
-	#_node.tree_exiting.connect(func (): cards_manager_info[_manager].erase(_node))
-
 
 #FIXME 输入卡片移除
 func manager_remove_card(_manager : CardsManager, _node : DataContainer,) -> void:

@@ -1,8 +1,14 @@
 extends Control
 class_name Card
 
-#主界面核心功能 ： 1.添加进入卡组 2.充能 3.充能完成
-#弹仓UI核心功能 ： 1.鼠标悬停 显示信息 
+#===主界面核心功能 ===
+#==充能型==  
+#1.添加进入卡组 2.充能 3.充能完成
+#==冷却型==  
+#1.添加进入卡组 2.冷却 3.冷却完成
+
+#===弹仓UI核心功能=== 
+#： 1.鼠标悬停 显示信息 
 
 # ===============================
 # 信号定义
@@ -13,16 +19,11 @@ signal unhovered(card: Node)
 
 #卡片buff
 signal add_progress(pro : float) #进度调整加
-signal card_buff_activated() #FIXME 这个信号的起名太迷惑了 应该改成系统性的
-
-#CardMissionStart 
-#CardMissionComplete
-
 signal reduce_progress(pro : float) #进度条减少
-signal card_buff_finished() 
 
-
-signal card_removed()
+#===卡片的充能任务===
+signal card_mission_start()
+signal card_mission_end()
 
 # ===============================
 # 导出变量
@@ -52,20 +53,19 @@ var rotate_tween : Tween
 var pop_tween : Tween
 
 
-
-
 func _ready() -> void:
 	match card_progress_type:
 		"Recharge":
+			card_mission_start.emit() #卡片任务开始 
 			add_progress.connect(card_progress.add_progress) #链接卡片进度信号 
-			card_progress.buff_activated.connect(func() :
-				CardServer.card_fully_charge.emit(self) #充能完成  #FIXME
-				card_buff_activated.emit()) #链接卡片充能激活信号 
+			card_progress.progress_compelete.connect(func() :
+				card_mission_end.emit()) #充能完成 卡片任务结束 
 		"ColdDown":
-			card_buff_activated.emit()
-			card_progress.buff_finished.connect(func() :
+			card_mission_start.emit() #卡片任务开始 
+			CardServer.card_buff_activated.emit(self)
+			card_progress.progress_compelete.connect(func() :
 				CardServer.card_buff_finished.emit(self)
-				card_buff_finished.emit()) #链接卡片buff结束信号 
+				card_mission_end.emit()) # buff结束 卡片任务结束 
 	
 	card_progress.set_up_progress(card_progress_type) #设置progress
 	
@@ -113,7 +113,6 @@ func outof_arry():
 	show_tween.tween_property(offset, "modulate:a", 0.0, .3).set_delay(up_time + show_time)
 	
 	await show_tween.finished
-	card_removed.emit()
 	await get_tree().process_frame
 	queue_free()
 
@@ -193,3 +192,10 @@ func _on_unhovered() -> void:
 
 func _add_charge():
 	add_progress.emit(data.charger_nb)
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("mouse_left"):
+		animated_sprite_2d.stop()
+		animated_sprite_2d.play("default")
+		print("卡片被点击")

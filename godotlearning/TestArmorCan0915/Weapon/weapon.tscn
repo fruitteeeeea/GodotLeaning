@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2wkw67xrk2ne"]
-
-[ext_resource type="Script" uid="uid://seql0wtdl6me" path="res://TestArmorCan0915/Weapon/weapon.gd" id="1_q88ch"]
-
-[node name="Weapon" type="Node2D"]
-script = ExtResource("1_q88ch")

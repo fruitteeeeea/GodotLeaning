@@ -24,10 +24,7 @@ func ____BulletPool____(): pass
 
 #重置子弹池子
 func restore_bullet_pool():
-	for i in runtime_bullet_pool:
-		runtime_bullet_pool.erase(i)
-		#i.free() #手动清理
-	#runtime_bullet_pool.clear()
+	runtime_bullet_pool.clear() #使用Refcount 清除引用 自动销毁
 	
 	if !bullet_set.size() > 0:
 		print("BulletPool未找到BulletData")
@@ -102,10 +99,7 @@ func reload() -> bool: #从子弹池子里获得bo 装填至bullet_instances
 
 	is_reloading = true
 	
-	for bull in runtime_magazine:
-		runtime_magazine.erase(bull)
-		#bull.free() #及其重要 需要手动清除
-
+	runtime_magazine.clear()
 
 	var bullet_list : Array[DataContainer] = bullet_pool_pick_random_bullet(magazine_max_capacity)
 	if bullet_list == []: return false #如果bullet_list是空的 返回装填失败

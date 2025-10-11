@@ -4,9 +4,8 @@ class_name CardProgress
 #==卡片类型===
 @export_enum("Recharge", "ColdDown") var progress_type := "Recharge"
 
-
-#===充能型===
-signal buff_activated
+signal progress_compelete 
+#充能完成后发出/冷却完成后发出
 
 var scale_tween : Tween
 var next_sizex := .0 #这里需要注意一下 位置是旋转过后的 
@@ -14,8 +13,6 @@ var next_sizex := .0 #这里需要注意一下 位置是旋转过后的
 var max_sizex :float
 var fully_charged := false
 
-#===冷却型===
-signal buff_finished
 
 @export var colddown_time := 5.0
 
@@ -62,7 +59,7 @@ func do_scale_tween(v := 32.0):
 	
 	if next_sizex >= 0.0: #注意 0.0才是最大值
 		fully_charged = true
-		buff_activated.emit()
+		progress_compelete.emit() #充能完成 
 
 
 func _reduce_progress() -> void:
@@ -70,4 +67,4 @@ func _reduce_progress() -> void:
 	scale_tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_LINEAR).set_parallel()
 	scale_tween.tween_property(control, "position:x", -max_sizex, colddown_time)
 	await scale_tween.finished
-	buff_finished.emit()
+	progress_compelete.emit() #冷却完成

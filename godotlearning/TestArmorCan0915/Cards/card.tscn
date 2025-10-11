@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://keanat2xgbl1"]
+[gd_scene load_steps=16 format=3 uid="uid://keanat2xgbl1"]
 
 [ext_resource type="Script" uid="uid://bibjuiolt7pi1" path="res://TestArmorCan0915/Cards/card.gd" id="1_qp4nn"]
 [ext_resource type="Texture2D" uid="uid://b3lvmgu3tnfu6" path="res://icon.svg" id="2_2wrio"]
@@ -25,13 +25,21 @@ region = Rect2(192, 0, 64, 80)
 atlas = ExtResource("3_l6ays")
 region = Rect2(256, 0, 64, 80)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_oouhx"]
-atlas = ExtResource("3_l6ays")
-region = Rect2(320, 0, 64, 80)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_ry3ka"]
 atlas = ExtResource("3_l6ays")
 region = Rect2(384, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k4svh"]
+atlas = ExtResource("3_l6ays")
+region = Rect2(448, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oa76t"]
+atlas = ExtResource("3_l6ays")
+region = Rect2(512, 0, 64, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ecl6d"]
+atlas = ExtResource("3_l6ays")
+region = Rect2(576, 0, 64, 80)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_k4svh"]
 animations = [{
@@ -52,14 +60,20 @@ animations = [{
 "texture": SubResource("AtlasTexture_knq2m")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_oouhx")
+"texture": SubResource("AtlasTexture_ry3ka")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ry3ka")
+"texture": SubResource("AtlasTexture_k4svh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oa76t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ecl6d")
 }],
 "loop": false,
 "name": &"default",
-"speed": 20.0
+"speed": 35.0
 }]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qp4nn"]
@@ -104,7 +118,7 @@ offset_bottom = 280.0
 position = Vector2(0, -12)
 scale = Vector2(2, 1.9)
 sprite_frames = SubResource("SpriteFrames_k4svh")
-frame = 6
+frame = 8
 frame_progress = 1.0
 
 [node name="Info" type="MarginContainer" parent="."]
@@ -149,3 +163,5 @@ label_settings = SubResource("LabelSettings_qp4nn")
 layout_mode = 2
 text = "治疗玩家。"
 label_settings = SubResource("LabelSettings_qp4nn")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

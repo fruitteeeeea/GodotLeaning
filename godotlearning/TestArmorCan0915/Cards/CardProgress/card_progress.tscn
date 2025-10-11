@@ -46,6 +46,7 @@ turbulence_noise_scale = 4.59
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_aln1n"]
 gradient = SubResource("Gradient_n4823")
 use_hdr = true
+fill_from = Vector2(0.413105, 0.196581)
 
 [node name="CardProgress" type="NinePatchRect"]
 modulate = Color(1, 1, 1, 0.501961)

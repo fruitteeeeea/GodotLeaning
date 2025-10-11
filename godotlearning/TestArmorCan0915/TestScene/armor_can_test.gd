@@ -9,6 +9,8 @@ const NORMAL_BULLET = preload("res://TestArmorCan0915/TestResource/BulletData/No
 @onready var magazine: CardsManager = $Magazine
 @onready var activated_buff: CardsManager = $ActivatedBuff
 
+@onready var activated_bullet: Label = $ActivatedBullet
+
 @export var test_bullet_pool : Array[BulletData]
 @export var test_bullet_pool_capacity := 20.0
 @export var test_magazine_capacity := 10.0
@@ -16,8 +18,11 @@ const NORMAL_BULLET = preload("res://TestArmorCan0915/TestResource/BulletData/No
 var is_locked := true
 
 func _ready() -> void:
-	Engine.time_scale *= 1000.0
-	CardServer.card_fully_charge.connect(_on_card_fully_charge)
+	CardServer.add_card_buff.connect(_on_card_buff_activated)
+	CardServer.card_buff_activated.connect(func (_card : Card): 
+		activated_bullet.text = PlayerBuffManager.get_all_activated_buff())
+	CardServer.card_buff_finished.connect(func (_card : Card):
+		activated_bullet.text = PlayerBuffManager.get_all_activated_buff())
 	
 	complete_bullet_pool()
 	spwan_bullet_card()
@@ -54,9 +59,27 @@ func spwan_bullet_card() -> void:
 	is_locked = false
 
 
-func _on_reload_pressed() -> void:
-	#var _magazine =  weapon.magazine
-	#weapon.reload()
+func fire():
+	if is_locked:
+		return
+	
+	is_locked = true
+	
+	var bull = PlayerWeaponServer.fire() as DataContainer 
+	if !bull:
+		reload()
+		is_locked = false
+		return
+
+	CardServer.manager_remove_card(magazine, bull)
+
+	if bull.data.modifiers.size() > 0: #如果是特殊子弹 则添加卡片
+		CardServer.manager_add_cards(buff_list, bull) #待激活buff卡片
+
+	is_locked = false
+
+
+func reload():
 	PlayerWeaponServer.reload()
 	
 	CardServer.reset_card_manager(magazine)
@@ -74,36 +97,15 @@ func _on_reload_pressed() -> void:
 	$CurrentMagazineBullet.text = str(narmal)
 	$CurrentMagazineSpecialBullet.text = str(specials)
 
-func _on_fire_pressed() -> void:
-	if is_locked:
-		return
-	
-	is_locked = true
-	
-	var bull = PlayerWeaponServer.fire() as DataContainer 
-	if !bull:
-		_on_reload_pressed()
-		is_locked = false
-		return
-
-	CardServer.manager_remove_card(magazine, bull)
-
-	if bull.data.modifiers.size() > 0: #如果是特殊子弹 则添加卡片
-		CardServer.manager_add_cards(buff_list, bull) #待激活buff卡片
-
-	is_locked = false
-
-
-func _on_card_fully_charge(_card : Card) -> void:
-	var bull = DataContainer.new()
+func _on_card_buff_activated(_card : Card) -> void:
+	var bull  = DataContainer.new()
 	bull.data = _card.data
 	CardServer.manager_add_cards(activated_buff, bull) #已激活buff卡片
-
 
 #随机为卡片充能
 func _on_timer_timeout() -> void: 
 	
-	_on_fire_pressed()
+	fire()
 	
 	var rng = randf()
 	if rng > 0.0 && rng < .25:
@@ -114,3 +116,8 @@ func _on_timer_timeout() -> void:
 		PlayerBehaviorServer.emit_signal("player_hitt")
 	elif rng > .75:
 		PlayerBehaviorServer.emit_signal("player_load")
+
+
+func _on_game_speed_value_changed(value: float) -> void:
+	Engine.time_scale = value
+	print(Engine.time_scale )

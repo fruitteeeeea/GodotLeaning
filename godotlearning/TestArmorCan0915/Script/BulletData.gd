@@ -22,17 +22,9 @@ enum ChargeEvent { ON_LOAD, ON_FIRE, ON_HITT, ON_KILL } #不同阶段触发的�
 @export_range(0.0, 1.0, .05) var charger_nb := .3 
 
 #===标签展示相关===
-@export var BulletName := "普通子弹"
-@export_enum("装填", "开火", "击中", "击杀") var TriggerType := "装填"
+@export var BulletName := "普通子弹" 
+@export_enum("装填", "开火", "击中", "击杀") var TriggerType := "装填" 
 @export var BulletDescription := "没有特殊效果。"
-
-#根据 trigger 获取对应的 modifier   #需要大改 这里是直接触发对应效果的 
-func get_modifiers(trigger_type: BulletModifierData.TriggerEvent) -> Array[BulletModifierData]:
-	var list : Array[BulletModifierData] = []
-	for m in modifiers:
-		if m.trigger == trigger_type:
-			list.append(m)
-	return list
 
 #获取子弹的所有元素反应 
 func get_enchantments() -> Array[BulletEnhanceMentData]:
