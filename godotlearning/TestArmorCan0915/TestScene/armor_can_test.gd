@@ -1,9 +1,5 @@
 extends Node2D
 
-const NORMAL_BULLET = preload("res://TestArmorCan0915/TestResource/BulletData/NormalBullet.tres")
-
-#@onready var weapon: Weapon = $Weapon
-
 @onready var bullet_pool: CardsManager = $BulletPool #管理bullet pool
 @onready var buff_list: CardsManager = $BuffList #管理magazine
 @onready var magazine: CardsManager = $Magazine
@@ -11,9 +7,7 @@ const NORMAL_BULLET = preload("res://TestArmorCan0915/TestResource/BulletData/No
 
 @onready var activated_bullet: Label = $ActivatedBullet
 
-@export var test_bullet_pool : Array[BulletData]
-@export var test_bullet_pool_capacity := 20.0
-@export var test_magazine_capacity := 10.0
+@export var test_weaponset : PlayerWeaponSet
 
 var is_locked := true
 
@@ -31,10 +25,7 @@ func _ready() -> void:
 
 
 func complete_bullet_pool() -> void: #完成并分配 武器子弹池 #只在最开始执行一次
-	#注意先设定武器容量
-	PlayerWeaponServer.setup_weapon_capacity(test_bullet_pool_capacity, test_magazine_capacity)
-	#再设定子弹集
-	PlayerWeaponServer.buildup_bullet_set(test_bullet_pool) 
+	PlayerWeaponServer.setup_weapon_set(test_weaponset)
 
 
 func spwan_bullet_card() -> void:

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PlayerWeaponSet" load_steps=3 format=3 uid="uid://dg4f156v3b7kg"]
+
+[ext_resource type="Script" uid="uid://bjkiblwgds4sq" path="res://TestArmorCan0915/Script/BulletData.gd" id="1_0uqkd"]
+[ext_resource type="Script" uid="uid://dbavi5slfq76i" path="res://TestArmorCan0915/Script/PlayerWeaponSet.gd" id="2_0hqpe"]
+
+[resource]
+script = ExtResource("2_0hqpe")
+bullet_set = Array[ExtResource("1_0uqkd")]([])
+bullet_pool_capacity = 15
+magazine_capacity = 5.0
+metadata/_custom_type_script = "uid://dbavi5slfq76i"
