@@ -41,16 +41,16 @@ func bullet_pool_pick_random_bullet(_nb : int) -> Array[DataContainer]:
 	var nb = min(_nb, runtime_bullet_pool.size()) #返回最小值 
 
 	runtime_bullet_pool.shuffle() #打乱顺序
-	
 	for b in range(nb):
-		if runtime_bullet_pool.is_empty():
+		if runtime_bullet_pool.is_empty(): 
 			break
 		
 		var bullet = runtime_bullet_pool.pop_front() #子弹一次只会被选中一遍
 		bullet_picked_list.append(bullet)
 	
 	restore_bullet_pool() #恢复子弹池子
-	return bullet_picked_list #返回带有指定数量DataContainer的数组 
+	return bullet_picked_list #返回带有指定数量DataContainer的数组 #
+	
 
 
 func get_bullet_pool() -> Array[DataContainer]:

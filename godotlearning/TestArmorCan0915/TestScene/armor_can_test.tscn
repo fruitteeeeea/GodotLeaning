@@ -27,6 +27,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Label" type="Label" parent="BGtext"]
+layout_mode = 0
 offset_top = 112.0
 offset_right = 488.0
 offset_bottom = 256.0
@@ -34,6 +35,7 @@ text = "弹仓"
 label_settings = SubResource("LabelSettings_54vig")
 
 [node name="Label2" type="Label" parent="BGtext"]
+layout_mode = 0
 offset_top = 472.0
 offset_right = 488.0
 offset_bottom = 616.0
@@ -41,6 +43,7 @@ text = "弹夹"
 label_settings = SubResource("LabelSettings_54vig")
 
 [node name="Label3" type="Label" parent="BGtext"]
+layout_mode = 0
 offset_top = 360.0
 offset_right = 488.0
 offset_bottom = 504.0
@@ -48,6 +51,7 @@ text = "待激活Buff"
 label_settings = SubResource("LabelSettings_54vig")
 
 [node name="Label4" type="Label" parent="BGtext"]
+layout_mode = 0
 offset_top = 248.0
 offset_right = 529.0
 offset_bottom = 392.0
@@ -138,6 +142,7 @@ scale = Vector2(0.5, 0.5)
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
+autostart = true
 
 [node name="GameSpeed" type="HSlider" parent="."]
 offset_right = 640.0

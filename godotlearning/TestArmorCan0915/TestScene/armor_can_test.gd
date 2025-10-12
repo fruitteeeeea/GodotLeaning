@@ -18,6 +18,7 @@ const NORMAL_BULLET = preload("res://TestArmorCan0915/TestResource/BulletData/No
 var is_locked := true
 
 func _ready() -> void:
+	#添加卡片 
 	CardServer.add_card_buff.connect(_on_card_buff_activated)
 	CardServer.card_buff_activated.connect(func (_card : Card): 
 		activated_bullet.text = PlayerBuffManager.get_all_activated_buff())

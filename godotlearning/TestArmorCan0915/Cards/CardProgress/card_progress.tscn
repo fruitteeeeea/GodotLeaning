@@ -86,3 +86,8 @@ process_material = SubResource("ParticleProcessMaterial_5iow5")
 position = Vector2(76, 64)
 scale = Vector2(2.375, 2)
 texture = SubResource("GradientTexture2D_aln1n")
+
+[node name="Line2D" type="Line2D" parent="Control/Sprite2D"]
+position = Vector2(30.7368, -32.0005)
+points = PackedVector2Array(0.000339508, 64, 0, 0)
+width = 3.0

@@ -1,0 +1,72 @@
+[gd_scene load_steps=2 format=3 uid="uid://5n3udnf1014a"]
+
+[ext_resource type="Script" uid="uid://8x3cjdt1q4ly" path="res://TestArmorCan0915/work_shop_server.gd" id="1_o4ws2"]
+
+[node name="WorkShopServer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_o4ws2")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 128.0
+offset_bottom = 194.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BulletModifier" type="GridContainer" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 2
+
+[node name="Button" type="Button" parent="PanelContainer/BulletModifier"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "子弹升级01"
+
+[node name="Button2" type="Button" parent="PanelContainer/BulletModifier"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "子弹升级01"
+
+[node name="Button3" type="Button" parent="PanelContainer/BulletModifier"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "子弹升级01"
+
+[node name="Button4" type="Button" parent="PanelContainer/BulletModifier"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "子弹升级01"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 536.0
+offset_top = 416.0
+offset_right = 635.0
+offset_bottom = 447.0
+text = "退出工房ww"
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 520.0
+offset_right = 319.0
+offset_bottom = 551.0
+text = "重选弹夹（-1）"
+
+[node name="Button3" type="Button" parent="."]
+layout_mode = 0
+offset_left = 328.0
+offset_top = 520.0
+offset_right = 447.0
+offset_bottom = 551.0
+text = "重选补给（-1）"
