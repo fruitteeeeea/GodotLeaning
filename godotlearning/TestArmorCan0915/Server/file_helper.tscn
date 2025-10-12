@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cww8ryeuhea78"]
+
+[ext_resource type="Script" uid="uid://ds7ogsg8017or" path="res://TestArmorCan0915/Server/file_helper.gd" id="1_utc61"]
+
+[node name="FileHelper" type="Node"]
+script = ExtResource("1_utc61")

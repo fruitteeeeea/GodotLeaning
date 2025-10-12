@@ -17,7 +17,6 @@ font_color = Color(1, 1, 1, 0.337255)
 [node name="ArmorCanTest" type="Node2D"]
 script = ExtResource("1_67rp3")
 test_bullet_pool = Array[ExtResource("4_8hbpa")]([ExtResource("3_pe3bf"), ExtResource("4_54vig"), ExtResource("5_kot4y"), ExtResource("5_kot4y"), ExtResource("3_pe3bf"), ExtResource("3_pe3bf")])
-test_bullet_pool_capacity = 15.0
 test_magazine_capacity = 5.0
 
 [node name="BGtext" type="Control" parent="."]

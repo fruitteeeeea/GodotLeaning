@@ -3,15 +3,8 @@ extends Node2D
 signal bullet_added(bullet : BulletData) #子弹被添加
 signal bullet_remove(bullet : BulletData)
 
-var current_bullet_pool : Array[DataContainer] = []
-var current_magazine : Array[DataContainer] = []
+const NORMAL_BULLET = preload("res://TestArmorCan0915/TestResource/BulletData/NormalBullet.tres")
 
-
-#各个卡片对应的字典 
-@export var bullet_pool_card := {}
-@export var magazine_card := {}
-@export var buff_list_card := {}
-@export var actived_buff_card := {}
 
 #region BulletPool
 #===BulletPool的功能===
@@ -21,6 +14,27 @@ var runtime_bullet_pool : Array[DataContainer] = [] #运行时的子弹实例
 @export var bullet_pool_max_capacity: int = 20 #弹仓容量
 
 func ____BulletPool____(): pass
+#输入一个带有特殊BulletData的数组 
+#补充普通BulletData
+#按照弹仓容量完成BulletSet
+func buildup_bullet_set(test_bullet_pool : Array[BulletData]) -> void: 
+	var arr = []
+	for i in test_bullet_pool: #添加现有的特殊子弹 
+		arr.append(i)
+	
+	while arr.size() < get_bullet_pool_capacity(): #填充普通子弹
+		var new_data  = NORMAL_BULLET.duplicate(true)
+		arr.append(new_data)
+
+	arr.shuffle()
+	
+	#===创建子弹数据数列===
+	for i in arr: #添加子弹 
+		add_bullet(i)
+	 
+	restore_bullet_pool() #根据给予的数列生成子弹实例
+
+
 
 #重置子弹池子
 func restore_bullet_pool():
@@ -86,7 +100,6 @@ func remove_bullet(bullet: BulletData) -> void: #移除子弹
 signal on_bullet_loaded(bullet : DataContainer) #子弹被装载进入弹夹的时候发出 
 signal on_bullet_fired(bullet : DataContainer)
 
-
 var runtime_magazine : Array[DataContainer] = [] #运行时的子弹实例
 @export var magazine_max_capacity: int = 10.0 #弹夹容量
 
@@ -139,6 +152,14 @@ func ____Weapon____(): pass
 func setup_weapon_capacity(pool_capa : int, magaz_capa : int) -> void:
 	bullet_pool_max_capacity = pool_capa
 	magazine_max_capacity = magaz_capa
+
+#限制弹仓最大值
+func get_bullet_pool_capacity() -> int:
+	return min(bullet_pool_max_capacity, 25)
+
+#限制弹夹最大值
+func get_magazine_capacity() -> int:
+	return min(magazine_max_capacity, 10)
 
 
 func fire() -> DataContainer: #返回一个

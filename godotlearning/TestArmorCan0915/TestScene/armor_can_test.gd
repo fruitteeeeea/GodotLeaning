@@ -20,7 +20,8 @@ var is_locked := true
 func _ready() -> void:
 	#添加卡片 
 	CardServer.add_card_buff.connect(_on_card_buff_activated)
-	CardServer.card_buff_activated.connect(func (_card : Card): 
+	
+	CardServer.card_buff_activated.connect(func (_card : Card): #buff文字
 		activated_bullet.text = PlayerBuffManager.get_all_activated_buff())
 	CardServer.card_buff_finished.connect(func (_card : Card):
 		activated_bullet.text = PlayerBuffManager.get_all_activated_buff())
@@ -32,23 +33,8 @@ func _ready() -> void:
 func complete_bullet_pool() -> void: #完成并分配 武器子弹池 #只在最开始执行一次
 	#注意先设定武器容量
 	PlayerWeaponServer.setup_weapon_capacity(test_bullet_pool_capacity, test_magazine_capacity)
-	
-	var arr = []
-	for i in test_bullet_pool: #添加现有的特殊子弹 
-		if i is BulletData:
-			arr.append(i)
-	
-	while arr.size() < PlayerWeaponServer.bullet_pool_max_capacity: #填充普通子弹
-		var new_data  = NORMAL_BULLET.duplicate(true)
-		arr.append(new_data)
-
-	arr.shuffle()
-	
-	#===创建子弹数据数列===
-	for i in arr: #添加子弹 
-		PlayerWeaponServer.add_bullet(i)
-	 
-	PlayerWeaponServer.restore_bullet_pool() #根据给予的数列生成子弹实例
+	#再设定子弹集
+	PlayerWeaponServer.buildup_bullet_set(test_bullet_pool) 
 
 
 func spwan_bullet_card() -> void:
