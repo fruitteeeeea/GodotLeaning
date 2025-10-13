@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://5n3udnf1014a"]
 
-[ext_resource type="Script" uid="uid://8x3cjdt1q4ly" path="res://TestArmorCan0915/work_shop_server.gd" id="1_o4ws2"]
+[ext_resource type="Script" uid="uid://8x3cjdt1q4ly" path="res://TestArmorCan0915/Server/work_shop_server.gd" id="1_o4ws2"]
 
 [node name="WorkShopServer" type="Control"]
 layout_mode = 3

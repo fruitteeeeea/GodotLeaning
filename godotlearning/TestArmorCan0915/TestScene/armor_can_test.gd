@@ -12,24 +12,24 @@ extends Node2D
 var is_locked := true
 
 func _ready() -> void:
-	#添加卡片 
+	#弹仓更改的时候 重新生成弹仓卡片 
+	PlayerWeaponServer.weapon_set_settedup.connect(spwan_bullet_card)
+	#完成并分配 武器子弹池 #只在最开始执行一次
+	PlayerWeaponServer.setup_weapon_set(test_weaponset)
+
+	#添加buff激活卡片 
 	CardServer.add_card_buff.connect(_on_card_buff_activated)
-	
-	CardServer.card_buff_activated.connect(func (_card : Card): #buff文字
+	#buff文字
+	CardServer.card_buff_activated.connect(func (_card : Card): 
 		activated_bullet.text = PlayerBuffManager.get_all_activated_buff())
 	CardServer.card_buff_finished.connect(func (_card : Card):
 		activated_bullet.text = PlayerBuffManager.get_all_activated_buff())
-	
-	complete_bullet_pool()
-	spwan_bullet_card()
-
-
-func complete_bullet_pool() -> void: #完成并分配 武器子弹池 #只在最开始执行一次
-	PlayerWeaponServer.setup_weapon_set(test_weaponset)
 
 
 func spwan_bullet_card() -> void:
 	is_locked = true
+	CardServer.reset_card_manager(bullet_pool)
+	
 	for i in PlayerWeaponServer.get_bullet_pool():
 		var bull = i as DataContainer
 		CardServer.manager_add_cards(bullet_pool, i) #弹仓卡片
@@ -99,3 +99,11 @@ func _on_timer_timeout() -> void:
 func _on_game_speed_value_changed(value: float) -> void:
 	Engine.time_scale = value
 	print(Engine.time_scale )
+
+
+func _on_save_weapon_set_pressed() -> void:
+	PlayerWeaponServer.save_player_weapon_set()
+
+
+func _on_print_weapon_set_pressed() -> void:
+	PlayerWeaponServer.load_player_weapon_set()

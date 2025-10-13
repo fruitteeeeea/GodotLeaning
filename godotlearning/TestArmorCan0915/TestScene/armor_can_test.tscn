@@ -157,9 +157,24 @@ min_value = 1.0
 step = 5.0
 value = 1.0
 
+[node name="SaveWeaponSet" type="Button" parent="."]
+offset_top = 608.0
+offset_right = 132.0
+offset_bottom = 639.0
+text = "SaveWeaponSet
+"
+
+[node name="PrintWeaponSet" type="Button" parent="."]
+offset_top = 568.0
+offset_right = 134.0
+offset_bottom = 599.0
+text = "PrintWeaponSet"
+
 [connection signal="pressed" from="EmitCardSignal/EmitReload" to="EmitCardSignal" method="_on_emit_reload_pressed"]
 [connection signal="pressed" from="EmitCardSignal/EmitFire" to="EmitCardSignal" method="_on_emit_fire_pressed"]
 [connection signal="pressed" from="EmitCardSignal/EmitHit" to="EmitCardSignal" method="_on_emit_hit_pressed"]
 [connection signal="pressed" from="EmitCardSignal/EmitKill" to="EmitCardSignal" method="_on_emit_kill_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="value_changed" from="GameSpeed" to="." method="_on_game_speed_value_changed"]
+[connection signal="pressed" from="SaveWeaponSet" to="." method="_on_save_weapon_set_pressed"]
+[connection signal="pressed" from="PrintWeaponSet" to="." method="_on_print_weapon_set_pressed"]

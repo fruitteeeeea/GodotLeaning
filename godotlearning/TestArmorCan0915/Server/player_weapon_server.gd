@@ -3,18 +3,22 @@ extends Node2D
 signal bullet_added(bullet : BulletData) #子弹被添加
 signal bullet_remove(bullet : BulletData)
 
+signal weapon_set_settedup
+
 const NORMAL_BULLET = preload("res://TestArmorCan0915/TestResource/BulletData/NormalBullet.tres")
 const DEFULT_WEAPON_SET = preload("res://TestArmorCan0915/Resource/defult/defult_weapon_set.tres")
 
 func _ready() -> void:
 	setup_weapon_set(DEFULT_WEAPON_SET)
 
-
+#按照武器配置设定武器 
 func setup_weapon_set(weapon_set : PlayerWeaponSet):
 	#注意先设定武器容量
 	setup_weapon_capacity(weapon_set.bullet_pool_capacity, weapon_set.magazine_capacity)
 	#再设定子弹集
 	buildup_bullet_set(weapon_set.bullet_set)
+	#发送成功设置武器的信号
+	weapon_set_settedup.emit()
 
 
 #region BulletPool
@@ -161,9 +165,16 @@ func get_magazine() -> Array[DataContainer]: #获取当前弹夹
 #===Weapon的功能===
 func ____Weapon____(): pass
 
+#设置武器的容量
 func setup_weapon_capacity(pool_capa : int, magaz_capa : int) -> void:
 	bullet_pool_max_capacity = pool_capa
 	magazine_max_capacity = magaz_capa
+
+#修改武器的容量 
+func upgrade_weapon_capacity(pool_capa : int, magaz_capa : int) -> void:
+	bullet_pool_max_capacity += pool_capa
+	magazine_max_capacity += magaz_capa
+
 
 #限制弹仓最大值
 func get_bullet_pool_capacity() -> int:
@@ -185,5 +196,23 @@ func fire() -> DataContainer: #返回一个
 
 	var bullet = get_fire_nullet() as DataContainer#发射子弹函数 发射弹夹最前面的子弹 
 	return bullet
+
+#endregion
+
+#region WeaponDataSave&Load
+func ____Tool____(): pass
+
+func save_player_weapon_set() -> void:
+	var res = PlayerWeaponSet.new()
+	
+	res.bullet_pool_capacity = get_bullet_pool_capacity()
+	res.magazine_capacity = get_magazine_capacity()
+	res.bullet_set = bullet_set.duplicate(true)
+	
+	FileHelper.save_status(res, "PlayerWeaponSet" ,"runtime_weapon_set")
+
+func load_player_weapon_set() -> void:
+	var res = FileHelper.load_status("PlayerWeaponSet" ,"runtime_weapon_set")
+	setup_weapon_set(res) #读取这个设置
 
 #endregion

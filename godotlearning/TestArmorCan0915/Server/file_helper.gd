@@ -14,7 +14,7 @@ func save_status(resource : Resource, folder: String, file_name : String):
 func load_status(folder, file_name) -> Resource:
 	var path := get_file_path(folder, file_name)
 	if ResourceLoader.exists(path):
-		var res = ResourceLoader.load(path) as TestPlayerStatus
+		var res = ResourceLoader.load(path) as Resource
 		
 		print("读取成功 -> ", path)
 		return res
