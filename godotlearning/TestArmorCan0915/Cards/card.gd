@@ -67,16 +67,20 @@ func _ready() -> void:
 				CardServer.card_buff_finished.emit(self)
 				card_mission_end.emit()) # buff结束 卡片任务结束 
 	
-	card_progress.set_up_progress(card_progress_type) #设置progress
+	card_progress.set_up_progress(card_progress_type) #设置 progress 类型
 	
 	if data:
-		offset.modulate = data.color #颜色 #设定卡片的样式 
-		bullet_name.text = data.BulletName
-		trigger_type.text = data.TriggerType
-		description.text = data.description
+		updata_card_visual(data)
 		
 	into_arry()
  
+#更新卡片显示 #与 data 的 modifier 紧密相关 
+func updata_card_visual(_data : BulletData) -> void:
+	offset.modulate = _data.color 
+	bullet_name.text = _data.BulletName
+	trigger_type.text = _data.TriggerType
+	description.text = _data.description
+
 
 #===入场和出场===
 func into_arry():
@@ -115,25 +119,6 @@ func outof_arry():
 	await show_tween.finished
 	await get_tree().process_frame
 	queue_free()
-
-
-func do_scale(target, duration, up : bool = true):
-	if scale_tween:
-		scale_tween.kill()
-	
-	if up:
-		z_index = 2
-		pop_up()
-		info.show()
-	else :
-		z_index = 0
-		pop_up(0.0)
-		info.hide()
-	
-	var scale_tween = create_tween()
-	scale_tween.tween_property(offset, "scale", target, duration) \
-		.set_trans(Tween.TRANS_EXPO) \
-		.set_ease(Tween.EASE_OUT)
 
 
 func pop_up(posy : float = -25.0):
@@ -189,6 +174,24 @@ func _on_unhovered() -> void:
 	emit_signal("unhovered", self)
 	do_scale(Vector2(1.0, 1.0), 0.3, false)
 
+
+func do_scale(target, duration, up : bool = true):
+	if scale_tween:
+		scale_tween.kill()
+	
+	if up:
+		z_index = 2
+		pop_up()
+		info.show()
+	else :
+		z_index = 0
+		pop_up(0.0)
+		info.hide()
+	
+	var scale_tween = create_tween()
+	scale_tween.tween_property(offset, "scale", target, duration) \
+		.set_trans(Tween.TRANS_EXPO) \
+		.set_ease(Tween.EASE_OUT)
 
 func _add_charge():
 	add_progress.emit(data.charger_nb)

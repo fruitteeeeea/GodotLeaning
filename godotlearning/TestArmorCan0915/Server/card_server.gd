@@ -80,13 +80,12 @@ func manager_add_cards(_manager : CardsManager, _node : DataContainer) -> void:
 		
 		card.card_progress_type = "ColdDown" 
 		
-		#==这里要确保 card 在生命周期内被正确释放 否则会导致 temp_contain 内存直流
+		#==这里要确保 card 在生命周期内被正确释放 否则会导致 temp_contain 内存泄露
 		card.card_mission_start.connect(func () : 
 			PlayerBuffManager.add_buff(temp_contain)) 
 		card.card_mission_end.connect(func (): #卡片buff结束时
 			PlayerBuffManager.remove_buff(temp_contain)
 			manager_remove_card(_manager, _node)) #移除卡片 
-
 
 	#卡片悬停 
 	if _manager.can_hover:
@@ -95,12 +94,12 @@ func manager_add_cards(_manager : CardsManager, _node : DataContainer) -> void:
 		
 		card.unhovered.connect(_manager._on_card_unhovered)
 		card.mouse_exited.connect(card._on_unhovered)
-	
+
 	_manager.add_cards(card)
 
 	if !cards_manager_info.has(_manager): #初始化字典 #管理器对应的值是字典{节点 ： 卡片}
 		cards_manager_info[_manager] = {} 
-	
+
 	cards_manager_info[_manager][_node] = card #字典添加对应卡片的节点
 
 #FIXME 输入卡片移除

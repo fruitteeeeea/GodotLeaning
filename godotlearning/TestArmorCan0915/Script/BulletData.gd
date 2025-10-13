@@ -10,9 +10,6 @@ class_name BulletData
 @export var pool_weight := 1.0
 @export var pool_size := Vector2.ONE
 
-#子弹的附魔属性（火属性 冰属性 
-@export var enchantments: Array[BulletEnhanceMentData] = [] 
-
 #子弹的额外机制（开火 装填 击中 击杀
 @export var modifiers: Array[BulletModifierData] = [] 
 
@@ -25,13 +22,6 @@ enum ChargeEvent { ON_LOAD, ON_FIRE, ON_HITT, ON_KILL } #不同阶段触发的�
 @export var BulletName := "普通子弹" 
 @export_enum("装填", "开火", "击中", "击杀") var TriggerType := "装填" 
 @export var BulletDescription := "没有特殊效果。"
-
-#获取子弹的所有元素反应 
-func get_enchantments() -> Array[BulletEnhanceMentData]:
-	var list : Array[BulletEnhanceMentData]
-	for e in enchantments:
-		list.append(e) #返回子弹附带的效果 
-	return list
 
 #Test 子弹测试 
 @export_category("DebuggTest")

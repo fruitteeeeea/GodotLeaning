@@ -68,6 +68,7 @@ func reload():
 	#for b in _magazine.get_magazine():
 	for b in PlayerWeaponServer.get_magazine():
 		narmal.append(b.data.BulletName)
+		
 		CardServer.manager_add_cards(magazine, b) #弹夹卡片
 		if b.data.modifiers.size() > 0:
 			specials.append(b.data.BulletName)

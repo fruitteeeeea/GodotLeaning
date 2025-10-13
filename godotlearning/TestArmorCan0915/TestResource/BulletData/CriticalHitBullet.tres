@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="BulletData" load_steps=5 format=3 uid="uid://0btwx0vr6lka"]
+[gd_resource type="Resource" script_class="BulletData" load_steps=4 format=3 uid="uid://0btwx0vr6lka"]
 
-[ext_resource type="Script" uid="uid://dsm1kmgyycsjd" path="res://TestArmorCan0915/Script/BulletEnhanceMentData.gd" id="1_t2op1"]
 [ext_resource type="Script" uid="uid://bytdj6li0dp7y" path="res://TestArmorCan0915/Script/BulletModifierData.gd" id="2_kqh4g"]
 [ext_resource type="Script" uid="uid://bjkiblwgds4sq" path="res://TestArmorCan0915/Script/BulletData.gd" id="3_i1mfa"]
 [ext_resource type="Resource" uid="uid://ctg8v0jjnnxcc" path="res://TestArmorCan0915/TestResource/BulletModifierData/CritiHit.tres" id="3_kqh4g"]
@@ -13,7 +12,6 @@ size = 1.0
 speed = 400.0
 pool_weight = 1.0
 pool_size = Vector2(1, 1)
-enchantments = Array[ExtResource("1_t2op1")]([])
 modifiers = Array[ExtResource("2_kqh4g")]([ExtResource("3_kqh4g")])
 charger = 0
 charger_nb = 0.3

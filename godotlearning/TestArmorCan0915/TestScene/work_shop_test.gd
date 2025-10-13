@@ -10,6 +10,10 @@ func _ready() -> void:
 	PlayerWeaponServer.weapon_set_settedup.connect(spwan_bullet_card)
 	spwan_bullet_card()
 
+
+
+
+
 #region BulletPool
 func spwan_bullet_card() -> void:
 	CardServer.reset_card_manager(bullet_pool)

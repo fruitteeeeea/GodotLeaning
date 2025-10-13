@@ -11,32 +11,28 @@ const DEFULT_WEAPON_SET = preload("res://TestArmorCan0915/Resource/defult/defult
 func _ready() -> void:
 	setup_weapon_set(DEFULT_WEAPON_SET)
 
+
 #按照武器配置设定武器 
 func setup_weapon_set(weapon_set : PlayerWeaponSet):
 	#注意先设定武器容量
 	setup_weapon_capacity(weapon_set.bullet_pool_capacity, weapon_set.magazine_capacity)
 	#再设定子弹集
-	buildup_bullet_set(weapon_set.bullet_set)
+	buildup_runtime_bullet_pool(weapon_set.bullet_set)
 	#发送成功设置武器的信号
 	weapon_set_settedup.emit()
 
-
-#region BulletPool
-#===BulletPool的功能===
+ 
+#region BulletSet
 var bullet_set : Array[BulletData] = [] #基准弹仓数据
-var runtime_bullet_pool : Array[DataContainer] = [] #运行时的子弹实例
-
-@export var bullet_pool_max_capacity: int = 15 #弹仓容量
-
-func ____BulletPool____(): pass
+func ____BulletSet____(): pass
 #输入一个带有特殊BulletData的数组 
 #补充普通BulletData
 #按照弹仓容量完成BulletSet
-func buildup_bullet_set(test_bullet_pool : Array[BulletData]) -> void: 
+func fill_bullet_set(_set : Array[BulletData]) -> Array[BulletData]:
 	bullet_set.clear() #重建bullet set
 	
-	var arr = []
-	for i in test_bullet_pool: #添加现有的特殊子弹 
+	var arr : Array[BulletData] = []
+	for i in _set: #添加现有的特殊子弹 
 		arr.append(i)
 	
 	while arr.size() < get_bullet_pool_capacity(): #填充普通子弹
@@ -45,6 +41,22 @@ func buildup_bullet_set(test_bullet_pool : Array[BulletData]) -> void:
 
 	arr.shuffle()
 	
+	return arr
+
+
+
+#endregion
+
+#region BulletPool
+#===BulletPool的功能===
+var runtime_bullet_pool : Array[DataContainer] = [] #运行时的子弹实例
+@export var bullet_pool_max_capacity: int = 15 #弹仓容量
+
+func ____BulletPool____(): pass
+
+#一句 BulletSet 创建 runtime data
+func buildup_runtime_bullet_pool(test_bullet_pool : Array[BulletData]) -> void: 
+	var arr = fill_bullet_set(test_bullet_pool)
 	#===创建子弹数据数列===
 	for i in arr: #添加子弹 
 		add_bullet(i)
