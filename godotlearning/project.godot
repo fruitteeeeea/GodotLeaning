@@ -23,6 +23,7 @@ CardServer="*res://TestArmorCan0915/Server/card_server.tscn"
 PlayerBehaviorServer="*res://TestArmorCan0915/Server/player_behavior_server.tscn"
 PlayerWeaponServer="*res://TestArmorCan0915/Server/player_weapon_server.gd"
 PlayerBuffManager="*res://TestArmorCan0915/Server/player_buff_manager.tscn"
+WorkShopServer="*res://TestArmorCan0915/Server/work_shop_server.tscn"
 
 [dialogic]
 

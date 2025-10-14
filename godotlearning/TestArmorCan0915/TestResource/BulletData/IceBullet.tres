@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="BulletData" load_steps=3 format=3 uid="uid://bmun7ocs0g5gf"]
+
+[ext_resource type="Script" uid="uid://bytdj6li0dp7y" path="res://TestArmorCan0915/Script/BulletModifierData.gd" id="1_nw205"]
+[ext_resource type="Script" uid="uid://bjkiblwgds4sq" path="res://TestArmorCan0915/Script/BulletData.gd" id="2_0c86r"]
+
+[resource]
+script = ExtResource("2_0c86r")
+base_damage = 10.0
+size = 1.0
+speed = 400.0
+pool_weight = 1.0
+pool_size = Vector2(1, 1)
+modifiers = Array[ExtResource("1_nw205")]([])
+charger = 1
+charger_nb = 0.3
+BulletName = "冰冻子弹"
+TriggerType = "装填"
+BulletDescription = "击中会冰冻敌人。"
+color_list = [Color(1, 0, 0, 1), Color(0, 0, 1, 1), Color(1, 1, 0, 1)]
+color = Color(0.882353, 0.960784, 0.996078, 1)
+description = "击中会冰冻敌人。"
+pool_index = 0
+metadata/_custom_type_script = "uid://bjkiblwgds4sq"

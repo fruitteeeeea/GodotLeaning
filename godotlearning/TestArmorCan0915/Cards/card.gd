@@ -201,4 +201,4 @@ func _on_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("mouse_left"):
 		animated_sprite_2d.stop()
 		animated_sprite_2d.play("default")
-		print("卡片被点击")
+		WorkShopServer.card_being_clicked(self)

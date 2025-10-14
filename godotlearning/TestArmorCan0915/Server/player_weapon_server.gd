@@ -40,10 +40,11 @@ func fill_bullet_set(_set : Array[BulletData]) -> Array[BulletData]:
 		arr.append(new_data)
 
 	arr.shuffle()
-	
 	return arr
 
-
+#获取 bullet_set
+func get_bullet_set() -> Array[BulletData]:
+	return bullet_set
 
 #endregion
 
@@ -92,7 +93,7 @@ func bullet_pool_pick_random_bullet(_nb : int) -> Array[DataContainer]:
 	
 	restore_bullet_pool() #恢复子弹池子
 	return bullet_picked_list #返回带有指定数量DataContainer的数组 #
-	
+
 
 
 func get_bullet_pool() -> Array[DataContainer]:

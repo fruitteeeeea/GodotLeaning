@@ -19,19 +19,28 @@ text = "当前弹仓"
 label_settings = SubResource("LabelSettings_unnql")
 
 [node name="Label2" type="Label" parent="."]
-offset_top = 264.0
+offset_top = 256.0
 offset_right = 462.0
-offset_bottom = 396.0
+offset_bottom = 388.0
 text = "选中弹夹"
 label_settings = SubResource("LabelSettings_unnql")
 
 [node name="DebugDrawer" parent="." instance=ExtResource("3_unnql")]
 position = Vector2(320, 576)
 
-[node name="PickedBulletSet" parent="." instance=ExtResource("2_a0bo4")]
+[node name="BulletPool" parent="." instance=ExtResource("2_a0bo4")]
 position = Vector2(320, 128)
 can_hover = true
 
-[node name="PickedMagazine" parent="." instance=ExtResource("2_a0bo4")]
+[node name="PickedBullet" parent="." instance=ExtResource("2_a0bo4")]
 position = Vector2(320, 384)
 can_hover = true
+
+[node name="pick bullet" type="Button" parent="."]
+offset_left = 192.0
+offset_top = 448.0
+offset_right = 264.0
+offset_bottom = 479.0
+text = "选择子弹"
+
+[connection signal="pressed" from="pick bullet" to="." method="_on_pick_bullet_pressed"]
