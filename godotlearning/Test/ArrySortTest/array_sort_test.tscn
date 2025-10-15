@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://dk4vwqy7gb64w"]
+
+[ext_resource type="Script" uid="uid://e2j3hmp5tatd" path="res://Test/ArrySortTest/array_sort_test.gd" id="1_u2en3"]
+[ext_resource type="PackedScene" uid="uid://b642jhngbevj8" path="res://Test/ArrySortTest/test_sort_card.tscn" id="2_bfjv7"]
+
+[node name="ArraySortTest" type="Node2D"]
+script = ExtResource("1_u2en3")
+
+[node name="TestSortCard" parent="." instance=ExtResource("2_bfjv7")]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "生成一组数字
+"
+
+[node name="Button2" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "按种类排序
+"
+
+[node name="Button3" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "按稀有度排序"
+
+[node name="Label" type="Label" parent="."]
+offset_top = 112.0
+offset_right = 40.0
+offset_bottom = 135.0
+
+[node name="CardArray" type="HBoxContainer" parent="."]
+offset_top = 256.0
+offset_right = 40.0
+offset_bottom = 296.0
+
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button3" to="." method="_on_button_3_pressed"]

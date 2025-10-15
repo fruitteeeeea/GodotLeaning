@@ -12,9 +12,9 @@ font_color = Color(1, 1, 1, 0.337255)
 script = ExtResource("1_u8qc0")
 
 [node name="Label" type="Label" parent="."]
-offset_top = 16.0
+offset_top = 136.0
 offset_right = 462.0
-offset_bottom = 148.0
+offset_bottom = 268.0
 text = "当前弹仓"
 label_settings = SubResource("LabelSettings_unnql")
 
@@ -29,9 +29,9 @@ label_settings = SubResource("LabelSettings_unnql")
 position = Vector2(320, 576)
 
 [node name="PickedBulletSet" parent="." instance=ExtResource("2_a0bo4")]
-position = Vector2(320, 128)
+position = Vector2(320, 208)
 can_hover = true
 
 [node name="PickedMagazine" parent="." instance=ExtResource("2_a0bo4")]
-position = Vector2(320, 384)
+position = Vector2(320, 336)
 can_hover = true

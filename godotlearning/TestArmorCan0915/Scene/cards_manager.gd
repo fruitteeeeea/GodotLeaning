@@ -10,7 +10,7 @@ class_name CardsManager
 @export var max_x := overall_width / 2        #最右边的点
 
 @export var max_spacing := 65     #最大间隔
-@export var hover_spacing := 60   #悬停间隔
+@export var hover_spacing := 80   #悬停间隔
 
 @export_category("CardManagerFunc")
 @export var can_charge := false

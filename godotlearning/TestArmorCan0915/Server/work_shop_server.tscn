@@ -5,6 +5,7 @@
 [ext_resource type="Resource" uid="uid://bmun7ocs0g5gf" path="res://TestArmorCan0915/TestResource/BulletData/IceBullet.tres" id="3_sxmt7"]
 
 [node name="WorkShopServer" type="Control"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
