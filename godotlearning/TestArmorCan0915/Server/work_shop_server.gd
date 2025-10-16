@@ -123,7 +123,7 @@ func card_being_clicked(_card : Card):
 	if !current_selected_data:
 		print("❌ 未选中卡片数据")
 		return
-		
+	
 	current_pick_magazine[index] = current_selected_data
 	end_pick()
 	update_pick_bullet_set.emit(current_pick_bullet_set)
@@ -140,7 +140,19 @@ func _on_repick_magazine_pressed() -> void:
 
 func _on_fire_bullet_pressed() -> void:
 	current_selected_data = test_bullet_data01
+	repick_magazine()
 
 
 func _on_ice_bullet_pressed() -> void:
 	current_selected_data = test_bullet_data02
+
+#当modifier被选中的时候 抽取子弹 
+func _on_modifier_selected(_data) -> void:
+	current_selected_data = _data
+	
+	pass
+
+
+func _on_card_selected() -> void:
+	#弹出确认应用子弹的窗口 
+	pass

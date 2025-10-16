@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://f76efaq16qdn"
-path="res://.godot/imported/CardBase.png-51e1745215608e10cd42b8897baafa85.ctex"
+path="res://.godot/imported/CardBase.png-a3f93aa45f01d82e6fa561c397b44659.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://TestArmorCan0915/Asset/CardBase.png"
-dest_files=["res://.godot/imported/CardBase.png-51e1745215608e10cd42b8897baafa85.ctex"]
+source_file="res://Test/ArrySortTest/CardBase.png"
+dest_files=["res://.godot/imported/CardBase.png-a3f93aa45f01d82e6fa561c397b44659.ctex"]
 
 [params]
 

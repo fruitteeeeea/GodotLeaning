@@ -1,11 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://5n3udnf1014a"]
+[gd_scene load_steps=5 format=3 uid="uid://5n3udnf1014a"]
 
 [ext_resource type="Script" uid="uid://8x3cjdt1q4ly" path="res://TestArmorCan0915/Server/work_shop_server.gd" id="1_o4ws2"]
 [ext_resource type="Resource" uid="uid://cjrmljab0fj5a" path="res://TestArmorCan0915/TestResource/BulletData/FlameBllet.tres" id="2_3lhx8"]
 [ext_resource type="Resource" uid="uid://bmun7ocs0g5gf" path="res://TestArmorCan0915/TestResource/BulletData/IceBullet.tres" id="3_sxmt7"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_sxmt7"]
+font_size = 32
+font_color = Color(1, 1, 1, 0.501961)
+
 [node name="WorkShopServer" type="Control"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,7 +51,8 @@ offset_left = 536.0
 offset_top = 416.0
 offset_right = 635.0
 offset_bottom = 447.0
-text = "退出工房ww"
+text = "退出工房
+"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 0
@@ -64,6 +68,29 @@ text = "重选弹夹（-1）"
 [node name="RepickModifier" type="Button" parent="HBoxContainer"]
 layout_mode = 2
 text = "重选补给（-1）"
+
+[node name="ApplyBulletConfirmPanel" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="ApplyBulletConfirmPanel"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 48.0
+offset_bottom = 93.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "选择修改器以抽取应用子弹。"
+label_settings = SubResource("LabelSettings_sxmt7")
+horizontal_alignment = 1
 
 [connection signal="pressed" from="PanelContainer/BulletModifier/FireBullet" to="." method="_on_fire_bullet_pressed"]
 [connection signal="pressed" from="PanelContainer/BulletModifier/IceBullet" to="." method="_on_ice_bullet_pressed"]

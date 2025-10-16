@@ -24,6 +24,7 @@ func _on_picked_card_spwan(arr : Array[BulletData], _manager : CardsManager, ) -
 		CardServer.manager_add_cards(_manager, bull)
 
 
+
 #region PickedBulletSet
 #endregion 
 
