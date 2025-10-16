@@ -6,10 +6,10 @@ const CONFIRMATION_PANEL = preload("res://TestArmorCan0915/UI/confirmation_panel
 #var panel = PanelServer.show_confirmation("01", "02", func(): print("01"), func(): print("02"))
 #delete_panel.connect(panel._on_cancel_pressed)
 
-# 创建确认框
+# 创建确认框 #注意 这个UI的 Z_Index 是10
 func show_confirmation(text1: String, text2: String, on_confirm: Callable, on_cancel: Callable) -> ConfirmationPanel:
 	var panel := CONFIRMATION_PANEL.instantiate() as ConfirmationPanel
-	add_child(panel)
+	get_tree().root.add_child(panel)
 	panel.setup(text1, text2)
 	
 	if on_confirm:

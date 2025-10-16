@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://5n3udnf1014a"]
+[gd_scene load_steps=6 format=3 uid="uid://5n3udnf1014a"]
 
 [ext_resource type="Script" uid="uid://8x3cjdt1q4ly" path="res://TestArmorCan0915/Server/work_shop_server.gd" id="1_o4ws2"]
 [ext_resource type="Resource" uid="uid://cjrmljab0fj5a" path="res://TestArmorCan0915/TestResource/BulletData/FlameBllet.tres" id="2_3lhx8"]
 [ext_resource type="Resource" uid="uid://bmun7ocs0g5gf" path="res://TestArmorCan0915/TestResource/BulletData/IceBullet.tres" id="3_sxmt7"]
+[ext_resource type="Script" uid="uid://bp5uy63umhpsj" path="res://TestArmorCan0915/Server/work_shop_flow.gd" id="4_cidmk"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_sxmt7"]
 font_size = 32
@@ -15,9 +16,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_o4ws2")
 test_bullet_data01 = ExtResource("2_3lhx8")
 test_bullet_data02 = ExtResource("3_sxmt7")
+
+[node name="WorkShopFlow" type="Node" parent="."]
+script = ExtResource("4_cidmk")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1

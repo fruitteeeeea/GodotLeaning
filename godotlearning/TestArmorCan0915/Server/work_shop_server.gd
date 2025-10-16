@@ -13,9 +13,21 @@ signal update_pick_magazine(arr : Array[BulletData])
 #4. 设置玩家当前 Weapon Set
 #5. 解锁 Weapon Set
 
+#步骤
+#1.显示玩家弹仓 显示可选择修改器 
+#2.选择修改器 抽取可应用子弹
+#3.选择需要应用的子弹
+#4.确认应用子弹
+#5.修改器选择页面
+
 
 #工房获取 Modifier 的顺序 
 #1. 获取当前可获取内容等级 
+
+var active_panel: Node = null
+
+
+
 
 var is_modifiy_mod := false
 var is_locked := false #进行危险操作的时候 可以先锁住
@@ -124,13 +136,23 @@ func card_being_clicked(_card : Card):
 		print("❌ 未选中卡片数据")
 		return
 	
+	var confirmed_panel = PanelServer.show_confirmation("确认覆盖这枚子弹吗？", "子弹（A）将会被替换成子弹（B）", _override_bullet.bind(index), func() : pass)
+	
+	#current_pick_magazine[index] = current_selected_data
+	#end_pick()
+	#update_pick_bullet_set.emit(current_pick_bullet_set)
+	#update_pick_magazine.emit(current_pick_magazine)
+	#
+	#print("🔁 已更新子弹数据:", current_selected_data.BulletName)
+
+
+func _override_bullet(index : int) -> void:
 	current_pick_magazine[index] = current_selected_data
 	end_pick()
 	update_pick_bullet_set.emit(current_pick_bullet_set)
 	update_pick_magazine.emit(current_pick_magazine)
 	
 	print("🔁 已更新子弹数据:", current_selected_data.BulletName)
-
 
 
 #===界面按钮===

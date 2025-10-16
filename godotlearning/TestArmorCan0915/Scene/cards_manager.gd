@@ -1,7 +1,7 @@
 extends Node2D
 class_name CardsManager
 
-@onready var debug_drawer: Node2D = $"../DebugDrawer"
+#@onready var debug_drawer: Node2D = $"../DebugDrawer"
 
 @export var horizontal_arran := true
 
@@ -84,7 +84,7 @@ func get_card_positions(n: int) -> Array[float]: #仅仅计算位置
 
 # ---------------- 内部函数 ----------------
 func _update_card_positions(positions: Array) -> void:
-	debug_drawer.clear_circles()   # 清空之前的
+	#debug_drawer.clear_circles()   # 清空之前的
 	var i := 0
 	for card in cards_posx_info.keys():
 		if i >= positions.size():

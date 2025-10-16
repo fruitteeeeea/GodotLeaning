@@ -1,5 +1,7 @@
 extends Node2D
 
+#这里应该只有一个按钮 就是打开工房。
+
 @onready var picked_bullet_set: CardsManager = $PickedBulletSet
 @onready var picked_magazine: CardsManager = $PickedMagazine
 
@@ -22,12 +24,3 @@ func _on_picked_card_spwan(arr : Array[BulletData], _manager : CardsManager, ) -
 		var bull = DataContainer.new()
 		bull.data = bd
 		CardServer.manager_add_cards(_manager, bull)
-
-
-
-#region PickedBulletSet
-#endregion 
-
-
-#region PickedMagazine
-#endregion
