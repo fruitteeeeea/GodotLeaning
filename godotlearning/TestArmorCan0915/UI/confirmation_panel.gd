@@ -1,4 +1,4 @@
-extends MarginContainer
+extends Control
 class_name ConfirmationPanel
 
 signal confirmed
