@@ -153,6 +153,7 @@ func rotate_to(target_angle: float, duration := 0.3) -> void:
 # ===============================
 # 内部工具：随机旋转回弹 /鼠标悬停 /卡片充能
 # ===============================
+#region internal_tool
 func _play_rotation_bounce() -> void:
 	if rotate_tween:
 		rotate_tween.kill()
@@ -193,12 +194,15 @@ func do_scale(target, duration, up : bool = true):
 		.set_trans(Tween.TRANS_EXPO) \
 		.set_ease(Tween.EASE_OUT)
 
+
 func _add_charge():
 	add_progress.emit(data.charger_nb)
 
 
-func _on_gui_input(event: InputEvent) -> void:
+func _on_card_click(event: InputEvent) -> void:
 	if event.is_action_pressed("mouse_left"):
 		animated_sprite_2d.stop()
 		animated_sprite_2d.play("default")
 		WorkShopServer.card_being_clicked(self)
+
+#endregion

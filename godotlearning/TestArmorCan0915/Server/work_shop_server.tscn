@@ -15,6 +15,7 @@ font_size = 96
 font_color = Color(1, 1, 1, 0.337255)
 
 [node name="WorkShopServer" type="Control"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -130,6 +131,7 @@ can_hover = true
 [node name="PickedMagazine" parent="Cards" instance=ExtResource("5_6gwe6")]
 position = Vector2(320, 336)
 can_hover = true
+can_click = true
 
 [connection signal="pressed" from="PanelContainer/BulletModifier/FireBullet" to="." method="_on_fire_bullet_pressed"]
 [connection signal="pressed" from="PanelContainer/BulletModifier/IceBullet" to="." method="_on_ice_bullet_pressed"]

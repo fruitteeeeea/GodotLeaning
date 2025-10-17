@@ -95,6 +95,11 @@ func manager_add_cards(_manager : CardsManager, _node : DataContainer) -> void:
 		card.unhovered.connect(_manager._on_card_unhovered)
 		card.mouse_exited.connect(card._on_unhovered)
 
+	#卡片点击
+	if _manager.can_click:
+		card.gui_input.connect(card._on_card_click)
+
+
 	_manager.add_cards(card)
 
 	if !cards_manager_info.has(_manager): #初始化字典 #管理器对应的值是字典{节点 ： 卡片}

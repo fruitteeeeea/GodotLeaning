@@ -62,9 +62,10 @@ func close_workshop() -> void:
 	workshop_closed.emit()
 
 
+#====PHASE01====
 #region WeaponSet
 
-var current_pick_bullet_set : Array[BulletData] = []
+var current_pick_bullet_set : Array[BulletData] = [] #这里用一下set
 
 var curretn_bullet_pool_capacity : int
 var current_magazine_capacity : int
@@ -74,12 +75,84 @@ var current_pick_magazine : Array[BulletData] = []
 #获取玩家当前的 武器配置 （子弹配置 弹仓容量 弹夹容量）
 func get_player_current_weaponset() -> void:
 	current_pick_bullet_set = PlayerWeaponServer.get_bullet_set()
+	BulletSorter.sort_bullets02(current_pick_bullet_set, "type") #这里对数组进行一下整理。
+	
 	update_pick_bullet_set.emit(current_pick_bullet_set)
 	
 	curretn_bullet_pool_capacity = PlayerWeaponServer.get_bullet_pool_capacity()
 	current_magazine_capacity = PlayerWeaponServer.get_magazine_capacity()
 
+#endregion
 
+#region WorkShop
+@onready var bullet_modifier: GridContainer = $PanelContainer/BulletModifier
+
+func apply_modifier_to_bullet():
+	pass
+
+
+func _updata_selected_button(i : Button) -> void:
+	print(i.name)
+
+
+#endregion
+
+
+
+var current_selected_data : BulletData
+var current_selected_modifier : BulletModifierData
+
+
+
+
+#region WorkFlow
+
+#region PHASE01
+func _on_phase01_enter() -> void:
+	_spawn_bullet_pool_cards()
+	_spwan_modifier_cards()
+
+#region SetUp
+#生成弹仓卡片
+func _spawn_bullet_pool_cards() -> void:
+	pass
+
+#生成修改器卡片
+func _spwan_modifier_cards() -> void:
+	pass
+
+#endregion
+
+#region Operation
+#按下
+func _on_fire_bullet_pressed() -> void:
+	current_selected_data = test_bullet_data01
+	repick_magazine()
+
+
+func _on_ice_bullet_pressed() -> void:
+	current_selected_data = test_bullet_data02
+	repick_magazine()
+
+
+func _on_modifier_selected(_data) -> void:
+	current_selected_data = _data
+	pass
+
+
+#endregion
+
+#endregion
+
+
+
+#region PHASE02
+#当modifier被选中的时候 抽取子弹 
+func _on_phase02_enter() -> void:
+	pass
+
+
+#region SetUp
 func repick_magazine() -> void:
 	if is_locked:
 		return
@@ -102,34 +175,16 @@ func end_pick() -> void:
 	current_pick_bullet_set.shuffle()
 	current_pick_magazine.clear()
 
-
 #endregion
 
-#region WorkShop
-@onready var bullet_modifier: GridContainer = $PanelContainer/BulletModifier
-
-func apply_modifier_to_bullet():
-	pass
-
-
-func _updata_selected_button(i : Button) -> void:
-	print(i.name)
-
-
-#endregion
-
-
-
-var current_selected_data : BulletData
-var current_selected_modifier : BulletModifierData
-
+#region Operation
 #===卡片操作===
 func card_being_clicked(_card : Card):
 	print(_card.name)
 	var _data = _card.data
 	
 	# 检查该卡片对应的数据是否在 current_pick_magazine 中
-	var index := current_pick_magazine.find(_data)
+	var index := current_pick_magazine.find(_data) #提升为全局变量？
 	if index == -1:
 		print("❌ 未找到卡片对应的数据")
 		return
@@ -155,6 +210,24 @@ func card_being_clicked(_card : Card):
 	_override_bullet.bind(index), func() : pass)
 
 
+
+#endregion
+#endregion
+
+
+#region PHASE03
+func _on_phase03_enter() -> void:
+	pass
+
+
+#region SetUp
+#弹出确认应用子弹的窗口 
+func _show_confirmation() -> void:
+	pass
+
+#endregion
+
+#region Operation
 func _override_bullet(index : int) -> void:
 	current_pick_magazine[index] = current_selected_data
 	end_pick()
@@ -163,39 +236,15 @@ func _override_bullet(index : int) -> void:
 	
 	print("🔁 已更新子弹数据:", current_selected_data.BulletName)
 
+#endregion
 
-#===界面按钮===
-func _on_repick_magazine_pressed() -> void:
-	repick_magazine()
-
-
-func _on_fire_bullet_pressed() -> void:
-	current_selected_data = test_bullet_data01
-	repick_magazine()
-
-
-func _on_ice_bullet_pressed() -> void:
-	current_selected_data = test_bullet_data02
-
-#region WorkFlow
-#PHASE01
-func _on_workshop_open() -> void:
-	pass
-
-
-#PHASE02
-#当modifier被选中的时候 抽取子弹 
-func _on_modifier_selected(_data) -> void:
-	current_selected_data = _data
-	pass
-
-#PHASE03
-func _on_card_selected() -> void:
-	#弹出确认应用子弹的窗口 
-	pass
 #endregion
 
 
+
+
+#===内部函数====
+#region internal_function
 #region CardManager
 #根据bullet_set 指定 manager 生成卡片
 func _on_picked_card_spwan(arr : Array[BulletData], _manager : CardsManager, ) -> void:
@@ -207,6 +256,17 @@ func _on_picked_card_spwan(arr : Array[BulletData], _manager : CardsManager, ) -
 		CardServer.manager_add_cards(_manager, bull)
 #endregion
 
+#endregion
 
+
+#===按下按钮===
+#region ButtonPress
 func _on_close_work_shop_pressed() -> void:
 	close_workshop()
+
+func _on_repick_magazine_pressed() -> void:
+	#这里要添加条件 才能重选弹夹
+	repick_magazine()
+
+
+#endregion

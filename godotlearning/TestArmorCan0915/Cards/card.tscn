@@ -163,5 +163,3 @@ label_settings = SubResource("LabelSettings_qp4nn")
 layout_mode = 2
 text = "治疗玩家。"
 label_settings = SubResource("LabelSettings_qp4nn")
-
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]
