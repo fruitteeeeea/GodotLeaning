@@ -136,14 +136,9 @@ func card_being_clicked(_card : Card):
 		print("❌ 未选中卡片数据")
 		return
 	
-	var confirmed_panel = PanelServer.show_confirmation("确认覆盖这枚子弹吗？", "子弹（A）将会被替换成子弹（B）", _override_bullet.bind(index), func() : pass)
-	
-	#current_pick_magazine[index] = current_selected_data
-	#end_pick()
-	#update_pick_bullet_set.emit(current_pick_bullet_set)
-	#update_pick_magazine.emit(current_pick_magazine)
-	#
-	#print("🔁 已更新子弹数据:", current_selected_data.BulletName)
+	var confirmed_panel = PanelServer.\
+	show_confirmation("确认覆盖这枚子弹吗？", "子弹（A）将会被替换成子弹（B）", \
+	_override_bullet.bind(index), func() : pass)
 
 
 func _override_bullet(index : int) -> void:

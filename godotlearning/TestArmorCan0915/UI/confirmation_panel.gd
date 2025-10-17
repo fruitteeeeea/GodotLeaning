@@ -9,6 +9,7 @@ signal canceled
 
 #设置确认框文字
 func setup(info01 : String, info02 : String) -> void:
+	get_viewport().set_input_as_handled()
 	info_1.text = info01
 	info_2.text = info02
 
