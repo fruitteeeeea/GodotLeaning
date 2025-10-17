@@ -5,8 +5,8 @@ class_name BulletSorter
 #后期这里可以调整成依据种类 等级等等 
 const BULLET_NAME_ORDER = {
 	"普通子弹" : 0,
-	"燃烧子弹" : 1,
-	"冰冻子弹" : 2,
+	"冰冻子弹" : 1,
+	"燃烧子弹" : 2,
 }
 
 #=== TEST ===
@@ -72,5 +72,5 @@ static func sort_bullets02(bullets: Array[BulletData], mode: String) -> void:
 	match mode:
 		"type": #依据类型排序
 			bullets.sort_custom(func(a, b):
-				return BULLET_NAME_ORDER.get(a.BulletName, 999) < BULLET_NAME_ORDER.get(b.BulletName, 999)
+				return BULLET_NAME_ORDER.get(a.BulletName, 999) > BULLET_NAME_ORDER.get(b.BulletName, 999)
 			)

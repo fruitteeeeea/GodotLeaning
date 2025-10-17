@@ -42,7 +42,7 @@ var is_locked := false #进行危险操作的时候 可以先锁住
 @export var test_modifier : BulletModifierData
 
 func _ready() -> void:
-	update_pick_bullet_set.connect(_on_picked_card_spwan.bind(picked_bullet_set))
+	update_pick_bullet_set.connect(_on_picked_card_spwan.bind(picked_bullet_set, true))
 	update_pick_magazine.connect(_on_picked_card_spwan.bind(picked_magazine))
 	
 	#for i in bullet_modifier.get_children(): #绑定修改器选择按钮
@@ -75,7 +75,6 @@ var current_pick_magazine : Array[BulletData] = []
 #获取玩家当前的 武器配置 （子弹配置 弹仓容量 弹夹容量）
 func get_player_current_weaponset() -> void:
 	current_pick_bullet_set = PlayerWeaponServer.get_bullet_set()
-	BulletSorter.sort_bullets02(current_pick_bullet_set, "type") #这里对数组进行一下整理。
 	
 	update_pick_bullet_set.emit(current_pick_bullet_set)
 	
@@ -247,8 +246,10 @@ func _override_bullet(index : int) -> void:
 #region internal_function
 #region CardManager
 #根据bullet_set 指定 manager 生成卡片
-func _on_picked_card_spwan(arr : Array[BulletData], _manager : CardsManager, ) -> void:
+func _on_picked_card_spwan(arr : Array[BulletData], _manager : CardsManager, _sort := false) -> void:
 	CardServer.reset_card_manager(_manager)
+	
+	if _sort : BulletSorter.sort_bullets02(arr, "type")
 	
 	for bd in arr:
 		var bull = DataContainer.new()
