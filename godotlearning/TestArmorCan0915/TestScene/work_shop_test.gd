@@ -1,26 +1,12 @@
 extends Node2D
 
 #这里应该只有一个按钮 就是打开工房。
-
-@onready var picked_bullet_set: CardsManager = $PickedBulletSet
-@onready var picked_magazine: CardsManager = $PickedMagazine
-
-var picked_bullet_arr : Array[DataContainer]
+@onready var open_work_shop: Button = $OpenWorkShop
 
 func _ready() -> void:
-	#弹仓更改的时候 重新生成弹仓卡片 
-	WorkShopServer.update_pick_bullet_set.connect(_on_picked_card_spwan.bind(picked_bullet_set))
-	WorkShopServer.update_pick_magazine.connect(_on_picked_card_spwan.bind(picked_magazine))
-	
-	WorkShopServer.is_modifiy_mod = true
-	#获取一下当前的 武器配置 
-	WorkShopServer.get_player_current_weaponset()
+	WorkShopServer.workshop_opened.connect(func(): open_work_shop.hide())
+	WorkShopServer.workshop_closed.connect(func(): open_work_shop.show())
 
-#根据bullet_set 指定 manager 生成卡片
-func _on_picked_card_spwan(arr : Array[BulletData], _manager : CardsManager, ) -> void:
-	CardServer.reset_card_manager(_manager)
-	
-	for bd in arr:
-		var bull = DataContainer.new()
-		bull.data = bd
-		CardServer.manager_add_cards(_manager, bull)
+
+func _on_open_work_shop_pressed() -> void:
+	WorkShopServer.open_workshop()

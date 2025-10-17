@@ -1,6 +1,5 @@
 extends Node2D
 
-@onready var label: Label = $Label
 
 @onready var test_sort_card: Control = $TestSortCard
 @onready var card_array: HBoxContainer = $CardArray
@@ -34,20 +33,9 @@ func respwan_card() -> void:
 func _on_button_pressed() -> void:
 	random_pick_card()
 	respwan_card()
-	#current_arry.clear()
-	#
-	#for i in range(10):
-		#var c = randi() % 100 + 1 
-#
-		#current_arry.append(c)
-	#
-	#update_label_text()
 
 
 func _on_button_2_pressed() -> void:
-	#current_arry.sort()
-	#update_label_text()
-
 	descending = !descending
 	sort_bullet("type")
 	respwan_card()
@@ -56,10 +44,6 @@ func _on_button_3_pressed() -> void:
 	descending = !descending
 	sort_bullet("rarity")
 	respwan_card()
-
-func update_label_text() -> void:
-	var final_text = ",".join(current_arry)
-	label.text = final_text
 
 
 func sort_bullet(_mode := "combined"):

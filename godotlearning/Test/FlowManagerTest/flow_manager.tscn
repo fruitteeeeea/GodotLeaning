@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dun617s2lcpk4"]
+
+[ext_resource type="Script" uid="uid://cj0hjh2seikts" path="res://Test/FlowManagerTest/flow_manager.gd" id="1_lyvgb"]
+
+[node name="FlowManager" type="Node2D"]
+script = ExtResource("1_lyvgb")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0

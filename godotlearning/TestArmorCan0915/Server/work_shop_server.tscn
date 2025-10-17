@@ -1,13 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://5n3udnf1014a"]
+[gd_scene load_steps=8 format=3 uid="uid://5n3udnf1014a"]
 
 [ext_resource type="Script" uid="uid://8x3cjdt1q4ly" path="res://TestArmorCan0915/Server/work_shop_server.gd" id="1_o4ws2"]
 [ext_resource type="Resource" uid="uid://cjrmljab0fj5a" path="res://TestArmorCan0915/TestResource/BulletData/FlameBllet.tres" id="2_3lhx8"]
 [ext_resource type="Resource" uid="uid://bmun7ocs0g5gf" path="res://TestArmorCan0915/TestResource/BulletData/IceBullet.tres" id="3_sxmt7"]
 [ext_resource type="Script" uid="uid://bp5uy63umhpsj" path="res://TestArmorCan0915/Server/work_shop_flow.gd" id="4_cidmk"]
+[ext_resource type="PackedScene" uid="uid://b6yq8uha6j81n" path="res://TestArmorCan0915/Scene/cards_manager.tscn" id="5_6gwe6"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_sxmt7"]
 font_size = 32
 font_color = Color(1, 1, 1, 0.501961)
+
+[sub_resource type="LabelSettings" id="LabelSettings_cidmk"]
+font_size = 96
+font_color = Color(1, 1, 1, 0.337255)
 
 [node name="WorkShopServer" type="Control"]
 layout_mode = 3
@@ -50,7 +55,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "冰霜子弹"
 
-[node name="Button" type="Button" parent="."]
+[node name="CloseWorkShop" type="Button" parent="."]
 layout_mode = 0
 offset_left = 536.0
 offset_top = 416.0
@@ -97,6 +102,36 @@ text = "选择修改器以抽取应用子弹。"
 label_settings = SubResource("LabelSettings_sxmt7")
 horizontal_alignment = 1
 
+[node name="Cards" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Cards"]
+layout_mode = 0
+offset_top = 136.0
+offset_right = 462.0
+offset_bottom = 268.0
+text = "当前弹仓"
+label_settings = SubResource("LabelSettings_cidmk")
+
+[node name="Label2" type="Label" parent="Cards"]
+layout_mode = 0
+offset_top = 264.0
+offset_right = 462.0
+offset_bottom = 396.0
+text = "选中弹夹"
+label_settings = SubResource("LabelSettings_cidmk")
+
+[node name="PickedBulletSet" parent="Cards" instance=ExtResource("5_6gwe6")]
+position = Vector2(320, 208)
+can_hover = true
+
+[node name="PickedMagazine" parent="Cards" instance=ExtResource("5_6gwe6")]
+position = Vector2(320, 336)
+can_hover = true
+
 [connection signal="pressed" from="PanelContainer/BulletModifier/FireBullet" to="." method="_on_fire_bullet_pressed"]
 [connection signal="pressed" from="PanelContainer/BulletModifier/IceBullet" to="." method="_on_ice_bullet_pressed"]
+[connection signal="pressed" from="CloseWorkShop" to="." method="_on_close_work_shop_pressed"]
 [connection signal="pressed" from="HBoxContainer/RepickMagazine" to="." method="_on_repick_magazine_pressed"]

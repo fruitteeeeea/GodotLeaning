@@ -14,6 +14,8 @@ const ELEMENT_ORDER = {
 	"ice": 2
 }
 
+
+
 # ========== 分类排序入口 ========== #
 # mode 决定排序方式
 # 可选: "type", "rarity", "element", "combined"
@@ -55,3 +57,9 @@ static func sort_bullets(bullets: Array[TestSortData], mode: String) -> void:
 		
 		_:
 			push_warning("Unknown sort mode: %s" % mode)
+
+#整理子弹 #依据类型排序
+static func sort_bullets02(bullets: Array[BulletData], mode: String) -> void:
+	match mode:
+		"type": #依据类型排序
+			pass
