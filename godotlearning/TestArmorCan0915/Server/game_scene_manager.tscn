@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0kjsewn554a5"]
+
+[ext_resource type="Script" uid="uid://buosplal7lw4y" path="res://TestArmorCan0915/Server/game_scene_manager.gd" id="1_utog2"]
+
+[node name="GameSceneManager" type="Node"]
+script = ExtResource("1_utog2")

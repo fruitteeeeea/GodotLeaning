@@ -1,8 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://5n3udnf1014a"]
+[gd_scene load_steps=5 format=3 uid="uid://5n3udnf1014a"]
 
 [ext_resource type="Script" uid="uid://8x3cjdt1q4ly" path="res://TestArmorCan0915/Server/work_shop_server.gd" id="1_o4ws2"]
-[ext_resource type="Resource" uid="uid://cjrmljab0fj5a" path="res://TestArmorCan0915/TestResource/BulletData/FlameBllet.tres" id="2_3lhx8"]
-[ext_resource type="Resource" uid="uid://bmun7ocs0g5gf" path="res://TestArmorCan0915/TestResource/BulletData/IceBullet.tres" id="3_sxmt7"]
 [ext_resource type="PackedScene" uid="uid://dgoga5au6ctkr" path="res://TestArmorCan0915/UI/instruction_text.tscn" id="4_6gwe6"]
 [ext_resource type="PackedScene" uid="uid://b6yq8uha6j81n" path="res://TestArmorCan0915/Scene/cards_manager.tscn" id="5_6gwe6"]
 
@@ -20,8 +18,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_o4ws2")
-test_bullet_data01 = ExtResource("2_3lhx8")
-test_bullet_data02 = ExtResource("3_sxmt7")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -159,8 +155,6 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Points : 10"
 
-[connection signal="pressed" from="PanelContainer/BulletModifier/FireBullet" to="." method="_on_fire_bullet_pressed"]
-[connection signal="pressed" from="PanelContainer/BulletModifier/IceBullet" to="." method="_on_ice_bullet_pressed"]
 [connection signal="pressed" from="CloseWorkShop" to="." method="_on_close_work_shop_pressed"]
 [connection signal="pressed" from="HBoxContainer/RepickModifier" to="." method="_on_repick_modifier_pressed"]
 [connection signal="pressed" from="HBoxContainer/RepickMagazine" to="." method="_on_repick_magazine_pressed"]

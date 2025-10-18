@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 DialogueServer="*res://Test/Dialogue/DialogueServer.gd"
+GameSceneManager="*res://TestArmorCan0915/Server/game_scene_manager.tscn"
 FileHelper="*res://TestArmorCan0915/Server/file_helper.tscn"
 ResourceServer="*res://TestArmorCan0915/Server/resource_server.tscn"
 PanelServer="*res://TestArmorCan0915/Server/panel_server.tscn"

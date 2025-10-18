@@ -12,7 +12,7 @@ signal update_pick_modifier(arr : Array[BulletData])
 #修改玩家弹夹步骤 
 
 #工房修改玩家 WeaponSet 的顺序
-#1. 锁定 WeaponS et
+#1. 锁定 WeaponSet
 #2. 获取玩家当前 Weapon Set
 #3. 对玩家当前 Weapon Set 进行修改 
 #4. 设置玩家当前 Weapon Set
@@ -32,6 +32,7 @@ signal update_pick_modifier(arr : Array[BulletData])
 #3. 每次刷新需要花费点数
 #4. 统帅模式可以无限刷新modifier
 
+var workshop_points := 1 #玩家工房操作点数
 
 #====固定UI====
 @onready var instruction_text: InstructionText = $InstructionText
@@ -60,14 +61,14 @@ var instruction_text_dic := {
 
 
 #===Test相关===
-@export var test_bullet_data01 : BulletData 
-@export var test_bullet_data02 : BulletData 
 
 var is_modifiy_mod := false
 var is_locked := false #进行危险操作的时候 可以先锁住
 
 
 func _ready() -> void:
+	GameSceneManager.player_enter_new_level.connect(update_workshop)
+	
 	update_pick_bullet_set.connect(_on_picked_card_spwan.bind(picked_bullet_set, true))
 	update_pick_magazine.connect(_on_picked_card_spwan.bind(picked_magazine))
 	update_pick_modifier.connect(_on_picked_card_spwan.bind(picked_modifier))
@@ -80,7 +81,6 @@ func open_workshop() -> void:
 	is_modifiy_mod = true
 	show()
 	get_player_current_weaponset()
-	get_player_current_level_modifier()
 	workshop_opened.emit()
 	
 	_on_phase01_enter()
@@ -101,6 +101,10 @@ var curretn_bullet_pool_capacity : int
 var current_magazine_capacity : int
 
 #region SetUp (关底 刷新一次）
+func update_workshop():
+	has_free_repick_modifier = true #刷新modifier的次数。
+
+
 #获取玩家当前的 武器配置 （子弹配置 弹仓容量 弹夹容量）
 func get_player_current_weaponset() -> void:
 	current_pick_bullet_set = PlayerWeaponServer.get_bullet_set() #直接赋值，同步修改 
@@ -110,15 +114,12 @@ func get_player_current_weaponset() -> void:
 
 #===ModifierLevel===
 var current_modifier_level := 1 #玩家当前修改器等级
-var can_repick_modifier := 10 #关底刷新/花费点数刷新
+var has_free_repick_modifier := true #每关赠送的刷新modifier的次数。
 
 var current_picked_modifier : Array[BulletData] = []
 
 #获取玩家当前等级的 Modifier
 func get_player_current_level_modifier() -> void: 
-	if !can_repick_modifier - 1 >= 0 : return
-	can_repick_modifier -= 1
-	
 	current_picked_modifier.clear()
 	
 	for i in range(current_magazine_capacity): #依据弹夹数量生成modifier
@@ -151,14 +152,12 @@ func _on_phase01_enter() -> void:
 	CardServer.reset_card_manager(picked_magazine)
 	
 	repick_modifier.disabled = false
-	for i in bullet_modifier.get_children(): #启用所有modifier
-		if i is Button:
-			i.disabled = false
+	modifier_cover.hide() #启用所有修改器
 	
 	_spawn_bullet_pool_cards()
 	_spwan_modifier_cards()
 
-	modifier_cover.hide()
+	
 
 
 #region SetUp
@@ -168,23 +167,15 @@ func _spawn_bullet_pool_cards() -> void:
 
 #生成修改器卡片
 func _spwan_modifier_cards() -> void:
-	pass
+	if has_free_repick_modifier: #确保是初次获取
+		has_free_repick_modifier = false
+		get_player_current_level_modifier()
+
 
 #endregion
 
 #region Operation
 #按下
-func _on_fire_bullet_pressed() -> void:
-	current_selected_data = test_bullet_data01
-	_repick_magazine()
-	_on_phase01_exit()
-
-
-func _on_ice_bullet_pressed() -> void:
-	current_selected_data = test_bullet_data02
-	_repick_magazine()
-	_on_phase01_exit()
-
 var curretn_picked_modifier_card : Card  #当前点击的卡片
 
 func _on_modifier_picked(_card : Card) -> void: #当修改器选择的时候 进入
@@ -196,10 +187,7 @@ func _on_modifier_picked(_card : Card) -> void: #当修改器选择的时候 进
 #region Exit
 func _on_phase01_exit() -> void:
 	repick_modifier.disabled = true
-	
-	for i in bullet_modifier.get_children(): #停用所有modifier
-		if i is Button:
-			i.disabled = true
+	modifier_cover.show()
 	
 	_on_phase02_enter()
 
@@ -218,7 +206,6 @@ func _on_phase02_enter() -> void:
 	instruction_text.update_instruction_text(instruction_text_dic[current_phase])
 
 	repick_magazine.disabled = false
-	modifier_cover.show()
 
 #region SetUp
 func _repick_magazine() -> void: #按照弹夹容量挑选子弹到magazine
@@ -270,7 +257,6 @@ func _on_magazine_bullet_picked(_card : Card) -> void:
 
 func _on_phase02_exit() -> void:
 	repick_magazine.disabled = true
-	modifier_cover.hide()
 	_on_phase03_enter()
 
 
@@ -344,8 +330,11 @@ func _on_close_work_shop_pressed() -> void:
 
 
 func _on_repick_modifier_pressed() -> void:
+	if !workshop_points - 1 >= 0: #确保玩家有足够的操作点数
+		return 
+	
+	workshop_points -= 1
 	get_player_current_level_modifier()
-
 
 
 func _on_repick_magazine_pressed() -> void:
