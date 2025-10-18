@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgoga5au6ctkr"]
+
+[ext_resource type="Script" uid="uid://bqa61hgwl1x4l" path="res://TestArmorCan0915/UI/instruction_text.gd" id="1_a84om"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_biw34"]
+font_size = 32
+font_color = Color(1, 1, 1, 0.501961)
+
+[node name="InstructionText" type="Label"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "选择一个修改器以继续。"
+label_settings = SubResource("LabelSettings_biw34")
+script = ExtResource("1_a84om")
