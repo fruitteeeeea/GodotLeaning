@@ -98,6 +98,7 @@ func manager_add_cards(_manager : CardsManager, _node : DataContainer) -> void:
 	#卡片点击
 	if _manager.can_click:
 		card.gui_input.connect(card._on_card_click)
+		card.clicked.connect(func (_card : Card) : _manager.card_being_clicked.emit(card))
 
 
 	_manager.add_cards(card)
@@ -106,6 +107,7 @@ func manager_add_cards(_manager : CardsManager, _node : DataContainer) -> void:
 		cards_manager_info[_manager] = {} 
 
 	cards_manager_info[_manager][_node] = card #字典添加对应卡片的节点
+
 
 #FIXME 输入卡片移除
 func manager_remove_card(_manager : CardsManager, _node : DataContainer,) -> void:

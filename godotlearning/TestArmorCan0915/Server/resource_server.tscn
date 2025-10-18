@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dn1xoq47i6ecr"]
+
+[ext_resource type="Script" uid="uid://bmktyp2qhe6pd" path="res://TestArmorCan0915/Server/resource_server.gd" id="1_1ndwl"]
+
+[node name="ResourceServer" type="Node"]
+script = ExtResource("1_1ndwl")

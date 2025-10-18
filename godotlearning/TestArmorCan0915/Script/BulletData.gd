@@ -6,10 +6,6 @@ class_name BulletData
 @export var size: float = 1.0
 @export var speed: float = 400
 
-#子弹在弹药库中的信息
-@export var pool_weight := 1.0
-@export var pool_size := Vector2.ONE
-
 #子弹的额外机制（开火 装填 击中 击杀
 @export var modifiers: Array[BulletModifierData] = [] 
 

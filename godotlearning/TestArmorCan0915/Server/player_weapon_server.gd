@@ -101,15 +101,8 @@ func get_bullet_pool() -> Array[DataContainer]:
 
 
 #==工房操作===
-func get_total_size() -> int:
-	var total = 0
-	for b in bullet_set:
-		total += b.pool_size.x * b.pool_size.y
-	return total
-
-
 func can_add_bullet(bullet: BulletData) -> bool: #检查是否可以添加子弹 
-	return get_total_size() + bullet.pool_size.x * bullet.pool_size.y <= bullet_pool_max_capacity
+	return bullet_set.size() + 1 <= bullet_pool_max_capacity
 
 
 #升级 缩小其中一枚子弹的体积 放大一枚子弹的体积 

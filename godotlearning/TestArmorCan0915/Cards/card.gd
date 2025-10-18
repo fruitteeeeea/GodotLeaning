@@ -17,6 +17,9 @@ class_name Card
 signal hovered(card: Node) #传递给card manager 调整悬停时的卡组位置 
 signal unhovered(card: Node)
 
+#卡片点击
+signal clicked(card : Card)
+
 #卡片buff
 signal add_progress(pro : float) #进度调整加
 signal reduce_progress(pro : float) #进度条减少
@@ -203,6 +206,6 @@ func _on_card_click(event: InputEvent) -> void:
 	if event.is_action_pressed("mouse_left"):
 		animated_sprite_2d.stop()
 		animated_sprite_2d.play("default")
-		WorkShopServer.card_being_clicked(self)
+		emit_signal("clicked", self)
 
 #endregion

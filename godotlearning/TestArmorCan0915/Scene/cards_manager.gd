@@ -1,6 +1,8 @@
 extends Node2D
 class_name CardsManager
 
+signal card_being_clicked(card : Card) #卡片被点击
+
 #@onready var debug_drawer: Node2D = $"../DebugDrawer"
 
 @export var horizontal_arran := true
@@ -33,7 +35,7 @@ func add_cards(_card : Card = null,) -> void:
 
 
 #减少卡片 
-func remove_cards(_card : Card = null) -> void:
+func remove_cards(_card : Card = null) -> void: #TODO 改成私有变量
 	var target_card: Card = _card
 	
 	if target_card:

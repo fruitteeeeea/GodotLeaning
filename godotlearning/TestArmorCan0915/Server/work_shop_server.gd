@@ -6,6 +6,8 @@ signal workshop_closed
 
 signal update_pick_bullet_set(arr : Array[BulletData])
 signal update_pick_magazine(arr : Array[BulletData])
+signal update_pick_modifier(arr : Array[BulletData])
+
 
 #修改玩家弹夹步骤 
 
@@ -26,6 +28,9 @@ signal update_pick_magazine(arr : Array[BulletData])
 
 #工房获取 Modifier 的顺序 
 #1. 获取当前可获取内容等级 
+#2. 每个关底可以免费刷新一次
+#3. 每次刷新需要花费点数
+#4. 统帅模式可以无限刷新modifier
 
 
 #====固定UI====
@@ -34,6 +39,7 @@ signal update_pick_magazine(arr : Array[BulletData])
 @onready var repick_magazine: Button = $HBoxContainer/RepickMagazine
 
 @onready var bullet_modifier: GridContainer = $PanelContainer/BulletModifier
+@onready var modifier_cover: Control = $Cards/ModifierCover #用来阻止继续操作modifier
 
 
 #====FlowControl====
@@ -50,6 +56,7 @@ var instruction_text_dic := {
 #===卡片管理器===
 @onready var picked_bullet_set: CardsManager = $Cards/PickedBulletSet
 @onready var picked_magazine: CardsManager = $Cards/PickedMagazine
+@onready var picked_modifier: CardsManager = $Cards/PickedModifier
 
 
 #===Test相关===
@@ -63,16 +70,17 @@ var is_locked := false #进行危险操作的时候 可以先锁住
 func _ready() -> void:
 	update_pick_bullet_set.connect(_on_picked_card_spwan.bind(picked_bullet_set, true))
 	update_pick_magazine.connect(_on_picked_card_spwan.bind(picked_magazine))
+	update_pick_modifier.connect(_on_picked_card_spwan.bind(picked_modifier))
 	
-	#for i in bullet_modifier.get_children(): #绑定修改器选择按钮
-		#if i is Button:
-			#i.pressed.connect(_updata_selected_button.bind(i))
+	picked_magazine.card_being_clicked.connect(_on_magazine_bullet_picked)
+	picked_modifier.card_being_clicked.connect(_on_modifier_picked)
 
 
 func open_workshop() -> void:
 	is_modifiy_mod = true
 	show()
 	get_player_current_weaponset()
+	get_player_current_level_modifier()
 	workshop_opened.emit()
 	
 	_on_phase01_enter()
@@ -85,20 +93,39 @@ func close_workshop() -> void:
 	
 	PlayerWeaponServer.restore_bullet_pool()
 
-
+#===WeaponSet===
 var current_pick_bullet_set : Array[BulletData] = [] #这里用一下set
 var current_pick_magazine : Array[BulletData] = []
 
 var curretn_bullet_pool_capacity : int
 var current_magazine_capacity : int
 
-
-#region WeaponSet
+#region SetUp (关底 刷新一次）
 #获取玩家当前的 武器配置 （子弹配置 弹仓容量 弹夹容量）
 func get_player_current_weaponset() -> void:
 	current_pick_bullet_set = PlayerWeaponServer.get_bullet_set() #直接赋值，同步修改 
 	curretn_bullet_pool_capacity = PlayerWeaponServer.get_bullet_pool_capacity()
 	current_magazine_capacity = PlayerWeaponServer.get_magazine_capacity()
+
+
+#===ModifierLevel===
+var current_modifier_level := 1 #玩家当前修改器等级
+var can_repick_modifier := 10 #关底刷新/花费点数刷新
+
+var current_picked_modifier : Array[BulletData] = []
+
+#获取玩家当前等级的 Modifier
+func get_player_current_level_modifier() -> void: 
+	if !can_repick_modifier - 1 >= 0 : return
+	can_repick_modifier -= 1
+	
+	current_picked_modifier.clear()
+	
+	for i in range(current_magazine_capacity): #依据弹夹数量生成modifier
+		var res = ResourceServer.get_current_level_modifier(current_modifier_level) as BulletData
+		current_picked_modifier.append(res)
+	
+	update_pick_modifier.emit(current_picked_modifier) #发送更新选择modifier信号。
 
 #endregion
 
@@ -131,6 +158,9 @@ func _on_phase01_enter() -> void:
 	_spawn_bullet_pool_cards()
 	_spwan_modifier_cards()
 
+	modifier_cover.hide()
+
+
 #region SetUp
 #生成弹仓卡片
 func _spawn_bullet_pool_cards() -> void:
@@ -155,13 +185,13 @@ func _on_ice_bullet_pressed() -> void:
 	_repick_magazine()
 	_on_phase01_exit()
 
-func _on_modifier_pressed(butt : Button) -> void: #当修改器选择的时候 进入
+var curretn_picked_modifier_card : Card  #当前点击的卡片
+
+func _on_modifier_picked(_card : Card) -> void: #当修改器选择的时候 进入
+	curretn_picked_modifier_card = _card #如果应用的话 需要移除卡片
+	current_selected_data = _card.data
 	_repick_magazine()
 	_on_phase01_exit()
-
-
-func _on_modifier_selected(_data) -> void:
-	current_selected_data = _data
 
 #region Exit
 func _on_phase01_exit() -> void:
@@ -188,6 +218,7 @@ func _on_phase02_enter() -> void:
 	instruction_text.update_instruction_text(instruction_text_dic[current_phase])
 
 	repick_magazine.disabled = false
+	modifier_cover.show()
 
 #region SetUp
 func _repick_magazine() -> void: #按照弹夹容量挑选子弹到magazine
@@ -218,7 +249,7 @@ func return_picked_bullet() -> void: #将 magazine 的 bullet 归还到 bulletse
 #===卡片操作===
 var current_magazine_index : int #当前点击的卡片的index
 
-func card_being_clicked(_card : Card):
+func _on_magazine_bullet_picked(_card : Card) -> void:
 	var _data = _card.data
 	
 	# 检查该卡片对应的数据是否在 current_pick_magazine 中
@@ -233,12 +264,13 @@ func card_being_clicked(_card : Card):
 	if !current_selected_data:
 		print("❌ 未选中卡片数据")
 		return
-	
+
 	_on_phase02_exit()
 
 
 func _on_phase02_exit() -> void:
 	repick_magazine.disabled = true
+	modifier_cover.hide()
 	_on_phase03_enter()
 
 
@@ -270,6 +302,10 @@ func _override_bullet(index : int) -> void:
 	update_pick_magazine.emit(current_pick_magazine)
 	
 	print("🔁 已更新子弹数据:", current_selected_data.BulletName)
+	
+	curretn_picked_modifier_card.hide() #移除该modifier
+	curretn_picked_modifier_card = null
+	
 	_on_phase01_enter()
 	
 
@@ -305,6 +341,12 @@ func _on_picked_card_spwan(arr : Array[BulletData], _manager : CardsManager, _so
 #region ButtonPress
 func _on_close_work_shop_pressed() -> void:
 	close_workshop()
+
+
+func _on_repick_modifier_pressed() -> void:
+	get_player_current_level_modifier()
+
+
 
 func _on_repick_magazine_pressed() -> void:
 	#这里要添加条件 才能重选弹夹
