@@ -78,6 +78,8 @@ func _ready() -> void:
 
 
 func open_workshop() -> void:
+	PlayerWeaponServer.weapon_locked = true
+	
 	is_modifiy_mod = true
 	show()
 	get_player_current_weaponset()
@@ -91,6 +93,7 @@ func close_workshop() -> void:
 	hide()
 	workshop_closed.emit()
 	
+	PlayerWeaponServer.weapon_locked = false
 	PlayerWeaponServer.restore_bullet_pool()
 
 #===WeaponSet===

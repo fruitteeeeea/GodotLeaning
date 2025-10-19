@@ -4,9 +4,12 @@ signal bullet_added(bullet : BulletData) #子弹被添加
 signal bullet_remove(bullet : BulletData)
 
 signal weapon_set_settedup
+signal bullet_pool_restore #弹仓重置的时候发出
 
 const NORMAL_BULLET = preload("res://TestArmorCan0915/TestResource/BulletData/NormalBullet.tres")
 const DEFULT_WEAPON_SET = preload("res://TestArmorCan0915/Resource/defult/defult_weapon_set.tres")
+
+var weapon_locked := false #如果处于 locked 状态 无法操作。
 
 func _ready() -> void:
 	setup_weapon_set(DEFULT_WEAPON_SET)
@@ -63,6 +66,7 @@ func buildup_runtime_bullet_pool(test_bullet_pool : Array[BulletData]) -> void:
 		add_bullet(i)
 	 
 	restore_bullet_pool() #根据给予的数列生成子弹实例
+	bullet_pool_restore.emit()
 
 
 #重置子弹池子
@@ -78,6 +82,7 @@ func restore_bullet_pool():
 		bull.data = i
 		runtime_bullet_pool.append(bull)
 
+	bullet_pool_restore.emit()
 
 func bullet_pool_pick_random_bullet(_nb : int) -> Array[DataContainer]:
 	var bullet_picked_list : Array[DataContainer] = []
@@ -130,6 +135,7 @@ var is_reloading := false #是否处于装填状态
 func ____Magazine____(): pass
 
 func reload() -> bool: #从子弹池子里获得bo 装填至bullet_instances
+	if weapon_locked: return false
 	if is_reloading: return false #返回装填失败 
 
 	is_reloading = true
@@ -192,6 +198,7 @@ func get_magazine_capacity() -> int:
 
 
 func fire() -> DataContainer: #返回一个
+	if weapon_locked: return null
 	if runtime_magazine.is_empty():
 		reload()
 		return

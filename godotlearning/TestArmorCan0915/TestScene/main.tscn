@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://cweyvgldfjb3u"]
+
+[ext_resource type="Script" uid="uid://dsyy2br1v74jy" path="res://TestArmorCan0915/TestScene/main.gd" id="1_a227c"]
+[ext_resource type="PackedScene" uid="uid://cipixtr831jtr" path="res://TestArmorCan0915/TestScene/armor_can_test.tscn" id="1_uwnpa"]
+[ext_resource type="PackedScene" uid="uid://b5ym2buubyol7" path="res://TestArmorCan0915/TestScene/work_shop_test.tscn" id="2_gk76u"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_a227c")
+
+[node name="ArmorCanTest" parent="." instance=ExtResource("1_uwnpa")]
+
+[node name="WorkShopTest" parent="." instance=ExtResource("2_gk76u")]

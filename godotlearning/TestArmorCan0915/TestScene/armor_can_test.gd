@@ -13,7 +13,7 @@ var is_locked := true
 
 func _ready() -> void:
 	#弹仓更改的时候 重新生成弹仓卡片 
-	PlayerWeaponServer.weapon_set_settedup.connect(spwan_bullet_card)
+	PlayerWeaponServer.bullet_pool_restore.connect(spwan_bullet_card)
 	#完成并分配 武器子弹池 #只在最开始执行一次
 	PlayerWeaponServer.setup_weapon_set(test_weaponset)
 
@@ -58,7 +58,7 @@ func fire():
 
 
 func reload():
-	PlayerWeaponServer.reload()
+	if !PlayerWeaponServer.reload() : return
 	
 	CardServer.reset_card_manager(magazine)
 	
@@ -108,3 +108,9 @@ func _on_save_weapon_set_pressed() -> void:
 
 func _on_print_weapon_set_pressed() -> void:
 	PlayerWeaponServer.load_player_weapon_set()
+	print(PlayerWeaponServer.bullet_set)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("mouse_right"):
+		PlayerWeaponServer.weapon_locked =! PlayerWeaponServer.weapon_locked
