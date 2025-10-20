@@ -37,7 +37,7 @@ func spwan_bullet_card() -> void:
 	is_locked = false
 
 
-func fire():
+func fire(): #这些将会出现在武器中 
 	if is_locked:
 		return
 	
@@ -81,6 +81,7 @@ func _on_card_buff_activated(_card : Card) -> void:
 	bull.data = _card.data
 	CardServer.manager_add_cards(activated_buff, bull) #已激活buff卡片
 
+#region TestScene
 #随机为卡片充能
 func _on_timer_timeout() -> void: 
 	
@@ -110,7 +111,4 @@ func _on_print_weapon_set_pressed() -> void:
 	PlayerWeaponServer.load_player_weapon_set()
 	print(PlayerWeaponServer.bullet_set)
 
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("mouse_right"):
-		PlayerWeaponServer.weapon_locked =! PlayerWeaponServer.weapon_locked
+#endregion

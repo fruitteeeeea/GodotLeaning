@@ -69,7 +69,7 @@ position = Vector2(320, 192)
 can_hover = true
 
 [node name="BuffList" parent="." instance=ExtResource("2_udgb4")]
-position = Vector2(320, 448)
+position = Vector2(320, 432)
 min_x = -256.0
 max_x = 256.0
 can_charge = true
