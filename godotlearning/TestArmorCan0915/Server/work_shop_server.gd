@@ -160,8 +160,6 @@ func _on_phase01_enter() -> void:
 	_spawn_bullet_pool_cards()
 	_spwan_modifier_cards()
 
-	
-
 
 #region SetUp
 #生成弹仓卡片

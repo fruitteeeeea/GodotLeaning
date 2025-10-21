@@ -5,5 +5,5 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	WorkShopServer.workshop_opened.connect(func() : armor_can_test.hide())
-	WorkShopServer.workshop_closed.connect(func() : armor_can_test.show())
+	WorkShopServerV2.workshop_opened.connect(func() : armor_can_test.hide())
+	WorkShopServerV2.workshop_closed.connect(func() : armor_can_test.show())
