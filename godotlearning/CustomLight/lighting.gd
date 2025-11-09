@@ -7,6 +7,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	var light_position = _get_light_position()
+
 	material.set_shader_parameter("number_of_lights", light_position.size())
 	material.set_shader_parameter("lights", light_position)
 

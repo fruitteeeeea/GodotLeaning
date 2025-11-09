@@ -4,7 +4,7 @@ uniform sampler2D screen_texture : hint_screen_texture, filter_nearest;
 uniform vec2 lights[100];
 uniform int number_of_lights = 1;
 
-uniform float band_radius = 10;
+uniform float band_radius = .8;
 uniform float band_strength = 0.3;
 
 uniform vec4 modulate_color : source_color = vec4(0.0);
@@ -32,7 +32,7 @@ vec4 modulate(vec4 color, float distance_to_light) {
 		return modulated;
 	}
 
-	if (distance_to_light >= band_radius) {
+	if (distance_to_light >= light_radius * band_radius) {
 		return mix(modulated, color, band_strength);
 	}
 
