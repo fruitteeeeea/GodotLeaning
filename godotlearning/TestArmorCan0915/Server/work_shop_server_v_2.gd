@@ -12,6 +12,13 @@ signal update_pick_bullets(arr : Array[BulletData])
 enum WorkShopPhase { NORMAL, ADD, REMOVE, }
 var current_phase : WorkShopPhase = WorkShopPhase.NORMAL
 
+@onready var instruction_text: InstructionText = $InstructionText
+var instruction_text_dic := {
+	WorkShopPhase.NORMAL : "选择一个修改器以继续。",
+	WorkShopPhase.ADD : "选择想要添加的子弹。",
+	WorkShopPhase.REMOVE : "选择想要移除的子弹。",
+}
+
 #卡片管理器
 @onready var picked_bullet_set: CardsManager = $CardsManager/PickedBulletSet
 @onready var picked_magazine: CardsManager = $CardsManager/PickedMagazine
@@ -92,7 +99,8 @@ func _on_picked_card_spwan(arr : Array[BulletData], _manager : CardsManager, _so
 		CardServer.manager_add_cards(_manager, bull)
 
 #按钮操作
-func _updata_button_state() -> void:
+func _updata_ui_state() -> void:
+	instruction_text.update_instruction_text(instruction_text_dic[current_phase])
 	match current_phase:
 		WorkShopPhase.NORMAL:
 			$Control/HBoxContainer.show()
@@ -105,13 +113,13 @@ func _updata_button_state() -> void:
 func _on_add_card_pressed() -> void:
 	current_phase = WorkShopPhase.ADD
 	_get_player_current_level_modifier()
-	_updata_button_state()
+	_updata_ui_state()
 
 
 func _on_remove_card_pressed() -> void:
 	current_phase = WorkShopPhase.REMOVE
 	_get_player_current_magazine_bullets()
-	_updata_button_state()
+	_updata_ui_state()
 
 
 func _on_done_pressed() -> void:
@@ -120,11 +128,16 @@ func _on_done_pressed() -> void:
 	update_pick_bullets.emit(current_picked_bullets) 
 	
 	current_phase = WorkShopPhase.NORMAL
-	_updata_button_state()
+	_updata_ui_state()
 	$CardsManager/BulletSetSize.text = str(current_pick_bullet_set.size())
 
 
 func _on_exit_work_shop_pressed() -> void:
-	close_workshop()
+	var confirmed_panel = PanelServer.\
+	show_confirmation("确认退出工房吗？", "当前卡组将会被保存。", \
+	func () : 
+		_on_done_pressed()
+		close_workshop(),
+	func() : pass)
 
 #endregion

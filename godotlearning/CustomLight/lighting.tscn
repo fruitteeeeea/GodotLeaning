@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dbt2078qr11m1"]
+
+[ext_resource type="Shader" uid="uid://b434tgwwau6ta" path="res://CustomLight/lighting.gdshader" id="1_qbmd1"]
+[ext_resource type="Script" uid="uid://54ceib7phl64" path="res://CustomLight/lighting.gd" id="2_dqnyi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dqnyi"]
+shader = ExtResource("1_qbmd1")
+shader_parameter/lights = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/number_of_lights = 1
+shader_parameter/band_radius = 188.0
+shader_parameter/band_strength = 0.3
+shader_parameter/modulate_color = Color(0, 0, 0, 0.611765)
+shader_parameter/light_radius = 256.0
+
+[node name="Lighting" type="ColorRect"]
+material = SubResource("ShaderMaterial_dqnyi")
+offset_right = 64.0
+offset_bottom = 64.0
+script = ExtResource("2_dqnyi")

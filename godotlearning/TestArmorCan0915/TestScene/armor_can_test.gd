@@ -9,8 +9,6 @@ extends Node2D
 
 @export var test_weaponset : PlayerWeaponSet
 
-var is_locked := true
-
 func _ready() -> void:
 	#弹仓更改的时候 重新生成弹仓卡片 
 	PlayerWeaponServer.bullet_pool_restore.connect(spwan_bullet_card)
@@ -27,26 +25,18 @@ func _ready() -> void:
 
 
 func spwan_bullet_card() -> void:
-	is_locked = true
 	CardServer.reset_card_manager(bullet_pool)
 	
 	for i in PlayerWeaponServer.get_bullet_pool():
 		var bull = i as DataContainer
 		CardServer.manager_add_cards(bullet_pool, i) #弹仓卡片
 
-	is_locked = false
-
 
 func fire(): #这些将会出现在武器中 
-	if is_locked:
-		return
-	
-	is_locked = true
-	
+
 	var bull = PlayerWeaponServer.fire() as DataContainer 
 	if !bull:
 		reload()
-		is_locked = false
 		return
 
 	CardServer.manager_remove_card(magazine, bull)
@@ -54,7 +44,6 @@ func fire(): #这些将会出现在武器中
 	if bull.data.modifiers.size() > 0: #如果是特殊子弹 则添加卡片
 		CardServer.manager_add_cards(buff_list, bull) #待激活buff卡片
 
-	is_locked = false
 
 
 func reload():

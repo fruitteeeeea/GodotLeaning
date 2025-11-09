@@ -31,7 +31,7 @@ func add_cards(_card : Card = null,) -> void:
 	cards_posx_info[_card] = Vector2.ZERO  # 先放字典，等位置计算
 	
 	current_cards = max(current_cards + 1, 0) # 更新数量
-	_update_card_positions(get_card_positions(current_cards)) # 重新对齐剩余卡片的位置
+	_update_card_positions(_get_card_positions(current_cards)) # 重新对齐剩余卡片的位置
 
 
 #减少卡片 
@@ -43,11 +43,11 @@ func remove_cards(_card : Card = null) -> void: #TODO 改成私有变量
 		target_card.outof_arry()
 
 		current_cards = max(current_cards - 1, 0) # 更新数量
-		_update_card_positions(get_card_positions(current_cards)) # 重新对齐剩余卡片的位置
+		_update_card_positions(_get_card_positions(current_cards)) # 重新对齐剩余卡片的位置
 
 
 # ---------------- 位置计算 ----------------
-func get_card_positions(n: int) -> Array[float]: #仅仅计算位置 
+func _get_card_positions(n: int) -> Array[float]: #仅仅计算位置 
 	var positions: Array[float] = []
 	if n <= 0:
 		return positions
@@ -108,9 +108,9 @@ func _update_card_positions(positions: Array) -> void:
 # ---------------- 卡片悬停 ----------------
 func _on_card_hovered(card: Node) -> void:
 	hover_index = cards_posx_info.keys().find(card)
-	_update_card_positions(get_card_positions(cards_posx_info.size()))
+	_update_card_positions(_get_card_positions(cards_posx_info.size()))
 
 
 func _on_card_unhovered(card: Node) -> void:
 	hover_index = -1
-	_update_card_positions(get_card_positions(cards_posx_info.size()))
+	_update_card_positions(_get_card_positions(cards_posx_info.size()))

@@ -14,11 +14,6 @@ const CARD = preload("res://TestArmorCan0915/Cards/card.tscn") #卡片场景
 	#卡片只需要专注于卡片本身的操作 
 } #FIXME 这个字典需要被移除
 
-#添加卡片管理器 
-#1.添加路径 2.管理器 3.屏幕上的位置 4.水平位置 5.名称
-func hud_add_manager(_path : String, _manager : CardsManager, _pos : Vector2, _heriozion : bool, _name : String):
-	pass
-
 #根据输入的管理器和节点 返回对应的卡片 
 func _find_card(_manager : CardsManager, _node : DataContainer) -> Card:
 	if !cards_manager_info.has(_manager) : return null #管理器 

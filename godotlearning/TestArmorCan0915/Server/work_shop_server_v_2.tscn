@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://d2qy85jmiecij"]
+[gd_scene load_steps=4 format=3 uid="uid://d2qy85jmiecij"]
 
 [ext_resource type="Script" uid="uid://6b8e078n7fhg" path="res://TestArmorCan0915/Server/work_shop_server_v_2.gd" id="1_bb13l"]
 [ext_resource type="Script" uid="uid://cfsphxqxe2i8t" path="res://TestArmorCan0915/Scene/cards_manager.gd" id="2_aaq58"]
+[ext_resource type="PackedScene" uid="uid://dgoga5au6ctkr" path="res://TestArmorCan0915/UI/instruction_text.tscn" id="3_2v0ye"]
 
 [node name="WorkShopServerV2" type="Control"]
 visible = false
@@ -111,6 +112,13 @@ text = "添加卡片"
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "移除卡片"
+
+[node name="InstructionText" parent="." instance=ExtResource("3_2v0ye")]
+layout_mode = 0
+offset_top = 400.0
+offset_right = 352.0
+offset_bottom = 445.0
+metadata/_edit_group_ = true
 
 [connection signal="pressed" from="Control/Done" to="." method="_on_done_pressed"]
 [connection signal="pressed" from="Control/ExitWorkShop" to="." method="_on_exit_work_shop_pressed"]

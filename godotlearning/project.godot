@@ -64,7 +64,7 @@ glossary/default_case_sensitive=true
 
 window/size/viewport_width=640
 window/size/viewport_height=640
-window/stretch/mode="canvas_items"
+window/stretch/mode="viewport"
 
 [editor_plugins]
 
@@ -76,6 +76,7 @@ Building=""
 CenterPoint=""
 Sheep=""
 player=""
+lights=""
 
 [input]
 

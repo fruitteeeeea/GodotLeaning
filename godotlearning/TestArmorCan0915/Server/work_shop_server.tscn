@@ -80,15 +80,6 @@ layout_mode = 2
 disabled = true
 text = "重选弹夹（-1）"
 
-[node name="ApplyBulletConfirmPanel" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="Cards" type="Control" parent="."]
 anchors_preset = 0
 offset_right = 40.0
@@ -112,17 +103,12 @@ label_settings = SubResource("LabelSettings_cidmk")
 
 [node name="PickedBulletSet" parent="Cards" instance=ExtResource("5_6gwe6")]
 position = Vector2(320, 208)
-can_hover = true
 
 [node name="PickedMagazine" parent="Cards" instance=ExtResource("5_6gwe6")]
 position = Vector2(320, 336)
-can_hover = true
-can_click = true
 
 [node name="PickedModifier" parent="Cards" instance=ExtResource("5_6gwe6")]
 position = Vector2(320, 488)
-can_hover = true
-can_click = true
 
 [node name="ModifierCover" type="Control" parent="Cards"]
 visible = false
