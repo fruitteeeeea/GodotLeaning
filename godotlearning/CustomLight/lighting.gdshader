@@ -8,6 +8,7 @@ uniform float band_radius = .8;
 uniform float band_strength = 0.3;
 
 uniform vec4 modulate_color : source_color = vec4(0.0);
+uniform vec4 light_color : source_color = vec4(1.0); // 🌈 新增：统一光源颜色
 
 uniform float light_radius = 256.0;
 
@@ -25,18 +26,20 @@ float distance_to_light(vec2 coords) {
 }
 
 
-vec4 modulate(vec4 color, float distance_to_light) {
-	vec4 modulated = color * modulate_color;
+vec4 modulate(vec4 color, float dist) {
+	vec4 darkened = color * modulate_color;
 
-	if (distance_to_light > light_radius) {
-		return modulated;
+	if (dist > light_radius) {
+		return darkened;
 	}
 
-	if (distance_to_light >= light_radius * band_radius) {
-		return mix(modulated, color, band_strength);
+	if (dist >= light_radius * band_radius) {
+		// 边缘区：混合暗部和光照颜色
+		return mix(darkened, color * light_color, band_strength);
 	}
 
-	return color;
+	// 中心区：完全受光
+	return color * light_color;
 }
 
 void fragment() {
