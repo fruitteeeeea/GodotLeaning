@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddxig5fes1gph"]
+
+[ext_resource type="Script" uid="uid://bfkykt1qhii2v" path="res://AwaitSignalLearning/signal_test_scene.gd" id="1_s8aeh"]
+
+[node name="SignalTestScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s8aeh")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -8.0
+offset_right = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "生成面板
+"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

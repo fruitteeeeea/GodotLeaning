@@ -1,48 +1,67 @@
 shader_type canvas_item;
 
 uniform sampler2D screen_texture : hint_screen_texture, filter_nearest;
+
+// 光源位置 & 半径
 uniform vec2 lights[100];
+uniform float light_radii[100];
 uniform int number_of_lights = 1;
 
-uniform float band_radius = .8;
+// 颜色控制
+uniform vec4 modulate_color : source_color = vec4(0.0);
+uniform vec4 light_color : source_color = vec4(1.0);
+
+// 过渡控制
+uniform float band_radius = 0.8;
 uniform float band_strength = 0.3;
 
-uniform vec4 modulate_color : source_color = vec4(0.0);
-uniform vec4 light_color : source_color = vec4(1.0); // 🌈 新增：统一光源颜色
 
-uniform float light_radius = 256.0;
-
-float distance_to_light(vec2 coords) {
-	float dist = 1000.0;
+// ✅ 新逻辑：当距离相近时，以半径更大的光源为准
+float distance_to_light(vec2 coords, out int nearest_idx) {
+	float min_score = 1e9;
+	nearest_idx = 0;
 
 	for (int i = 0; i < number_of_lights; i++) {
-		float new_dist = distance(coords, lights[i]);
+		float d = distance(coords, lights[i]);
+		float r = light_radii[i];
 
-		if (new_dist < dist) {
-			dist = new_dist;
+		// 以 "相对距离" 作为比较基准
+		// 使得半径大的光源在边界区域更有优势
+		float score = d / r;
+
+		if (score < min_score) {
+			min_score = score;
+			nearest_idx = i;
 		}
 	}
-	return dist;
+
+	// 返回真实距离
+	return distance(coords, lights[nearest_idx]);
 }
 
 
-vec4 modulate(vec4 color, float dist) {
+
+vec4 modulate_light(vec4 color, float dist, float radius) {
 	vec4 darkened = color * modulate_color;
 
-	if (dist > light_radius) {
+	if (dist > radius) {
 		return darkened;
 	}
 
-	if (dist >= light_radius * band_radius) {
-		// 边缘区：混合暗部和光照颜色
+	if (dist >= radius * band_radius) {
 		return mix(darkened, color * light_color, band_strength);
 	}
 
-	// 中心区：完全受光
 	return color * light_color;
 }
 
+
 void fragment() {
-	COLOR = texture(screen_texture, SCREEN_UV);
-	COLOR = modulate(COLOR, distance_to_light(FRAGCOORD.xy));
+	vec4 base_color = texture(screen_texture, SCREEN_UV);
+
+	int nearest_idx;
+	float dist = distance_to_light(FRAGCOORD.xy, nearest_idx);
+	float radius = light_radii[nearest_idx];
+
+	COLOR = modulate_light(base_color, dist, radius);
 }
